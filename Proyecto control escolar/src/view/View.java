@@ -76,11 +76,27 @@ public class View {
 		login.setLayout(new BoxLayout(login, BoxLayout.Y_AXIS));
 		login.setBorder(new EmptyBorder(40, 40, 40, 40));
 		
+		ImageIcon iconLogo = new ImageIcon(this.getClass().getResource("/imagenes/logouni.png"));
+		JLabel lblLogo = new JLabel(iconLogo);
+		lblLogo.setAlignmentX(35.0f);
+		lblLogo.setAlignmentY(20.0f);
+		lblLogo.setHorizontalAlignment(SwingConstants.LEFT);
+		login.add(lblLogo);
+		
+		login.add(Box.createRigidArea(new Dimension(0,20)));
+		
 		JLabel lblTitle = new JLabel("Control escolar");
 		lblTitle.setFont(new Font("Almarai ExtraBold",Font.PLAIN, 25));
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		login.add(lblTitle);
+		
+		JLabel lblMensaje = new JLabel("Gestiona cuestiones escolares al instante");
+		lblMensaje.setHorizontalAlignment(SwingConstants.LEFT);
+		lblMensaje.setAlignmentX(Component.CENTER_ALIGNMENT);
+		login.add(lblMensaje);
+		
+		login.add(Box.createRigidArea(new Dimension(0,40)));
 		
 		login.add(Box.createRigidArea(new Dimension(0,20)));
 		
@@ -123,16 +139,47 @@ public class View {
 		btnMostrar.addActionListener(e->{
 			mostrar=!mostrar;
 			if (mostrar) {
-				passwordField.setEchoChar((char) 0); // muestra el texto
+				passwordField.setEchoChar((char) 0); 
 		        btnMostrar.setIcon(iconOcultar);
 		    } else {
-		    	passwordField.setEchoChar('•'); // oculta el texto
+		    	passwordField.setEchoChar('•'); 
 		        btnMostrar.setIcon(iconMostrar);
 		    }
 		});
 		password.add(btnMostrar);
-		
 		login.add(password);
+		
+		login.add(Box.createRigidArea(new Dimension(0,90)));
+		
+		JButton btnIniciarSesion =new JButton ("Iniciar sesion");
+		btnIniciarSesion.setAlignmentX(0.5f);
+		btnIniciarSesion.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+		btnIniciarSesion.addActionListener(e->{
+			String passText = new String(passwordField.getPassword());
+			Boolean flag1 = false, flag2 = false;
+			
+			String username = txtEmail.getText();
+			
+			if( passText.equals("") ) {
+				
+				passwordField.setBorder(BorderFactory.createLineBorder(Color.red,3));
+				
+			}else {
+				
+				passwordField.setBorder(BorderFactory.createLineBorder(Color.green,3));
+				flag1 = true;
+			}
+			
+			
+			if(txtEmail.getText().equals("")) {
+				txtEmail.setBorder(BorderFactory.createLineBorder(Color.red,3));
+			}else {
+				
+				txtEmail.setBorder(BorderFactory.createLineBorder(Color.green,3));
+				flag2 = true;
+			}
+		});
+		login.add(btnIniciarSesion);
 		
 		ventana.repaint();
 		ventana.revalidate();

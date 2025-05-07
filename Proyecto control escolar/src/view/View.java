@@ -42,13 +42,16 @@ public class View {
 	private JTextField txtPassword;
 	private JTextField txtEmail;
 	private boolean mostrar=false;
+	Color azul1;
+	Color borde;
 	public View() {
-		
+		azul1= new Color(54, 146, 218);
+		borde = new Color(206, 207, 202);
 	}
 	public void login() {
 		ventana=new JFrame();
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ventana.setBounds(100, 100, 1000, 600);
+		ventana.setBounds(100, 100, 800, 600);
 		ventana.getContentPane().setLayout(new BorderLayout());
 		
 		ventana.setVisible(true);
@@ -74,16 +77,19 @@ public class View {
 		JPanel login = new JPanel();
 		ventana.getContentPane().add(login, BorderLayout.CENTER);
 		login.setLayout(new BoxLayout(login, BoxLayout.Y_AXIS));
-		login.setBorder(new EmptyBorder(40, 40, 40, 40));
+		login.setBorder(new EmptyBorder(20, 20, 20, 20));
+		
+		JPanel contentIcon = new JPanel ();
+		contentIcon.setLayout(new BoxLayout(contentIcon, BoxLayout.X_AXIS));
+		contentIcon.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
 		
 		ImageIcon iconLogo = new ImageIcon(this.getClass().getResource("/imagenes/logouni.png"));
 		JLabel lblLogo = new JLabel(iconLogo);
-		lblLogo.setAlignmentX(35.0f);
-		lblLogo.setAlignmentY(20.0f);
-		lblLogo.setHorizontalAlignment(SwingConstants.LEFT);
-		login.add(lblLogo);
+		lblLogo.setAlignmentX(Component.CENTER_ALIGNMENT);
+		contentIcon.add(lblLogo);
+		login.add(contentIcon);
 		
-		login.add(Box.createRigidArea(new Dimension(0,20)));
+		login.add(Box.createRigidArea(new Dimension(0,50)));
 		
 		JLabel lblTitle = new JLabel("Control escolar");
 		lblTitle.setFont(new Font("Almarai ExtraBold",Font.PLAIN, 25));
@@ -93,45 +99,54 @@ public class View {
 		
 		JLabel lblMensaje = new JLabel("Gestiona cuestiones escolares al instante");
 		lblMensaje.setHorizontalAlignment(SwingConstants.LEFT);
+		lblMensaje.setFont(new Font("Almarai ",Font.PLAIN, 12));
 		lblMensaje.setAlignmentX(Component.CENTER_ALIGNMENT);
 		login.add(lblMensaje);
 		
 		login.add(Box.createRigidArea(new Dimension(0,40)));
 		
-		login.add(Box.createRigidArea(new Dimension(0,20)));
-		
 		JLabel lblEmail = new JLabel("Email");
 		lblEmail.setAlignmentX(0.5f);
+		lblEmail.setFont(new Font("Almarai ",Font.PLAIN, 12));
 		lblEmail.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
 		login.add(lblEmail);
 		
 		txtEmail = new JTextField();
+		txtEmail.setToolTipText("Ingrese email");
 		txtEmail.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+		txtEmail.setBorder(BorderFactory.createLineBorder(borde,2));
 		login.add(txtEmail);
 		txtEmail.setColumns(10);
 		
-		login.add(Box.createRigidArea(new Dimension(0,20)));
+		login.add(Box.createRigidArea(new Dimension(0,10)));
 		
+		// Contenedor de JPasswordField y Boton mostrar y ocultar
 		JPanel password = new JPanel();
 		password.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-		password.setLayout(new BoxLayout(password, BoxLayout.X_AXIS));
+		password.setLayout(new BoxLayout(password, BoxLayout.LINE_AXIS));
 		password.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+		password.setBorder(BorderFactory.createLineBorder(borde,2));
 		
 		JLabel lblPassword = new JLabel();
 		login.add(lblPassword);
+		lblPassword.setFont(new Font("Almarai",Font.PLAIN, 13));
 		lblPassword.setText("Contraseña");
 		lblPassword.setHorizontalAlignment(SwingConstants.LEFT);
 		lblPassword.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
 		lblPassword.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		passwordField = new JPasswordField();
-		password.add(passwordField);
 		passwordField.setMaximumSize(new Dimension(400, 40));
+		passwordField.setToolTipText("Ingrese contraseña");
+		passwordField.setBorder(null);
 		passwordField.setColumns(10);
+		password.add(passwordField);
 		
 		ImageIcon iconMostrar = new ImageIcon(this.getClass().getResource("/imagenes/mostrar.png"));
 		ImageIcon iconOcultar = new ImageIcon(this.getClass().getResource("/imagenes/ocultar.png"));
 		JButton btnMostrar = new JButton(iconMostrar);
+		btnMostrar.setAlignmentX(-0.5f);
+		btnMostrar.setBorderPainted(false);
 		btnMostrar.setPreferredSize(new Dimension(40, 40));
 		btnMostrar.setMaximumSize(new Dimension(40, 40));
 		btnMostrar.setMinimumSize(new Dimension(40, 40));
@@ -151,22 +166,26 @@ public class View {
 		
 		login.add(Box.createRigidArea(new Dimension(0,90)));
 		
-		JButton btnIniciarSesion =new JButton ("Iniciar sesion");
+		// boton para iniciar sesion
+		JButton btnIniciarSesion =new JButton ("Iniciar sesión");
 		btnIniciarSesion.setAlignmentX(0.5f);
+		btnIniciarSesion.setBackground(azul1);
+		btnIniciarSesion.setFont(new Font("Almarai Bold",Font.PLAIN, 20));
+		btnIniciarSesion.setForeground(Color.WHITE);
 		btnIniciarSesion.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
 		btnIniciarSesion.addActionListener(e->{
+			
 			String passText = new String(passwordField.getPassword());
 			Boolean flag1 = false, flag2 = false;
-			
 			String username = txtEmail.getText();
 			
 			if( passText.equals("") ) {
 				
-				passwordField.setBorder(BorderFactory.createLineBorder(Color.red,3));
+				password.setBorder(BorderFactory.createLineBorder(Color.red,3));
 				
 			}else {
 				
-				passwordField.setBorder(BorderFactory.createLineBorder(Color.green,3));
+				password.setBorder(BorderFactory.createLineBorder(Color.green,3));
 				flag1 = true;
 			}
 			
@@ -177,7 +196,21 @@ public class View {
 				
 				txtEmail.setBorder(BorderFactory.createLineBorder(Color.green,3));
 				flag2 = true;
-			}
+			}if(flag1 && flag2) {
+				
+				//boolean user_auth = funciones.access(username,passText); 
+				 System.out.println("Validacion");
+				 JOptionPane.showMessageDialog(ventana, "Bienvenido.");
+				 
+				/*if(user_auth) {
+					
+					JOptionPane.showMessageDialog(ventana, "Bienvenido.");
+					ventana.dispose();
+					
+					*/
+				}else {
+					JOptionPane.showMessageDialog(ventana, "email o contraseña incorrectos","Datos incorrectos",JOptionPane.WARNING_MESSAGE);
+				}	
 		});
 		login.add(btnIniciarSesion);
 		

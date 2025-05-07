@@ -21,6 +21,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -40,6 +41,7 @@ public class View {
 	private BufferedImage imagenLogin;
 	private JTextField txtPassword;
 	private JTextField txtEmail;
+	private boolean mostrar=false;
 	public View() {
 		
 	}
@@ -94,10 +96,43 @@ public class View {
 		
 		login.add(Box.createRigidArea(new Dimension(0,20)));
 		
-		txtPassword = new JTextField();
-		txtPassword.setAlignmentX(Component.CENTER_ALIGNMENT);
-		login.add(txtPassword);
-		txtPassword.setColumns(10);
+		JPanel password = new JPanel();
+		password.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+		password.setLayout(new BoxLayout(password, BoxLayout.X_AXIS));
+		password.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+		
+		JLabel lblPassword = new JLabel();
+		login.add(lblPassword);
+		lblPassword.setText("Contraseña");
+		lblPassword.setHorizontalAlignment(SwingConstants.LEFT);
+		lblPassword.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+		lblPassword.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		passwordField = new JPasswordField();
+		password.add(passwordField);
+		passwordField.setMaximumSize(new Dimension(400, 40));
+		passwordField.setColumns(10);
+		
+		ImageIcon iconMostrar = new ImageIcon(this.getClass().getResource("/imagenes/mostrar.png"));
+		ImageIcon iconOcultar = new ImageIcon(this.getClass().getResource("/imagenes/ocultar.png"));
+		JButton btnMostrar = new JButton(iconMostrar);
+		btnMostrar.setPreferredSize(new Dimension(40, 40));
+		btnMostrar.setMaximumSize(new Dimension(40, 40));
+		btnMostrar.setMinimumSize(new Dimension(40, 40));
+		btnMostrar.setBackground(Color.WHITE);
+		btnMostrar.addActionListener(e->{
+			mostrar=!mostrar;
+			if (mostrar) {
+				passwordField.setEchoChar((char) 0); // muestra el texto
+		        btnMostrar.setIcon(iconOcultar);
+		    } else {
+		    	passwordField.setEchoChar('•'); // oculta el texto
+		        btnMostrar.setIcon(iconMostrar);
+		    }
+		});
+		password.add(btnMostrar);
+		
+		login.add(password);
 		
 		ventana.repaint();
 		ventana.revalidate();

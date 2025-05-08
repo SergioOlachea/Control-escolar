@@ -33,6 +33,8 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
+import controlles.HomeController;
+
 
 public class View {
 	private JFrame ventana;
@@ -81,15 +83,15 @@ public class View {
 		
 		JPanel contentIcon = new JPanel ();
 		contentIcon.setLayout(new BoxLayout(contentIcon, BoxLayout.X_AXIS));
-		contentIcon.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+		contentIcon.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
 		
 		ImageIcon iconLogo = new ImageIcon(this.getClass().getResource("/imagenes/logouni.png"));
 		JLabel lblLogo = new JLabel(iconLogo);
-		lblLogo.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblLogo.setAlignmentX(Component.LEFT_ALIGNMENT);
 		contentIcon.add(lblLogo);
 		login.add(contentIcon);
 		
-		login.add(Box.createRigidArea(new Dimension(0,50)));
+		login.add(Box.createRigidArea(new Dimension(0,40)));
 		
 		JLabel lblTitle = new JLabel("Control escolar");
 		lblTitle.setFont(new Font("Almarai ExtraBold",Font.PLAIN, 25));
@@ -136,7 +138,7 @@ public class View {
 		lblPassword.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		passwordField = new JPasswordField();
-		passwordField.setMaximumSize(new Dimension(400, 40));
+		passwordField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
 		passwordField.setToolTipText("Ingrese contraseña");
 		passwordField.setBorder(null);
 		passwordField.setColumns(10);
@@ -201,6 +203,9 @@ public class View {
 				//boolean user_auth = funciones.access(username,passText); 
 				 System.out.println("Validacion");
 				 JOptionPane.showMessageDialog(ventana, "Bienvenido.");
+				 ventana.dispose();
+				 HomeController hc = new HomeController();
+				 hc.home();
 				 
 				/*if(user_auth) {
 					

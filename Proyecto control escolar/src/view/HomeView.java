@@ -22,30 +22,35 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import controlles.Controller;
+
 public class HomeView {
-	
+	Controller c = new Controller();
 	public void home() {
 		Color borde = new Color(206, 207, 202);
 		Color azul2 = new Color(52, 134, 199);
 		Color azul1 = new Color(54, 146, 218);
 		JFrame home = new JFrame();
 		home.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		home.setBounds(100, 100, 937, 522);
+		home.setBounds(100, 100, 982, 647);
 		home.getContentPane().setLayout(new BorderLayout());
 		home.setVisible(true);
 		
 		JPanel header = new JPanel();
 		home.add(header, BorderLayout.NORTH);
 		header.setBackground(azul2);
+		header.setPreferredSize(new Dimension(2147483647, 90));
 		header.setLayout(new BoxLayout(header, BoxLayout.LINE_AXIS));
-		header.setMaximumSize(new Dimension(80,80));
+		header.setMaximumSize(new Dimension(2147483647, 40));
 		
+		header.add(Box.createRigidArea(new Dimension(10,0)));
 		ImageIcon logo = new ImageIcon(this.getClass().getResource("/imagenes/uabcs (1).png"));
 		
 		JLabel logoUabcs = new JLabel(logo);
 		logoUabcs.setBackground(azul2);
 		logoUabcs.setBorder(null);
-		logoUabcs.setHorizontalAlignment(SwingConstants.LEFT);
+		logoUabcs.setPreferredSize(new Dimension(100, 100));
+		logoUabcs.setMaximumSize(new Dimension(60, 100));
 		header.add(logoUabcs);
 		
 		header.add(Box.createRigidArea(new Dimension(50,0)));
@@ -53,7 +58,7 @@ public class HomeView {
 		JLabel lblInicio = new JLabel("Inicio");
 		lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblInicio.setBorder(null);
-		lblInicio.setFont(new Font("Almarai Bold",Font.PLAIN,30));
+		lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
 		lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE,80));
 		lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
 		lblInicio.setBackground(azul2);
@@ -65,21 +70,36 @@ public class HomeView {
 		btnCerrarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnCerrarSesion.setBackground(azul2);
 		btnCerrarSesion.setBorder(null);
-		btnCerrarSesion.setPreferredSize(new Dimension(80, 80));
-		btnCerrarSesion.setMaximumSize(new Dimension(80, 80));
-		btnCerrarSesion.setMinimumSize(new Dimension(40, 40));
+		btnCerrarSesion.setPreferredSize(new Dimension(120,120));
+		btnCerrarSesion.addActionListener(e->{
+			int n = JOptionPane.showConfirmDialog(
+		            null,
+		            "Estas seguro que quieres cerrar sesión?",
+		            "Cerrar sesión",
+		            JOptionPane.YES_NO_OPTION);
+
+		        if(n==0){
+		            JOptionPane.showMessageDialog(null,"hasta luego!");
+		            home.dispose();
+		            c.despliegue();
+		        }
+		        else if(n==1) {
+		            JOptionPane.showMessageDialog(null, "GOODBYE");
+		        }
+		});
 		header.add(btnCerrarSesion);
+		
+		header.add(Box.createRigidArea(new Dimension(10,0)));
 		
 		JPanel options = new JPanel();
 		home.add(options, BorderLayout.WEST);
-		options.setMaximumSize(new Dimension(120, 120));
+		options.setPreferredSize(new Dimension(120, 120));
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 		
 		JPanel moduloAlumnos = new JPanel ();
-		moduloAlumnos.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		moduloAlumnos.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		moduloAlumnos.setPreferredSize(new Dimension(130, 120));
-		moduloAlumnos.setMaximumSize(new Dimension(130, 120));
+		moduloAlumnos.setMaximumSize(new Dimension(130, 130));
 		moduloAlumnos.setBackground(azul2);
 		
 		ImageIcon iconAlumnos = new ImageIcon (this.getClass().getResource("/imagenes/alumnos (1).png"));
@@ -106,8 +126,8 @@ public class HomeView {
 		JPanel moduloMaestros = new JPanel ();
 		moduloMaestros.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		moduloMaestros.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		moduloMaestros.setPreferredSize(new Dimension(130, 120));
-		moduloMaestros.setMaximumSize(new Dimension(130, 120));
+		moduloMaestros.setPreferredSize(new Dimension(130, 140));
+		moduloMaestros.setMaximumSize(new Dimension(130, 130));
 		moduloMaestros.setBackground(azul2);
 		
 		ImageIcon iconDocentnes = new ImageIcon (this.getClass().getResource("/imagenes/docentes (1).png"));
@@ -132,7 +152,7 @@ public class HomeView {
 		moduloGrupo.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		moduloGrupo.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		moduloGrupo.setPreferredSize(new Dimension(130, 120));
-		moduloGrupo.setMaximumSize(new Dimension(130, 120));
+		moduloGrupo.setMaximumSize(new Dimension(130, 130));
 		moduloGrupo.setBackground(azul2);
 		
 		ImageIcon iconGrupo = new ImageIcon (this.getClass().getResource("/imagenes/grupos (1).png"));
@@ -156,8 +176,8 @@ public class HomeView {
 		JPanel moduloAsignatura = new JPanel ();
 		moduloAsignatura.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		moduloAsignatura.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		moduloAsignatura.setPreferredSize(new Dimension(130, 120));
-		moduloAsignatura.setMaximumSize(new Dimension(130, 120));
+		moduloAsignatura.setPreferredSize(new Dimension(150, 150));
+		moduloAsignatura.setMaximumSize(new Dimension(150, 150));
 		moduloAsignatura.setBackground(azul2);
 		
 		ImageIcon iconAsignatura = new ImageIcon (this.getClass().getResource("/imagenes/asignaturas (1).png"));
@@ -169,7 +189,7 @@ public class HomeView {
 		btnAsignatura.setBackground(azul2);
 		moduloAsignatura.add(btnAsignatura);
 		
-		JLabel lblAsignatura = new JLabel ("<html>Modulo de<br>asignaturas");
+		JLabel lblAsignatura = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>asignaturas");
 		lblAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblAsignatura.setForeground(new Color(255, 255, 255));
 		lblAsignatura.setBackground(azul2);
@@ -178,22 +198,34 @@ public class HomeView {
 		moduloAsignatura.add(lblAsignatura);
 		options.add(moduloAsignatura);
 		
-		JPanel panel = new JPanel();
-		home.add(panel, BorderLayout.CENTER);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		// Panel de contenido
 		
-		JLabel lblNewLabel = new JLabel("Bienvenido/a!");
-		lblNewLabel.setAlignmentY(Component.TOP_ALIGNMENT);
-		lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel.add(lblNewLabel);
+		JPanel contenido = new JPanel();
+		home.add(contenido, BorderLayout.CENTER);
+		contenido.setBackground(Color.white);
+		contenido.setLayout(new BoxLayout(contenido, BoxLayout.Y_AXIS));
 		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel.add(lblNewLabel_1);
+		contenido.add(Box.createRigidArea(new Dimension(0,20)));
 		
-		JLabel lblNewLabel_2 = new JLabel("Bienvenido/a!");
-		lblNewLabel_2.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel.add(lblNewLabel_2);
+		JLabel lblBienvenido = new JLabel("Bienvenido/a!");
+		lblBienvenido.setAlignmentY(Component.TOP_ALIGNMENT);
+		lblBienvenido.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
+		lblBienvenido.setAlignmentX(Component.CENTER_ALIGNMENT);
+		contenido.add(lblBienvenido);
+		
+		JLabel lblMensaje = new JLabel("<html><div style='text-align: center;'>Seleccione las opciones de la barra izquierda <br>para navegar el sistema");
+		lblMensaje.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblMensaje.setFont(new Font("Almarai Bold", Font.PLAIN, 28));
+		lblMensaje.setHorizontalAlignment(SwingConstants.CENTER);
+		contenido.add(lblMensaje);
+		
+		ImageIcon mascota = new ImageIcon (this.getClass().getResource("/imagenes/mascota (1).png"));
+		contenido.add(Box.createRigidArea(new Dimension(0,20)));
+		
+		JLabel lblMascota = new JLabel(mascota);
+		lblMascota.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblMascota.setMaximumSize(new Dimension(550, 350));
+		contenido.add(lblMascota);
 		
 		
 		

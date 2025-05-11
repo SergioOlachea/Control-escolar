@@ -23,9 +23,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import controlles.Controller;
+import controlles.HomeController;
 
 public class HomeView {
 	Controller c = new Controller();
+	
 	public void home() {
 		Color borde = new Color(206, 207, 202);
 		Color azul2 = new Color(52, 134, 199);
@@ -109,10 +111,15 @@ public class HomeView {
 		btnAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnAlumnos.setBackground(azul2);
 		btnAlumnos.setBorder(null);
+		btnAlumnos.addActionListener(e->{
+			HomeController  hc = new HomeController();
+			home.dispose();
+			hc.moduloAlumnos();
+		});
 		
 		moduloAlumnos.add(btnAlumnos);
 		
-		JLabel lblAlumnos = new JLabel ("<html>Modulo de<br>alumnos");
+		JLabel lblAlumnos = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>alumnos");
 		lblAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblAlumnos.setForeground(new Color(255, 255, 255));
 		lblAlumnos.setBackground(azul2);
@@ -139,7 +146,7 @@ public class HomeView {
 		btnMaestros.setBackground(azul2);
 		moduloMaestros.add(btnMaestros);
 		
-		JLabel lblMaestros = new JLabel ("<html>Modulo de<br>maestros");
+		JLabel lblMaestros = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>maestros");
 		lblMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblMaestros.setForeground(new Color(255, 255, 255));
 		lblMaestros.setBackground(azul2);
@@ -164,7 +171,7 @@ public class HomeView {
 		btnGrupos.setBackground(azul2);
 		moduloGrupo.add(btnGrupos);
 		
-		JLabel lblGrupos = new JLabel ("<html>Modulo de<br>grupos");
+		JLabel lblGrupos = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>grupos");
 		lblGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblGrupos.setForeground(new Color(255, 255, 255));
 		lblGrupos.setBackground(azul2);

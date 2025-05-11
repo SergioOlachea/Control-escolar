@@ -96,6 +96,7 @@ public class View {
 		JLabel lblTitle = new JLabel("Control escolar");
 		lblTitle.setFont(new Font("Almarai ExtraBold",Font.PLAIN, 25));
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitle.setPreferredSize(new Dimension(Integer.MAX_VALUE,25));
 		lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		login.add(lblTitle);
 		
@@ -207,12 +208,6 @@ public class View {
 				 HomeController hc = new HomeController();
 				 hc.home();
 				 
-				/*if(user_auth) {
-					
-					JOptionPane.showMessageDialog(ventana, "Bienvenido.");
-					ventana.dispose();
-					
-					*/
 				}else {
 					JOptionPane.showMessageDialog(ventana, "email o contraseña incorrectos","Datos incorrectos",JOptionPane.WARNING_MESSAGE);
 				}	

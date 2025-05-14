@@ -94,18 +94,18 @@ public class View {
 		login.add(Box.createRigidArea(new Dimension(0,40)));
 		
 		JLabel lblTitle = new JLabel("Control escolar");
-		lblTitle.setFont(new Font("Almarai ExtraBold",Font.PLAIN, 25));
+		lblTitle.setFont(new Font("Almarai-ExtraBold",Font.PLAIN, 25));
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setPreferredSize(new Dimension(Integer.MAX_VALUE,25));
 		lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		login.add(lblTitle);
 		
 		JLabel lblMensaje = new JLabel("Gestiona cuestiones escolares al instante");
-		lblMensaje.setHorizontalAlignment(SwingConstants.LEFT);
+		lblMensaje.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMensaje.setFont(new Font("Almarai ",Font.PLAIN, 12));
+		lblMensaje.setMaximumSize(new Dimension(Integer.MAX_VALUE,25));
 		lblMensaje.setAlignmentX(Component.CENTER_ALIGNMENT);
 		login.add(lblMensaje);
-		
 		login.add(Box.createRigidArea(new Dimension(0,40)));
 		
 		JLabel lblEmail = new JLabel("Email");
@@ -239,6 +239,7 @@ public class View {
 		} catch (FontFormatException | IOException exception) {
 		    JOptionPane.showMessageDialog(null, exception.getMessage());
 		}
+		
  	 }
 	
 	//subClase para hacer la imagen responsiva

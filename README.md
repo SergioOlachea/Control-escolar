@@ -7,3 +7,16 @@ Este sistema permite gestionar información de **Alumnos, Docentes, Grupos y Asi
 - Creación y modificación de los registros existentes.
 - Descarga de registros completos en **formato PDF**.
 - Generación de **credenciales** para alumnos y docentes.
+---
+## Conexión a Base de Datos
+
+
+Este proyecto Java permite conectarse a una base de datos MySQL utilizando información de configuración externa almacenada en un archivo `database.properties`.
+[Descargar archivo](https://drive.google.com/file/d/1vi49oOgkYLw-r1PBmJxpbStyshpoj3wj/view?usp=drive_link)
+
+
+### Ubicación del archivo `database.properties`
+
+El archivo `database.properties` **debe estar ubicado en el directorio `src/`**. 
+
+

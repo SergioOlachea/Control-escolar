@@ -61,6 +61,7 @@ public class ModuloDocenteView {
 		modulo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		modulo.setBounds(100, 100, 982, 647);
 		JPanel contentPane = new JPanel();
+		modulo.setLocationRelativeTo(null);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		modulo.setVisible(true);
 
@@ -277,7 +278,9 @@ public class ModuloDocenteView {
 		option.setBorder(new EmptyBorder(15, 0, 5, 0));
 		contenido.add(option);
 		
-		JButton btnNuevoReg = new JButton("Nuevo");
+		ImageIcon add = new ImageIcon(getClass().getResource("/imagenes/añadir.png"));
+		JButton btnNuevoReg = new JButton(add);
+		btnNuevoReg.setText("Nuevo");
 		btnNuevoReg.setBackground(azul1);
 		btnNuevoReg.setAlignmentY(Component.TOP_ALIGNMENT);
 		btnNuevoReg.setForeground(Color.white);

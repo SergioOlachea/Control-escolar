@@ -34,6 +34,7 @@ import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 import controlles.HomeController;
+import model.AuthModel;
 
 
 public class View {
@@ -44,6 +45,7 @@ public class View {
 	private JTextField txtPassword;
 	private JTextField txtEmail;
 	private boolean mostrar=false;
+	AuthModel funciones = new AuthModel();
 	Color azul1;
 	Color borde;
 	public View() {
@@ -178,10 +180,10 @@ public class View {
 		btnIniciarSesion.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
 		btnIniciarSesion.addActionListener(e->{
 			
-			String passText = new String(passwordField.getPassword());
+			 String username = txtEmail.getText().trim();
+			 String passText = new String(passwordField.getPassword()).trim();
+			 
 			Boolean flag1 = false, flag2 = false;
-			String username = txtEmail.getText();
-			
 			if( passText.equals("") ) {
 				
 				password.setBorder(BorderFactory.createLineBorder(Color.red,3));
@@ -201,16 +203,18 @@ public class View {
 				flag2 = true;
 			}if(flag1 && flag2) {
 				
-				//boolean user_auth = funciones.access(username,passText); 
-				 System.out.println("Validacion");
-				 JOptionPane.showMessageDialog(ventana, "Bienvenido.");
-				 ventana.dispose();
-				 HomeController hc = new HomeController();
-				 hc.home();
-				 
-				}else {
-					JOptionPane.showMessageDialog(ventana, "email o contraseña incorrectos","Datos incorrectos",JOptionPane.WARNING_MESSAGE);
-				}	
+				boolean user_auth = funciones.access(username,passText); 
+				funciones.printAllUsers();
+				if(user_auth) {
+					JOptionPane.showMessageDialog(ventana, "Bienvenido.");
+					System.out.println("gola");
+					ventana.dispose();
+					HomeController hc = new HomeController();
+					 hc.home();
+				 } else {
+					 JOptionPane.showMessageDialog(ventana, "Campos inválidos", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
 		});
 		login.add(btnIniciarSesion);
 		
@@ -258,4 +262,5 @@ public class View {
 	            }
 	        }
 	    }
+	
 }

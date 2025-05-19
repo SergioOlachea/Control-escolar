@@ -25,11 +25,28 @@ public class AuthModel {
 
 			try (ResultSet rs = stmt.executeQuery()) {
 				acceso = rs.next();
+				System.out.println("Email: " + email + " | Password: " + password);
+				System.out.println("Resultado: " + acceso);
 				return acceso;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	public void printAllUsers() {
+	    String query = "SELECT Email, Password FROM Users";
+
+	    try (
+	        Connection con = ConexionBD.getConnection();
+	        PreparedStatement stmt = con.prepareStatement(query);
+	        ResultSet rs = stmt.executeQuery();
+	    ) {
+	        while (rs.next()) {
+	            System.out.println("Email: " + rs.getString("Email") + " | Password: " + rs.getString("Password"));
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 }

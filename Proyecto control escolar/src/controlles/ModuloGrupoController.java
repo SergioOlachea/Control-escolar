@@ -11,5 +11,12 @@ public class ModuloGrupoController {
 	public void moduloGrupo() {
 		mgv.moduloGrupo();
 	}
+	public void crear() {
+		mgv.crear();
+	}
+	public void modificar() {
+		mgv.modificar();
+	}
+
 
 }

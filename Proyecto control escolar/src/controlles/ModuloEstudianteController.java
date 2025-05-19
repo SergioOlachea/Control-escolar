@@ -15,5 +15,8 @@ public class ModuloEstudianteController {
 	public void crarEstudiante() {
 		mev.crear();
 	}
+	public void modificar() {
+		mev.modificar();
+	}
 
 }

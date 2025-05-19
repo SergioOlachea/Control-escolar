@@ -348,7 +348,7 @@ public class ModuloAsignturaView {
         tabla.getColumnModel().getColumn(3).setPreferredWidth(130);
 
         tabla.getColumn("Detalles de la asignatura").setCellRenderer(new BotonRenderer("Datos completos"));
-        tabla.getColumn("Detalles de la asignatura").setCellEditor(new BotonEditor(new JCheckBox(), "Datos completos", tabla));
+        tabla.getColumn("Detalles de la asignatura").setCellEditor(new BotonEditor(new JCheckBox(), "Datos completos", tabla,modulo));
         
         tabla.getColumnModel().getColumn(tabla.getColumnCount() - 1).setCellRenderer(new PanelBotonesRenderer());
         tabla.getColumnModel().getColumn(tabla.getColumnCount() - 1).setCellEditor(new PanelBotonesEditor(new JCheckBox(), tabla,modulo));
@@ -1108,11 +1108,13 @@ public class ModuloAsignturaView {
 		    protected JButton boton;
 		    private String texto;
 		    JTable tabla;
+		    private JFrame modulo;
 
-		    public BotonEditor(JCheckBox checkBox, String texto, JTable tabla) {
+		    public BotonEditor(JCheckBox checkBox, String texto, JTable tabla, JFrame modulo) {
 		        super(checkBox);
 		        this.tabla = tabla;
 		        this.texto = texto;
+		        this.modulo=modulo;
 		        boton = new JButton(texto);
 		        boton.setForeground(Color.BLUE);
 		        boton.setBorderPainted(false);
@@ -1120,6 +1122,7 @@ public class ModuloAsignturaView {
 
 		        boton.addActionListener(e -> {
 		            ModuloAsignaturaController mac= new ModuloAsignaturaController();
+		            modulo.dispose();
 		            mac.datos();
 		            fireEditingStopped();
 		        });

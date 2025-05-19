@@ -1303,9 +1303,9 @@ public class ModuloEstudianteView {
 			btnAlumnos.setBackground(azulBorde);
 			btnAlumnos.setBorder(null);
 			btnAlumnos.addActionListener(e->{
-				ModuloEstudianteController mac = new ModuloEstudianteController();
+				ModuloEstudianteController mec = new ModuloEstudianteController();
 				modulo.dispose();
-				mac.ModuloEstudiante();
+				mec.ModuloEstudiante();
 			});
 			
 			moduloAlumnos.add(btnAlumnos);

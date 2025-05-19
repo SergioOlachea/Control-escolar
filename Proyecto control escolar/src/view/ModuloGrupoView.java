@@ -143,9 +143,9 @@ public class ModuloGrupoView {
 		btnAlumnos.setBackground(azul2);
 		btnAlumnos.setBorder(null);
 		btnAlumnos.addActionListener(e->{
-			ModuloEstudianteController mac = new ModuloEstudianteController();
+			ModuloEstudianteController mec = new ModuloEstudianteController();
 			modulo.dispose();
-			mac.ModuloEstudiante();
+			mec.ModuloEstudiante();
 		});
 		
 		moduloAlumnos.add(btnAlumnos);
@@ -252,8 +252,9 @@ public class ModuloGrupoView {
 		moduloAsignatura.add(lblAsignatura);
 		options.add(moduloAsignatura);
 		
-		// Panel de contenido
 		
+		
+		// Panel de contenido
 		JPanel contenido = new JPanel();
 		contentPane.add(contenido, BorderLayout.CENTER);
 		contenido.setBackground(Color.white);
@@ -289,7 +290,6 @@ public class ModuloGrupoView {
 			mgc.crear();
 		});
 		btnNuevoReg.setMaximumSize(new Dimension(75,30));
-	
 		option.add(btnNuevoReg);
 		
 		option.add(Box.createRigidArea(new Dimension(180,0)));
@@ -349,6 +349,7 @@ public class ModuloGrupoView {
         tabla.getColumnModel().getColumn(1).setPreferredWidth(60); 
         tabla.getColumnModel().getColumn(2).setPreferredWidth(200);
         tabla.getColumnModel().getColumn(3).setPreferredWidth(120); 
+        tabla.getColumnModel().getColumn(4).setPreferredWidth(120);
 
         tabla.getColumn("Detalles del grupo").setCellRenderer(new BotonRenderer("Datos completos"));
         tabla.getColumn("Detalles del grupo").setCellEditor(new BotonEditor(new JCheckBox(), "Datos completos", tabla,modulo));

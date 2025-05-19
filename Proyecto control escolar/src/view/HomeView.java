@@ -65,6 +65,7 @@ public class HomeView {
 		JLabel lblInicio = new JLabel("Inicio");
 		lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblInicio.setBorder(null);
+		lblInicio.setForeground(Color.white);
 		lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
 		lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE,80));
 		lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
@@ -229,8 +230,9 @@ public class HomeView {
 		moduloAsignatura.add(lblAsignatura);
 		options.add(moduloAsignatura);
 		
-		// Panel de contenido
 		
+		
+		// Panel de contenido
 		JPanel contenido = new JPanel();
 		home.add(contenido, BorderLayout.CENTER);
 		contenido.setBackground(Color.white);

@@ -4,9 +4,6 @@ import view.ModuloGrupoView;
 
 public class ModuloGrupoController {
 	ModuloGrupoView mgv = new ModuloGrupoView();
-	public ModuloGrupoController() {
-		mgv.moduloGrupo();
-	}
 		
 	public void moduloGrupo() {
 		mgv.moduloGrupo();

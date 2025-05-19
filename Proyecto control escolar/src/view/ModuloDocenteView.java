@@ -53,6 +53,7 @@ public class ModuloDocenteView {
 		Color azul2 = new Color(52, 134, 199);
 		Color azul1 = new Color(54, 146, 218);
 		Color azulBorde= new Color(101, 166, 217);
+		
 		JFrame modulo= new JFrame();
 		modulo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		modulo.setBounds(100, 100, 982, 647);
@@ -141,9 +142,9 @@ public class ModuloDocenteView {
 		btnAlumnos.setBackground(azul2);
 		btnAlumnos.setBorder(null);
 		btnAlumnos.addActionListener(e->{
-			ModuloEstudianteController mac = new ModuloEstudianteController();
+			ModuloEstudianteController mec = new ModuloEstudianteController();
 			modulo.dispose();
-			mac.ModuloEstudiante();
+			mec.ModuloEstudiante();
 		});
 		
 		moduloAlumnos.add(btnAlumnos);
@@ -250,8 +251,8 @@ public class ModuloDocenteView {
 		moduloAsignatura.add(lblAsignatura);
 		options.add(moduloAsignatura);
 		
-		// Panel de contenido
 		
+		// Panel de contenido
 		JPanel contenido = new JPanel();
 		contentPane.add(contenido, BorderLayout.CENTER);
 		contenido.setBackground(Color.white);

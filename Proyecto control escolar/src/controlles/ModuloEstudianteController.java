@@ -18,5 +18,11 @@ public class ModuloEstudianteController {
 	public void modificar() {
 		mev.modificar();
 	}
+	public void datosGenerales() {
+		mev.datos();
+	}
+	public void credencial() {
+		mev.credencial();
+	}
 
 }

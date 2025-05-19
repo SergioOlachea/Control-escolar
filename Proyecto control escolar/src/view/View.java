@@ -57,6 +57,7 @@ public class View {
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ventana.setBounds(100, 100, 800, 600);
 		ventana.getContentPane().setLayout(new BorderLayout());
+		ventana.setLocationRelativeTo(null);
 		
 		ventana.setVisible(true);
 		
@@ -96,7 +97,7 @@ public class View {
 		login.add(Box.createRigidArea(new Dimension(0,40)));
 		
 		JLabel lblTitle = new JLabel("Control escolar");
-		lblTitle.setFont(new Font("Almarai-ExtraBold",Font.PLAIN, 25));
+		lblTitle.setFont(new Font("Almarai Extrabold",Font.PLAIN, 25));
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setPreferredSize(new Dimension(Integer.MAX_VALUE,25));
 		lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -104,7 +105,7 @@ public class View {
 		
 		JLabel lblMensaje = new JLabel("Gestiona cuestiones escolares al instante");
 		lblMensaje.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMensaje.setFont(new Font("Almarai ",Font.PLAIN, 12));
+		lblMensaje.setFont(new Font("Almarai Bold",Font.PLAIN, 14));
 		lblMensaje.setMaximumSize(new Dimension(Integer.MAX_VALUE,25));
 		lblMensaje.setAlignmentX(Component.CENTER_ALIGNMENT);
 		login.add(lblMensaje);
@@ -112,7 +113,7 @@ public class View {
 		
 		JLabel lblEmail = new JLabel("Email");
 		lblEmail.setAlignmentX(0.5f);
-		lblEmail.setFont(new Font("Almarai ",Font.PLAIN, 12));
+		lblEmail.setFont(new Font("Almarai Bold",Font.PLAIN, 12));
 		lblEmail.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
 		login.add(lblEmail);
 		
@@ -134,7 +135,7 @@ public class View {
 		
 		JLabel lblPassword = new JLabel();
 		login.add(lblPassword);
-		lblPassword.setFont(new Font("Almarai",Font.PLAIN, 13));
+		lblPassword.setFont(new Font("Almarai Bold",Font.PLAIN, 12));
 		lblPassword.setText("Contraseña");
 		lblPassword.setHorizontalAlignment(SwingConstants.LEFT);
 		lblPassword.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
@@ -207,13 +208,14 @@ public class View {
 				funciones.printAllUsers();
 				if(user_auth) {
 					JOptionPane.showMessageDialog(ventana, "Bienvenido.");
-					System.out.println("gola");
 					ventana.dispose();
 					HomeController hc = new HomeController();
 					 hc.home();
 				 } else {
-					 JOptionPane.showMessageDialog(ventana, "Campos inválidos", "Error", JOptionPane.ERROR_MESSAGE);
+					 JOptionPane.showMessageDialog(ventana, "Nombre de usuario o contraseña incorrectos", "Datos incorrectos", JOptionPane.ERROR_MESSAGE);
 				}
+			}else {
+				 JOptionPane.showMessageDialog(ventana, "Nombre de usuario o contraseña incorrectos", "Datos incorrectos", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		login.add(btnIniciarSesion);

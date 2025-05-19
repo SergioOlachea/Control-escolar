@@ -41,6 +41,7 @@ public class HomeView {
 		home.setBounds(100, 100, 982, 647);
 		home.getContentPane().setLayout(new BorderLayout());
 		home.setVisible(true);
+		home.setLocationRelativeTo(null);
 		
 		JPanel header = new JPanel();
 		home.add(header, BorderLayout.NORTH);
@@ -85,12 +86,12 @@ public class HomeView {
 		            JOptionPane.YES_NO_OPTION);
 
 		        if(n==0){
-		            JOptionPane.showMessageDialog(null,"hasta luego!");
 		            home.dispose();
 		            c.despliegue();
+		            JOptionPane.showMessageDialog(null,"Sesión cerrada correctamente");
 		        }
 		        else if(n==1) {
-		            JOptionPane.showMessageDialog(null, "GOODBYE");
+		            
 		        }
 		});
 		header.add(btnCerrarSesion);
@@ -129,6 +130,7 @@ public class HomeView {
 		lblAlumnos.setBackground(azul2);
 		lblAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAlumnos.setMaximumSize(new Dimension(80, 70));
+		lblAlumnos.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
 		moduloAlumnos.add(lblAlumnos);
 		options.add(moduloAlumnos);
 		
@@ -155,12 +157,13 @@ public class HomeView {
 		});
 		moduloMaestros.add(btnMaestros);
 		
-		JLabel lblMaestros = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>maestros");
+		JLabel lblMaestros = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>docentes");
 		lblMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblMaestros.setForeground(new Color(255, 255, 255));
 		lblMaestros.setBackground(azul2);
 		lblMaestros.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMaestros.setMaximumSize(new Dimension(80, 70));
+		lblMaestros.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
 		moduloMaestros.add(lblMaestros);
 		options.add(moduloMaestros);
 		
@@ -190,6 +193,7 @@ public class HomeView {
 		lblGrupos.setBackground(azul2);
 		lblGrupos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGrupos.setMaximumSize(new Dimension(80, 70));
+		lblGrupos.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
 		moduloGrupo.add(lblGrupos);
 		options.add(moduloGrupo);
 		
@@ -221,6 +225,7 @@ public class HomeView {
 		lblAsignatura.setBackground(azul2);
 		lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAsignatura.setMaximumSize(new Dimension(80, 70));
+		lblAsignatura.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
 		moduloAsignatura.add(lblAsignatura);
 		options.add(moduloAsignatura);
 		

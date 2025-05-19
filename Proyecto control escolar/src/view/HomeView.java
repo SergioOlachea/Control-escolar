@@ -24,6 +24,10 @@ import javax.swing.SwingConstants;
 
 import controlles.Controller;
 import controlles.HomeController;
+import controlles.ModuloAsignaturaController;
+import controlles.ModuloDocenteController;
+import controlles.ModuloEstudianteController;
+import controlles.ModuloGrupoController;
 
 public class HomeView {
 	Controller c = new Controller();
@@ -112,9 +116,9 @@ public class HomeView {
 		btnAlumnos.setBackground(azul2);
 		btnAlumnos.setBorder(null);
 		btnAlumnos.addActionListener(e->{
-			HomeController  hc = new HomeController();
+			ModuloEstudianteController mac = new ModuloEstudianteController();
 			home.dispose();
-			hc.moduloAlumnos();
+			mac.ModuloEstudiante();
 		});
 		
 		moduloAlumnos.add(btnAlumnos);
@@ -144,6 +148,11 @@ public class HomeView {
 		btnMaestros.setBorder(null);
 		btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnMaestros.setBackground(azul2);
+		btnMaestros.addActionListener(e->{
+			ModuloDocenteController mdc= new ModuloDocenteController();
+			home.dispose();
+			mdc.moduloDocente();
+		});
 		moduloMaestros.add(btnMaestros);
 		
 		JLabel lblMaestros = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>maestros");
@@ -169,7 +178,11 @@ public class HomeView {
 		btnGrupos.setBorder(null);
 		btnGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnGrupos.setBackground(azul2);
-		moduloGrupo.add(btnGrupos);
+		btnGrupos.addActionListener(e->{
+			ModuloGrupoController mgc= new ModuloGrupoController();
+			home.dispose();
+			mgc.moduloGrupo();
+		});		moduloGrupo.add(btnGrupos);
 		
 		JLabel lblGrupos = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>grupos");
 		lblGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -194,6 +207,12 @@ public class HomeView {
 		btnAsignatura.setBorder(null);
 		btnAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnAsignatura.setBackground(azul2);
+		btnAsignatura.addActionListener(e->{
+			ModuloAsignaturaController mac= new ModuloAsignaturaController();
+			home.dispose();
+			mac.moduloAsignatura();
+			
+		});
 		moduloAsignatura.add(btnAsignatura);
 		
 		JLabel lblAsignatura = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>asignaturas");

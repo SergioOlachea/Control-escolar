@@ -97,7 +97,7 @@ public class View {
 		login.add(Box.createRigidArea(new Dimension(0,40)));
 		
 		JLabel lblTitle = new JLabel("Control escolar");
-		lblTitle.setFont(new Font("Almarai Extrabold",Font.PLAIN, 25));
+		lblTitle.setFont(new Font("Almarai-Extrabold",Font.PLAIN, 25));
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setPreferredSize(new Dimension(Integer.MAX_VALUE,25));
 		lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);

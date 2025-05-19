@@ -5,7 +5,7 @@ import view.ModuloGrupoView;
 public class ModuloGrupoController {
 	ModuloGrupoView mgv = new ModuloGrupoView();
 	public ModuloGrupoController() {
-		
+		mgv.moduloGrupo();
 	}
 		
 	public void moduloGrupo() {
@@ -16,6 +16,9 @@ public class ModuloGrupoController {
 	}
 	public void modificar() {
 		mgv.modificar();
+	}
+	public void datos() {
+		mgv.detalles();
 	}
 
 

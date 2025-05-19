@@ -44,19 +44,19 @@ import controlles.ModuloAsignaturaController;
 import controlles.ModuloDocenteController;
 import controlles.ModuloEstudianteController;
 import controlles.ModuloGrupoController;
+import view.ModuloAsignturaView.BotonRenderer;
 import view.ModuloDocenteView.BotonEditor;
-import view.ModuloDocenteView.BotonRenderer;
 import view.ModuloDocenteView.PanelBotonesEditor;
 import view.ModuloDocenteView.PanelBotonesRenderer;
 
 public class ModuloGrupoView {
-	JFrame modulo= new JFrame();
 	public void moduloGrupo() {
 		Color borde = new Color(206, 207, 202);
 		Color azul2 = new Color(52, 134, 199);
 		Color azul1 = new Color(54, 146, 218);
 		Color azulBorde= new Color(101, 166, 217);
-		
+
+		JFrame modulo= new JFrame();
 		modulo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		modulo.setBounds(100, 100, 982, 647);
 		JPanel contentPane = new JPanel();
@@ -283,6 +283,11 @@ public class ModuloGrupoView {
 		btnNuevoReg.setAlignmentY(Component.TOP_ALIGNMENT);
 		btnNuevoReg.setForeground(Color.white);
 		btnNuevoReg.setBorder(BorderFactory.createLineBorder(azulBorde,5));
+		btnNuevoReg.addActionListener(e->{
+			ModuloGrupoController mgc = new ModuloGrupoController();
+			modulo.dispose();
+			mgc.crear();
+		});
 		btnNuevoReg.setMaximumSize(new Dimension(75,30));
 	
 		option.add(btnNuevoReg);
@@ -346,10 +351,10 @@ public class ModuloGrupoView {
         tabla.getColumnModel().getColumn(3).setPreferredWidth(120); 
 
         tabla.getColumn("Detalles del grupo").setCellRenderer(new BotonRenderer("Datos completos"));
-        tabla.getColumn("Detalles del grupo").setCellEditor(new BotonEditor(new JCheckBox(), "Datos completos", tabla));
-
-        tabla.getColumn("Opciones").setCellRenderer(new PanelBotonesRenderer());
-        tabla.getColumn("Opciones").setCellEditor(new PanelBotonesEditor(new JCheckBox(), tabla));
+        tabla.getColumn("Detalles del grupo").setCellEditor(new BotonEditor(new JCheckBox(), "Datos completos", tabla,modulo));
+        
+        tabla.getColumnModel().getColumn(tabla.getColumnCount() - 1).setCellRenderer(new PanelBotonesRenderer());
+        tabla.getColumnModel().getColumn(tabla.getColumnCount() - 1).setCellEditor(new PanelBotonesEditor(new JCheckBox(), tabla,modulo));
         
         JScrollPane scrollPane = new JScrollPane(tabla);
         scrollPane.setBackground(Color.white);
@@ -442,129 +447,7 @@ public class ModuloGrupoView {
 
 	}
 	
-	 // Renderizador simple para botones
-    class BotonRenderer extends JButton implements TableCellRenderer {
-        public BotonRenderer(String texto) {
-            setText(texto);
-            setForeground(Color.BLUE);
-            setBorderPainted(false);
-            setContentAreaFilled(false);
-        }
-
-        public Component getTableCellRendererComponent(JTable table, Object value,
-            boolean isSelected, boolean hasFocus, int row, int column) {
-            return this;
-        }
-    }
-
-    // Editor para botones
-    class BotonEditor extends DefaultCellEditor {
-        protected JButton boton;
-        private String texto;
-        JTable tabla;
-
-        public BotonEditor(JCheckBox checkBox, String string, JTable tabla) {
-            super(checkBox);
-            this.tabla = tabla;
-            this.texto = string;
-            boton = new JButton(texto);
-            boton.setForeground(Color.BLUE);
-            boton.setBorderPainted(false);
-            boton.setContentAreaFilled(false);
-
-            boton.addActionListener(e -> {
-                JOptionPane.showMessageDialog(null, "Botón '" + texto + "' presionado en fila " + (tabla.getSelectedRow() + 1));
-                fireEditingStopped();
-            });
-        }
-
-
-		public Component getTableCellEditorComponent(JTable table, Object value,
-            boolean isSelected, int row, int column) {
-            return boton;
-        }
-
-        public Object getCellEditorValue() {
-            return texto;
-        }
-    }
-
-    // Panel con dos botones
-    class PanelBotonesRenderer extends JPanel implements TableCellRenderer {
-        public PanelBotonesRenderer() {
-            setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-            JButton btnEditar = new JButton(new ImageIcon(this.getClass().getResource("/imagenes/edit (1).png")));
-            JButton btnBorrar = new JButton(new ImageIcon(this.getClass().getResource("/imagenes/delete (1).png")));
-            btnEditar.setPreferredSize(new Dimension(20, 20));
-            btnEditar.setBorder(null);
-            btnEditar.setBackground(Color.white);
-            btnBorrar.setBorder(null);
-            btnBorrar.setPreferredSize(new Dimension(20, 20));
-            btnBorrar.setBackground(Color.white);
-            this.setBackground(Color.white);
-            add(btnEditar);
-            add(btnBorrar);
-        }
-
-        public Component getTableCellRendererComponent(JTable table, Object value,
-            boolean isSelected, boolean hasFocus, int row, int column) {
-            return this;
-        }
-    }
-
-    class PanelBotonesEditor extends DefaultCellEditor {
-        private JPanel panel;
-        private JButton editar, borrar;
-        private JTable tabla;
-
-        public PanelBotonesEditor(JCheckBox checkBox, JTable tabla) {
-            super(checkBox);
-            this.tabla = tabla;
-        }
-
-        public Component getTableCellEditorComponent(JTable table, Object value,
-                boolean isSelected, int row, int column) {
-
-            panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
-            panel.setBackground(Color.WHITE);
-
-            editar = new JButton(new ImageIcon(getClass().getResource("/imagenes/edit (1).png")));
-            borrar = new JButton(new ImageIcon(getClass().getResource("/imagenes/delete (1).png")));
-
-            editar.setPreferredSize(new Dimension(20, 20));
-            editar.setBorder(null);
-            editar.setBackground(Color.white);
-            borrar.setBorder(null);
-            borrar.setPreferredSize(new Dimension(20, 20));
-            borrar.setBackground(Color.white);
-            
-            editar.setFocusable(false);
-            borrar.setFocusable(false);
-            
-            editar.addActionListener(e -> {
-                ModuloGrupoController mgc = new ModuloGrupoController();
-                modulo.dispose();
-                mgc.modificar();
-            });
-
-            borrar.addActionListener(e -> {
-                ((DefaultTableModel) tabla.getModel()).removeRow(row);
-                JOptionPane.showMessageDialog(null, "Fila eliminada " + (row + 1));
-                fireEditingStopped();
-                System.out.println(borrar.getSize());
-            });
-
-            panel.add(editar);
-            panel.add(borrar);
-            panel.repaint();
-            return panel;
-        }
-
-        public Object getCellEditorValue() {
-            return "";
-        }
-   	}
-    public void crear() {
+	public void crear() {
     	Color borde = new Color(206, 207, 202);
     	Color azul2 = new Color(52, 134, 199);
     	Color azul1 = new Color(54, 146, 218);
@@ -767,8 +650,10 @@ public class ModuloGrupoView {
     	contenido.setLayout(new BoxLayout(contenido, BoxLayout.PAGE_AXIS));
     	
     	JLabel temporal = new JLabel("CREAR GRUPO");
+    	contenido.add(temporal);
     }
-    public void modificar() {
+   
+	public void modificar() {
     	Color borde = new Color(206, 207, 202);
     	Color azul2 = new Color(52, 134, 199);
     	Color azul1 = new Color(54, 146, 218);
@@ -971,5 +856,341 @@ public class ModuloGrupoView {
     	contenido.setLayout(new BoxLayout(contenido, BoxLayout.PAGE_AXIS));
     	
     	JLabel temporal = new JLabel("MODIFICAR GRUPO");
+    	contenido.add(temporal);
     }
+    
+    public void detalles() {
+    	Color borde = new Color(206, 207, 202);
+    	Color azul2 = new Color(52, 134, 199);
+    	Color azul1 = new Color(54, 146, 218);
+    	Color azulBorde = new Color(101, 166, 217);
+    	JFrame modulo = new JFrame();
+    	modulo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	modulo.setBounds(100, 100, 982, 647);
+    	JPanel contentPane = new JPanel();
+    	modulo.setLocationRelativeTo(null);
+    	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+    	modulo.setVisible(true);
+    	modulo.setContentPane(contentPane);
+    	contentPane.setLayout(new BorderLayout(0, 0));
+
+    	JPanel header = new JPanel();
+    	contentPane.add(header, BorderLayout.NORTH);
+    	header.setBackground(azul2);
+    	header.setPreferredSize(new Dimension(2147483647, 90));
+    	header.setLayout(new BoxLayout(header, BoxLayout.LINE_AXIS));
+    	header.setMaximumSize(new Dimension(2147483647, 40));
+
+    	header.add(Box.createRigidArea(new Dimension(10, 0)));
+    	ImageIcon logo = new ImageIcon(this.getClass().getResource("/imagenes/uabcs (1).png"));
+
+    	JLabel logoUabcs = new JLabel(logo);
+    	logoUabcs.setBackground(azul2);
+    	logoUabcs.setBorder(null);
+    	logoUabcs.setPreferredSize(new Dimension(100, 100));
+    	logoUabcs.setMaximumSize(new Dimension(60, 100));
+    	header.add(logoUabcs);
+
+    	header.add(Box.createRigidArea(new Dimension(50, 0)));
+
+    	JLabel lblInicio = new JLabel("Modulo grupo");
+    	lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblInicio.setBorder(null);
+    	lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
+    	lblInicio.setForeground(Color.white);
+    	lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
+    	lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblInicio.setBackground(azul2);
+    	header.add(lblInicio);
+
+    	ImageIcon iconCerrarSesion = new ImageIcon(this.getClass().getResource("/imagenes/cerrarsesion (1).png"));
+
+    	JButton btnCerrarSesion = new JButton(iconCerrarSesion);
+    	btnCerrarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnCerrarSesion.setBackground(azul2);
+    	btnCerrarSesion.setBorder(null);
+    	btnCerrarSesion.setPreferredSize(new Dimension(120, 120));
+    	btnCerrarSesion.addActionListener(e -> {
+    	    int n = JOptionPane.showConfirmDialog(
+    	            null,
+    	            "Estas seguro que quieres cerrar sesión?",
+    	            "Cerrar sesión",
+    	            JOptionPane.YES_NO_OPTION);
+
+    	    if (n == 0) {
+    	        Controller c = new Controller();
+    	        modulo.dispose();
+    	        c.despliegue();
+    	    } else if (n == 1) {
+    	        JOptionPane.showMessageDialog(null, "GOODBYE");
+    	    }
+    	});
+    	header.add(btnCerrarSesion);
+
+    	header.add(Box.createRigidArea(new Dimension(10, 0)));
+
+    	JPanel options = new JPanel();
+    	contentPane.add(options, BorderLayout.WEST);
+    	options.setPreferredSize(new Dimension(120, 2147483647));
+    	options.setMaximumSize(new Dimension(120, 2147483647));
+    	options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
+
+    	JPanel moduloAlumnos = new JPanel();
+    	moduloAlumnos.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    	moduloAlumnos.setPreferredSize(new Dimension(130, 120));
+    	moduloAlumnos.setMaximumSize(new Dimension(130, 130));
+    	moduloAlumnos.setBackground(azul2);
+
+    	ImageIcon iconAlumnos = new ImageIcon(this.getClass().getResource("/imagenes/alumnos (1).png"));
+    	moduloAlumnos.setLayout(new BoxLayout(moduloAlumnos, BoxLayout.Y_AXIS));
+
+    	JButton btnAlumnos = new JButton(iconAlumnos);
+    	btnAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnAlumnos.setBackground(azul2);
+    	btnAlumnos.setBorder(null);
+    	btnAlumnos.addActionListener(e -> {
+    	    ModuloEstudianteController mac = new ModuloEstudianteController();
+    	    modulo.dispose();
+    	    mac.ModuloEstudiante();
+    	});
+
+    	moduloAlumnos.add(btnAlumnos);
+
+    	JLabel lblAlumnos = new JLabel("<html><div style='text-align: center;'>Modulo de<br>alumnos");
+    	lblAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblAlumnos.setForeground(new Color(255, 255, 255));
+    	lblAlumnos.setBackground(azul2);
+    	lblAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblAlumnos.setMaximumSize(new Dimension(80, 70));
+    	moduloAlumnos.add(lblAlumnos);
+    	options.add(moduloAlumnos);
+
+    	JPanel moduloMaestros = new JPanel();
+    	moduloMaestros.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+    	moduloMaestros.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    	moduloMaestros.setPreferredSize(new Dimension(130, 140));
+    	moduloMaestros.setMaximumSize(new Dimension(130, 130));
+    	moduloMaestros.setBackground(azul2);
+
+    	ImageIcon iconDocentnes = new ImageIcon(this.getClass().getResource("/imagenes/docentes (1).png"));
+    	moduloMaestros.setLayout(new BoxLayout(moduloMaestros, BoxLayout.Y_AXIS));
+
+    	JButton btnMaestros = new JButton(iconDocentnes);
+    	btnMaestros.setBorder(null);
+    	btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnMaestros.setBackground(azul2);
+    	btnMaestros.addActionListener(e -> {
+    	    ModuloDocenteController mdc = new ModuloDocenteController();
+    	    modulo.dispose();
+    	    mdc.moduloDocente();
+    	});
+    	moduloMaestros.add(btnMaestros);
+
+    	JLabel lblMaestros = new JLabel("<html><div style='text-align: center;'>Modulo de<br>maestros");
+    	lblMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblMaestros.setForeground(new Color(255, 255, 255));
+    	lblMaestros.setBackground(azul2);
+    	lblMaestros.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblMaestros.setMaximumSize(new Dimension(80, 70));
+    	moduloMaestros.add(lblMaestros);
+    	options.add(moduloMaestros);
+
+    	JPanel moduloGrupo = new JPanel();
+    	moduloGrupo.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+    	moduloGrupo.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    	moduloGrupo.setPreferredSize(new Dimension(130, 120));
+    	moduloGrupo.setMaximumSize(new Dimension(130, 130));
+    	moduloGrupo.setBackground(azulBorde);
+
+    	ImageIcon iconGrupo = new ImageIcon(this.getClass().getResource("/imagenes/grupos (1).png"));
+    	moduloGrupo.setLayout(new BoxLayout(moduloGrupo, BoxLayout.Y_AXIS));
+
+    	JButton btnGrupos = new JButton(iconGrupo);
+    	btnGrupos.setBorder(null);
+    	btnGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnGrupos.setBackground(azulBorde);
+    	btnGrupos.addActionListener(e -> {
+    	    ModuloGrupoController mgc = new ModuloGrupoController();
+    	    modulo.dispose();
+    	    mgc.moduloGrupo();
+    	});
+    	moduloGrupo.add(btnGrupos);
+
+    	JLabel lblGrupos = new JLabel("<html><div style='text-align: center;'>Modulo de<br>grupos");
+    	lblGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblGrupos.setForeground(new Color(255, 255, 255));
+    	lblGrupos.setBackground(azul2);
+    	lblGrupos.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblGrupos.setMaximumSize(new Dimension(80, 70));
+    	moduloGrupo.add(lblGrupos);
+    	options.add(moduloGrupo);
+
+    	JPanel moduloAsignatura = new JPanel();
+    	moduloAsignatura.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+    	moduloAsignatura.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    	moduloAsignatura.setPreferredSize(new Dimension(150, 150));
+    	moduloAsignatura.setMaximumSize(new Dimension(150, 150));
+    	moduloAsignatura.setBackground(azul2);
+
+    	ImageIcon iconAsignatura = new ImageIcon(this.getClass().getResource("/imagenes/asignaturas (1).png"));
+    	moduloAsignatura.setLayout(new BoxLayout(moduloAsignatura, BoxLayout.Y_AXIS));
+
+    	JButton btnAsignatura = new JButton(iconAsignatura);
+    	btnAsignatura.setBorder(null);
+    	btnAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnAsignatura.setBackground(azul2);
+    	btnAsignatura.addActionListener(e -> {
+    	    ModuloAsignaturaController mac = new ModuloAsignaturaController();
+    	    modulo.dispose();
+    	    mac.moduloAsignatura();
+    	});
+    	moduloAsignatura.add(btnAsignatura);
+
+    	JLabel lblAsignatura = new JLabel("<html><div style='text-align: center;'>Modulo de<br>asignaturas");
+    	lblAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblAsignatura.setForeground(new Color(255, 255, 255));
+    	lblAsignatura.setBackground(azul2);
+    	lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblAsignatura.setMaximumSize(new Dimension(80, 70));
+    	moduloAsignatura.add(lblAsignatura);
+    	options.add(moduloAsignatura);
+
+    	JPanel contenido = new JPanel();
+    	contentPane.add(contenido, BorderLayout.CENTER);
+    	contenido.setBackground(Color.white);
+    	contenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
+    	contenido.setLayout(new BoxLayout(contenido, BoxLayout.PAGE_AXIS));
+    	
+    	JLabel temporal = new JLabel("DETALLES GRUPO");
+    	contenido.add(temporal);
+    }
+
+
+	
+	 // Renderizador simple para botones
+    class BotonRenderer extends JButton implements TableCellRenderer {
+	    public BotonRenderer(String texto) {
+	        setText(texto);
+	        setForeground(Color.BLUE);
+	        setBorderPainted(false);
+	        setContentAreaFilled(false);
+	    }
+
+	    public Component getTableCellRendererComponent(JTable table, Object value,
+	                                                   boolean isSelected, boolean hasFocus, int row, int column) {
+	        return this;
+	    }
+	}
+
+    public class BotonEditor extends DefaultCellEditor {
+	    protected JButton boton;
+	    private String texto;
+	    private JTable tabla;
+	    private JFrame modulo;
+
+	    public BotonEditor(JCheckBox checkBox, String texto, JTable tabla, JFrame modulo) {
+	        super(checkBox);
+	        this.texto = texto;
+	        this.tabla = tabla;
+	        this.modulo = modulo;
+	        boton = new JButton(texto);
+	        boton.setForeground(Color.BLUE);
+	        boton.setBorderPainted(false);
+	        boton.setContentAreaFilled(false);
+
+	        boton.addActionListener(e -> {
+	        	ModuloGrupoController mgc = new ModuloGrupoController();
+				modulo.dispose();
+				mgc.datos();
+	            fireEditingStopped();
+	        });
+	    }
+
+	    public Component getTableCellEditorComponent(JTable table, Object value,
+	                                                 boolean isSelected, int row, int column) {
+	        return boton;
+	    }
+
+	    public Object getCellEditorValue() {
+	        return texto;
+	    }
+	}
+    // Panel con dos botones
+    class PanelBotonesRenderer extends JPanel implements TableCellRenderer {
+        public PanelBotonesRenderer() {
+            setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+            JButton btnEditar = new JButton(new ImageIcon(this.getClass().getResource("/imagenes/edit (1).png")));
+            JButton btnBorrar = new JButton(new ImageIcon(this.getClass().getResource("/imagenes/delete (1).png")));
+            btnEditar.setPreferredSize(new Dimension(20, 20));
+            btnEditar.setBorder(null);
+            btnEditar.setBackground(Color.white);
+            btnBorrar.setBorder(null);
+            btnBorrar.setPreferredSize(new Dimension(20, 20));
+            btnBorrar.setBackground(Color.white);
+            this.setBackground(Color.white);
+            add(btnEditar);
+            add(btnBorrar);
+        }
+
+        public Component getTableCellRendererComponent(JTable table, Object value,
+            boolean isSelected, boolean hasFocus, int row, int column) {
+            return this;
+        }
+    }
+
+    class PanelBotonesEditor extends DefaultCellEditor {
+        private JPanel panel;
+        private JButton editar, borrar;
+        private JTable tabla;
+        private JFrame modulo;
+        
+
+        public PanelBotonesEditor(JCheckBox checkBox, JTable tabla,JFrame ventana) {
+            super(checkBox);
+            this.tabla = tabla;
+            this.modulo=ventana;
+        }
+
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                boolean isSelected, int row, int column) {
+
+            panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
+            panel.setBackground(Color.WHITE);
+
+            editar = new JButton(new ImageIcon(getClass().getResource("/imagenes/edit (1).png")));
+            borrar = new JButton(new ImageIcon(getClass().getResource("/imagenes/delete (1).png")));
+
+            editar.setPreferredSize(new Dimension(20, 20));
+            editar.setBorder(null);
+            editar.setBackground(Color.white);
+            borrar.setBorder(null);
+            borrar.setPreferredSize(new Dimension(20, 20));
+            borrar.setBackground(Color.white);
+            
+            editar.setFocusable(false);
+            borrar.setFocusable(false);
+            
+            editar.addActionListener(e -> {
+                ModuloGrupoController mgc = new ModuloGrupoController();
+                modulo.dispose();
+                mgc.modificar();
+            });
+
+            borrar.addActionListener(e -> {
+                ((DefaultTableModel) tabla.getModel()).removeRow(row);
+                JOptionPane.showMessageDialog(null, "Fila eliminada " + (row + 1));
+                fireEditingStopped();
+                System.out.println(borrar.getSize());
+            });
+
+            panel.add(editar);
+            panel.add(borrar);
+            panel.repaint();
+            return panel;
+        }
+
+        public Object getCellEditorValue() {
+            return "";
+        }
+   	}
 }

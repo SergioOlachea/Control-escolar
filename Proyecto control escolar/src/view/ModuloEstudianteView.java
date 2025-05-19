@@ -542,14 +542,14 @@ public class ModuloEstudianteView {
 			moduloAlumnos.setAlignmentX(Component.RIGHT_ALIGNMENT);
 			moduloAlumnos.setPreferredSize(new Dimension(130, 120));
 			moduloAlumnos.setMaximumSize(new Dimension(130, 130));
-			moduloAlumnos.setBackground(azul2);
+			moduloAlumnos.setBackground(azulBorde);
 			
 			ImageIcon iconAlumnos = new ImageIcon (this.getClass().getResource("/imagenes/alumnos (1).png"));
 			moduloAlumnos.setLayout(new BoxLayout(moduloAlumnos, BoxLayout.Y_AXIS));
 			
 			JButton btnAlumnos = new JButton(iconAlumnos);
 			btnAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
-			btnAlumnos.setBackground(azul2);
+			btnAlumnos.setBackground(azulBorde);
 			btnAlumnos.setBorder(null);
 			btnAlumnos.addActionListener(e->{
 				ModuloEstudianteController mac = new ModuloEstudianteController();
@@ -1079,14 +1079,14 @@ public class ModuloEstudianteView {
 			moduloAlumnos.setAlignmentX(Component.RIGHT_ALIGNMENT);
 			moduloAlumnos.setPreferredSize(new Dimension(130, 120));
 			moduloAlumnos.setMaximumSize(new Dimension(130, 130));
-			moduloAlumnos.setBackground(azul2);
+			moduloAlumnos.setBackground(azulBorde);
 			
 			ImageIcon iconAlumnos = new ImageIcon (this.getClass().getResource("/imagenes/alumnos (1).png"));
 			moduloAlumnos.setLayout(new BoxLayout(moduloAlumnos, BoxLayout.Y_AXIS));
 			
 			JButton btnAlumnos = new JButton(iconAlumnos);
 			btnAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
-			btnAlumnos.setBackground(azul2);
+			btnAlumnos.setBackground(azulBorde);
 			btnAlumnos.setBorder(null);
 			btnAlumnos.addActionListener(e->{
 				ModuloEstudianteController mac = new ModuloEstudianteController();
@@ -1293,14 +1293,14 @@ public class ModuloEstudianteView {
 			moduloAlumnos.setAlignmentX(Component.RIGHT_ALIGNMENT);
 			moduloAlumnos.setPreferredSize(new Dimension(130, 120));
 			moduloAlumnos.setMaximumSize(new Dimension(130, 130));
-			moduloAlumnos.setBackground(azul2);
+			moduloAlumnos.setBackground(azulBorde);
 			
 			ImageIcon iconAlumnos = new ImageIcon (this.getClass().getResource("/imagenes/alumnos (1).png"));
 			moduloAlumnos.setLayout(new BoxLayout(moduloAlumnos, BoxLayout.Y_AXIS));
 			
 			JButton btnAlumnos = new JButton(iconAlumnos);
 			btnAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
-			btnAlumnos.setBackground(azul2);
+			btnAlumnos.setBackground(azulBorde);
 			btnAlumnos.setBorder(null);
 			btnAlumnos.addActionListener(e->{
 				ModuloEstudianteController mac = new ModuloEstudianteController();
@@ -1506,14 +1506,14 @@ public class ModuloEstudianteView {
 		moduloAlumnos.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		moduloAlumnos.setPreferredSize(new Dimension(130, 120));
 		moduloAlumnos.setMaximumSize(new Dimension(130, 130));
-		moduloAlumnos.setBackground(azul2);
+		moduloAlumnos.setBackground(azulBorde);
 		
 		ImageIcon iconAlumnos = new ImageIcon (this.getClass().getResource("/imagenes/alumnos (1).png"));
 		moduloAlumnos.setLayout(new BoxLayout(moduloAlumnos, BoxLayout.Y_AXIS));
 		
 		JButton btnAlumnos = new JButton(iconAlumnos);
 		btnAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btnAlumnos.setBackground(azul2);
+		btnAlumnos.setBackground(azulBorde);
 		btnAlumnos.setBorder(null);
 		btnAlumnos.addActionListener(e->{
 			ModuloEstudianteController mac = new ModuloEstudianteController();

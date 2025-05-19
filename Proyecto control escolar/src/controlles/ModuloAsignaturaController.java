@@ -11,5 +11,14 @@ public class ModuloAsignaturaController {
 	public void moduloAsignatura() {
 		mav.ModuloAsignatura();
 	}
+	public void crear() {
+		mav.crear();
+	}
+	public void modificar() {
+		mav.modificar();
+	}
+	public void datos() {
+		mav.datos();
+	}
 
 }

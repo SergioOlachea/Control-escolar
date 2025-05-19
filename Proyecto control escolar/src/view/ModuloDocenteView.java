@@ -44,10 +44,6 @@ import controlles.ModuloAsignaturaController;
 import controlles.ModuloDocenteController;
 import controlles.ModuloEstudianteController;
 import controlles.ModuloGrupoController;
-import view.ModuloAsignturaView.BotonEditor;
-import view.ModuloAsignturaView.BotonRenderer;
-import view.ModuloAsignturaView.PanelBotonesEditor;
-import view.ModuloAsignturaView.PanelBotonesRenderer;
 
 public class ModuloDocenteView {
 
@@ -491,7 +487,7 @@ public class ModuloDocenteView {
 		
 		header.add(Box.createRigidArea(new Dimension(50,0)));
 		
-		JLabel lblInicio = new JLabel("Modulo alumnos");
+		JLabel lblInicio = new JLabel("Modulo docente");
 		lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblInicio.setBorder(null);
 		lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
@@ -572,7 +568,7 @@ public class ModuloDocenteView {
 		moduloMaestros.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		moduloMaestros.setPreferredSize(new Dimension(130, 140));
 		moduloMaestros.setMaximumSize(new Dimension(130, 130));
-		moduloMaestros.setBackground(azul2);
+		moduloMaestros.setBackground(azulBorde);
 		
 		ImageIcon iconDocentnes = new ImageIcon (this.getClass().getResource("/imagenes/docentes (1).png"));
 		moduloMaestros.setLayout(new BoxLayout(moduloMaestros, BoxLayout.Y_AXIS));
@@ -580,7 +576,7 @@ public class ModuloDocenteView {
 		JButton btnMaestros = new JButton(iconDocentnes);
 		btnMaestros.setBorder(null);
 		btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btnMaestros.setBackground(azul2);
+		btnMaestros.setBackground(azulBorde);
 		btnMaestros.addActionListener(e->{
 			ModuloDocenteController mdc= new ModuloDocenteController();
 			crear.dispose();
@@ -706,7 +702,7 @@ public class ModuloDocenteView {
 
 	    	header.add(Box.createRigidArea(new Dimension(50, 0)));
 
-	    	JLabel lblInicio = new JLabel("Modulo alumno");
+	    	JLabel lblInicio = new JLabel("Modulo docente");
 	    	lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
 	    	lblInicio.setBorder(null);
 	    	lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
@@ -787,7 +783,7 @@ public class ModuloDocenteView {
 			moduloMaestros.setAlignmentX(Component.RIGHT_ALIGNMENT);
 			moduloMaestros.setPreferredSize(new Dimension(130, 140));
 			moduloMaestros.setMaximumSize(new Dimension(130, 130));
-			moduloMaestros.setBackground(azul2);
+			moduloMaestros.setBackground(azulBorde);
 			
 			ImageIcon iconDocentnes = new ImageIcon (this.getClass().getResource("/imagenes/docentes (1).png"));
 			moduloMaestros.setLayout(new BoxLayout(moduloMaestros, BoxLayout.Y_AXIS));
@@ -795,7 +791,7 @@ public class ModuloDocenteView {
 			JButton btnMaestros = new JButton(iconDocentnes);
 			btnMaestros.setBorder(null);
 			btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
-			btnMaestros.setBackground(azul2);
+			btnMaestros.setBackground(azulBorde);
 			btnMaestros.addActionListener(e->{
 				ModuloDocenteController mdc= new ModuloDocenteController();
 				modulo.dispose();
@@ -920,7 +916,7 @@ public class ModuloDocenteView {
 
 	    	header.add(Box.createRigidArea(new Dimension(50, 0)));
 
-	    	JLabel lblInicio = new JLabel("Modulo alumno");
+	    	JLabel lblInicio = new JLabel("Modulo docente");
 	    	lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
 	    	lblInicio.setBorder(null);
 	    	lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
@@ -1001,7 +997,7 @@ public class ModuloDocenteView {
 			moduloMaestros.setAlignmentX(Component.RIGHT_ALIGNMENT);
 			moduloMaestros.setPreferredSize(new Dimension(130, 140));
 			moduloMaestros.setMaximumSize(new Dimension(130, 130));
-			moduloMaestros.setBackground(azul2);
+			moduloMaestros.setBackground(azulBorde);
 			
 			ImageIcon iconDocentnes = new ImageIcon (this.getClass().getResource("/imagenes/docentes (1).png"));
 			moduloMaestros.setLayout(new BoxLayout(moduloMaestros, BoxLayout.Y_AXIS));
@@ -1009,7 +1005,7 @@ public class ModuloDocenteView {
 			JButton btnMaestros = new JButton(iconDocentnes);
 			btnMaestros.setBorder(null);
 			btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
-			btnMaestros.setBackground(azul2);
+			btnMaestros.setBackground(azulBorde);
 			btnMaestros.addActionListener(e->{
 				ModuloDocenteController mdc= new ModuloDocenteController();
 				modulo.dispose();
@@ -1133,7 +1129,7 @@ public class ModuloDocenteView {
 	
 		header.add(Box.createRigidArea(new Dimension(50, 0)));
 	
-		JLabel lblInicio = new JLabel("Modulo alumnos");
+		JLabel lblInicio = new JLabel("Modulo docente");
 		lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblInicio.setBorder(null);
 		lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
@@ -1214,7 +1210,7 @@ public class ModuloDocenteView {
 		moduloMaestros.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		moduloMaestros.setPreferredSize(new Dimension(130, 140));
 		moduloMaestros.setMaximumSize(new Dimension(130, 130));
-		moduloMaestros.setBackground(azul2);
+		moduloMaestros.setBackground(azulBorde);
 		
 		ImageIcon iconDocentnes = new ImageIcon (this.getClass().getResource("/imagenes/docentes (1).png"));
 		moduloMaestros.setLayout(new BoxLayout(moduloMaestros, BoxLayout.Y_AXIS));
@@ -1222,7 +1218,7 @@ public class ModuloDocenteView {
 		JButton btnMaestros = new JButton(iconDocentnes);
 		btnMaestros.setBorder(null);
 		btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btnMaestros.setBackground(azul2);
+		btnMaestros.setBackground(azulBorde);
 		btnMaestros.addActionListener(e->{
 			ModuloDocenteController mdc= new ModuloDocenteController();
 			modulo.dispose();

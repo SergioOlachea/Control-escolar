@@ -12,4 +12,16 @@ public class ModuloDocenteController {
 	public void moduloDocente() {
 		mdv.moduloDocente();
 	}
+	public void crear() {
+		mdv.crear();
+	}
+	public void modificar() {
+		mdv.modificar();
+	}
+	public void credencial() {
+		mdv.credencial();
+	}
+	public void datos() {
+		mdv.datos();
+	}
 }

@@ -19,4 +19,10 @@ Este proyecto Java permite conectarse a una base de datos MySQL utilizando infor
 
 El archivo `database.properties` **debe estar ubicado en el directorio `src/`**. 
 
+## Acceso al sistema
+
+Para acceder al sistema , puedes usar las siguientes credenciales:
+
+- **Correo:** sysadmin@uabcs.mx
+- **Contraseña:** admin123
 

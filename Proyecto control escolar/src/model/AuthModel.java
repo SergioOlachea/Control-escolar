@@ -15,7 +15,6 @@ public class AuthModel {
 		String query = "SELECT 1"
 				+ "		  FROM Users"
 				+ "	     WHERE Email=? AND Password=?";
-	
 		try (
 				Connection con = ConexionBD.getConnection();
 				PreparedStatement stmt = con.prepareStatement(query);
@@ -33,20 +32,5 @@ public class AuthModel {
 			e.printStackTrace();
 			return false;
 		}
-	}
-	public void printAllUsers() {
-	    String query = "SELECT Email, Password FROM Users";
-
-	    try (
-	        Connection con = ConexionBD.getConnection();
-	        PreparedStatement stmt = con.prepareStatement(query);
-	        ResultSet rs = stmt.executeQuery();
-	    ) {
-	        while (rs.next()) {
-	            System.out.println("Email: " + rs.getString("Email") + " | Password: " + rs.getString("Password"));
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
 	}
 }

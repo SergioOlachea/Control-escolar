@@ -205,7 +205,6 @@ public class View {
 			}if(flag1 && flag2) {
 				
 				boolean user_auth = funciones.access(username,passText); 
-				funciones.printAllUsers();
 				if(user_auth) {
 					JOptionPane.showMessageDialog(ventana, "Bienvenido.");
 					ventana.dispose();

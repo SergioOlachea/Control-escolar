@@ -24,6 +24,10 @@ import javax.swing.SwingConstants;
 
 import controlles.Controller;
 import controlles.HomeController;
+import controlles.ModuloAsignaturaController;
+import controlles.ModuloDocenteController;
+import controlles.ModuloEstudianteController;
+import controlles.ModuloGrupoController;
 
 public class HomeView {
 	Controller c = new Controller();
@@ -37,6 +41,7 @@ public class HomeView {
 		home.setBounds(100, 100, 982, 647);
 		home.getContentPane().setLayout(new BorderLayout());
 		home.setVisible(true);
+		home.setLocationRelativeTo(null);
 		
 		JPanel header = new JPanel();
 		home.add(header, BorderLayout.NORTH);
@@ -60,6 +65,7 @@ public class HomeView {
 		JLabel lblInicio = new JLabel("Inicio");
 		lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblInicio.setBorder(null);
+		lblInicio.setForeground(Color.white);
 		lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
 		lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE,80));
 		lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
@@ -81,12 +87,12 @@ public class HomeView {
 		            JOptionPane.YES_NO_OPTION);
 
 		        if(n==0){
-		            JOptionPane.showMessageDialog(null,"hasta luego!");
 		            home.dispose();
 		            c.despliegue();
+		            JOptionPane.showMessageDialog(null,"Sesión cerrada correctamente");
 		        }
 		        else if(n==1) {
-		            JOptionPane.showMessageDialog(null, "GOODBYE");
+		            
 		        }
 		});
 		header.add(btnCerrarSesion);
@@ -112,9 +118,9 @@ public class HomeView {
 		btnAlumnos.setBackground(azul2);
 		btnAlumnos.setBorder(null);
 		btnAlumnos.addActionListener(e->{
-			HomeController  hc = new HomeController();
+			ModuloEstudianteController mac = new ModuloEstudianteController();
 			home.dispose();
-			hc.moduloAlumnos();
+			mac.ModuloEstudiante();
 		});
 		
 		moduloAlumnos.add(btnAlumnos);
@@ -125,6 +131,7 @@ public class HomeView {
 		lblAlumnos.setBackground(azul2);
 		lblAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAlumnos.setMaximumSize(new Dimension(80, 70));
+		lblAlumnos.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
 		moduloAlumnos.add(lblAlumnos);
 		options.add(moduloAlumnos);
 		
@@ -144,14 +151,20 @@ public class HomeView {
 		btnMaestros.setBorder(null);
 		btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnMaestros.setBackground(azul2);
+		btnMaestros.addActionListener(e->{
+			ModuloDocenteController mdc= new ModuloDocenteController();
+			home.dispose();
+			mdc.moduloDocente();
+		});
 		moduloMaestros.add(btnMaestros);
 		
-		JLabel lblMaestros = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>maestros");
+		JLabel lblMaestros = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>docentes");
 		lblMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblMaestros.setForeground(new Color(255, 255, 255));
 		lblMaestros.setBackground(azul2);
 		lblMaestros.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMaestros.setMaximumSize(new Dimension(80, 70));
+		lblMaestros.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
 		moduloMaestros.add(lblMaestros);
 		options.add(moduloMaestros);
 		
@@ -169,7 +182,11 @@ public class HomeView {
 		btnGrupos.setBorder(null);
 		btnGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnGrupos.setBackground(azul2);
-		moduloGrupo.add(btnGrupos);
+		btnGrupos.addActionListener(e->{
+			ModuloGrupoController mgc= new ModuloGrupoController();
+			home.dispose();
+			mgc.moduloGrupo();
+		});		moduloGrupo.add(btnGrupos);
 		
 		JLabel lblGrupos = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>grupos");
 		lblGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -177,6 +194,7 @@ public class HomeView {
 		lblGrupos.setBackground(azul2);
 		lblGrupos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGrupos.setMaximumSize(new Dimension(80, 70));
+		lblGrupos.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
 		moduloGrupo.add(lblGrupos);
 		options.add(moduloGrupo);
 		
@@ -194,6 +212,12 @@ public class HomeView {
 		btnAsignatura.setBorder(null);
 		btnAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnAsignatura.setBackground(azul2);
+		btnAsignatura.addActionListener(e->{
+			ModuloAsignaturaController mac= new ModuloAsignaturaController();
+			home.dispose();
+			mac.moduloAsignatura();
+			
+		});
 		moduloAsignatura.add(btnAsignatura);
 		
 		JLabel lblAsignatura = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>asignaturas");
@@ -202,11 +226,13 @@ public class HomeView {
 		lblAsignatura.setBackground(azul2);
 		lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAsignatura.setMaximumSize(new Dimension(80, 70));
+		lblAsignatura.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
 		moduloAsignatura.add(lblAsignatura);
 		options.add(moduloAsignatura);
 		
-		// Panel de contenido
 		
+		
+		// Panel de contenido
 		JPanel contenido = new JPanel();
 		home.add(contenido, BorderLayout.CENTER);
 		contenido.setBackground(Color.white);

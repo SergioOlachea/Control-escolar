@@ -15,8 +15,4 @@ public class HomeController {
 	public void home() {
 		hv.home();
 	}
-	public void moduloAlumnos() {
-		me.moduloAlumnos();
-	}
-	
 }

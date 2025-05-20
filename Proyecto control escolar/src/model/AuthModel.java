@@ -15,7 +15,6 @@ public class AuthModel {
 		String query = "SELECT 1"
 				+ "		  FROM Users"
 				+ "	     WHERE Email=? AND Password=?";
-	
 		try (
 				Connection con = ConexionBD.getConnection();
 				PreparedStatement stmt = con.prepareStatement(query);
@@ -25,6 +24,8 @@ public class AuthModel {
 
 			try (ResultSet rs = stmt.executeQuery()) {
 				acceso = rs.next();
+				System.out.println("Email: " + email + " | Password: " + password);
+				System.out.println("Resultado: " + acceso);
 				return acceso;
 			}
 		} catch (Exception e) {

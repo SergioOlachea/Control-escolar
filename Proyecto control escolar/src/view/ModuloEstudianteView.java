@@ -335,7 +335,7 @@ public class ModuloEstudianteView {
             
             datos[i][0] = String.format("%03d", i + 1);
             datos[i][1] = e.getNombres() + " " + e.getApellidos();
-            datos[i][2] = e.getGrado();
+            datos[i][2] = e.getGrado()+ " "+ e.getGrupo();
             datos[i][3] = "Detalles";
             datos[i][4] = "Credencial"; 
             datos[i][5] = "Opciones"; 
@@ -1238,6 +1238,7 @@ public class ModuloEstudianteView {
 
         JLabel lblNombres = new JLabel("Nombres");
         JTextField txtNombres = new JTextField(15);
+        //txtNombres.setText(e.getNombre());
         txtNombres.setBorder(BorderFactory.createLineBorder(borde,5));
 
         JLabel lblApellidos = new JLabel("Apellidos");

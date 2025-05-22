@@ -1,5 +1,6 @@
 package controlles;
 
+import model.Estudiante;
 import view.ModuloEstudianteView;
 
 public class ModuloEstudianteController {
@@ -15,8 +16,8 @@ public class ModuloEstudianteController {
 	public void crarEstudiante() {
 		mev.crear();
 	}
-	public void modificar() {
-		mev.modificar();
+	public void modificar(Estudiante estudiante) {
+		mev.modificar(estudiante);
 	}
 	public void datosGenerales() {
 		mev.datos();

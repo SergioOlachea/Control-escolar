@@ -11,12 +11,15 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -335,7 +338,7 @@ public class ModuloEstudianteView {
             
             datos[i][0] = String.format("%03d", i + 1);
             datos[i][1] = e.getNombres() + " " + e.getApellidos();
-            datos[i][2] = e.getGrado()+ " "+ e.getGrupo();
+            datos[i][2] = e.getGrupo();
             datos[i][3] = "Detalles";
             datos[i][4] = "Credencial"; 
             datos[i][5] = "Opciones"; 
@@ -1006,7 +1009,7 @@ public class ModuloEstudianteView {
 
 		}
 	    
-    public void modificar() {
+    public void modificar(Estudiante estudiante) {
     	Color borde = new Color(206, 207, 202);
 		Color azul2 = new Color(52, 134, 199);
 		Color azul1 = new Color(54, 146, 218);
@@ -1321,9 +1324,32 @@ public class ModuloEstudianteView {
         panelFoto.add(btnCargar);
 
        // Pregargado de los datos
-        
-        
-        
+        txtId.setText(String.valueOf(estudiante.getId()));
+        txtNombres.setText(estudiante.getNombres());
+        txtApellidos.setText(estudiante.getApellidos());
+        txtTelefono.setText(estudiante.getTelefono());
+        txtGrado.setText(String.valueOf(estudiante.getGrado()));
+        txtDomicilio.setText(estudiante.getDomicilio());
+        txtCorreo.setText(estudiante.getCorreo());
+        txtCurp.setText(estudiante.getCurp());
+
+        // Género
+        cbGenero.setSelectedItem(estudiante.getGenero());
+
+        // Fecha de nacimiento: dividir la fecha en día, mes, año
+        if (estudiante.getFechaNacimiento() != null) {
+            Date fecha = estudiante.getFechaNacimiento();
+            cbDia.setSelectedItem(String.valueOf(fecha.getDay()));
+            cbMes.setSelectedIndex(fecha.getMonth()); // Enero = 1
+            cbAnio.setSelectedItem(String.valueOf(fecha.getYear()));
+        }
+
+        // Foto (si tienes imagen como byte[], o ruta de imagen)
+        if (estudiante.getFoto() != null) {
+            ImageIcon icon = new ImageIcon(estudiante.getFoto()); // Asegúrate de convertir si es byte[]
+            Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            lblFoto.setIcon(new ImageIcon(scaledImage));
+        }        
         int fila = 0;
 
         organizador.gridx = 0; 
@@ -2068,10 +2094,13 @@ public class ModuloEstudianteView {
             borrar.setFocusable(false);
             
             editar.addActionListener(e -> {
-                ModuloEstudianteController mec = new ModuloEstudianteController();
-                modulo.dispose();
-                mec.modificar();
-                
+            	int filaSeleccionada = tabla.getSelectedRow();
+                if (filaSeleccionada >= 0) {
+                    Estudiante eSeleccionado = listaEstudiantes.get(filaSeleccionada);
+                    ModuloEstudianteController mec = new ModuloEstudianteController();
+                    modulo.dispose();
+                    mec.modificar(eSeleccionado); 
+                }
             });
 
             borrar.addActionListener(e -> {

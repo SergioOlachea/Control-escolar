@@ -45,27 +45,27 @@ public class View {
 	private JTextField txtPassword;
 	private JTextField txtEmail;
 	private boolean mostrar=false;
-	AuthModel funciones = new AuthModel();
+	AuthModel funciones;
 	Color azul1;
 	Color borde;
 	public View() {
 		azul1= new Color(54, 146, 218);
 		borde = new Color(206, 207, 202);
+		funciones = new AuthModel();
 	}
 	public void login() {
 		ventana=new JFrame();
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ventana.setBounds(100, 100, 800, 600);
 		ventana.getContentPane().setLayout(new BorderLayout());
-		ventana.setLocationRelativeTo(null);
 		
 		ventana.setVisible(true);
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
+		
 		// Login
-
 		try {
 			imagenLogin = ImageIO.read(this.getClass().getResource("/imagenes/login.png"));
 		} catch (IOException e) {
@@ -97,23 +97,23 @@ public class View {
 		login.add(Box.createRigidArea(new Dimension(0,40)));
 		
 		JLabel lblTitle = new JLabel("Control escolar");
-		lblTitle.setFont(new Font("Almarai-Extrabold",Font.PLAIN, 25));
+		lblTitle.setFont(new Font("Almarai ExtraBold",Font.PLAIN, 25));
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setPreferredSize(new Dimension(Integer.MAX_VALUE,25));
 		lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		login.add(lblTitle);
 		
 		JLabel lblMensaje = new JLabel("Gestiona cuestiones escolares al instante");
-		lblMensaje.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMensaje.setFont(new Font("Almarai Bold",Font.PLAIN, 14));
-		lblMensaje.setMaximumSize(new Dimension(Integer.MAX_VALUE,25));
+		lblMensaje.setHorizontalAlignment(SwingConstants.LEFT);
+		lblMensaje.setFont(new Font("Almarai ",Font.PLAIN, 12));
 		lblMensaje.setAlignmentX(Component.CENTER_ALIGNMENT);
 		login.add(lblMensaje);
+		
 		login.add(Box.createRigidArea(new Dimension(0,40)));
 		
 		JLabel lblEmail = new JLabel("Email");
 		lblEmail.setAlignmentX(0.5f);
-		lblEmail.setFont(new Font("Almarai Bold",Font.PLAIN, 12));
+		lblEmail.setFont(new Font("Almarai ",Font.PLAIN, 12));
 		lblEmail.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
 		login.add(lblEmail);
 		
@@ -135,7 +135,7 @@ public class View {
 		
 		JLabel lblPassword = new JLabel();
 		login.add(lblPassword);
-		lblPassword.setFont(new Font("Almarai Bold",Font.PLAIN, 12));
+		lblPassword.setFont(new Font("Almarai",Font.PLAIN, 13));
 		lblPassword.setText("Contraseña");
 		lblPassword.setHorizontalAlignment(SwingConstants.LEFT);
 		lblPassword.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
@@ -181,10 +181,10 @@ public class View {
 		btnIniciarSesion.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
 		btnIniciarSesion.addActionListener(e->{
 			
-			 String username = txtEmail.getText().trim();
-			 String passText = new String(passwordField.getPassword()).trim();
-			 
+			String passText = new String(passwordField.getPassword());
 			Boolean flag1 = false, flag2 = false;
+			String username = txtEmail.getText();
+			
 			if( passText.equals("") ) {
 				
 				password.setBorder(BorderFactory.createLineBorder(Color.red,3));
@@ -205,17 +205,15 @@ public class View {
 			}if(flag1 && flag2) {
 				
 				boolean user_auth = funciones.access(username,passText); 
-				if(user_auth) {
-					JOptionPane.showMessageDialog(ventana, "Bienvenido.");
-					ventana.dispose();
-					HomeController hc = new HomeController();
-					 hc.home();
-				 } else {
-					 JOptionPane.showMessageDialog(ventana, "Nombre de usuario o contraseña incorrectos", "Datos incorrectos", JOptionPane.ERROR_MESSAGE);
-				}
-			}else {
-				 JOptionPane.showMessageDialog(ventana, "Nombre de usuario o contraseña incorrectos", "Datos incorrectos", JOptionPane.ERROR_MESSAGE);
-			}
+				 System.out.println("Validacion");
+				 JOptionPane.showMessageDialog(ventana, "Bienvenido.");
+				 ventana.dispose();
+				 HomeController hc = new HomeController();
+				 hc.home();
+				 
+				}else {
+					JOptionPane.showMessageDialog(ventana, "email o contraseña incorrectos","Datos incorrectos",JOptionPane.WARNING_MESSAGE);
+				}	
 		});
 		login.add(btnIniciarSesion);
 		
@@ -244,7 +242,6 @@ public class View {
 		} catch (FontFormatException | IOException exception) {
 		    JOptionPane.showMessageDialog(null, exception.getMessage());
 		}
-		
  	 }
 	
 	//subClase para hacer la imagen responsiva
@@ -263,5 +260,4 @@ public class View {
 	            }
 	        }
 	    }
-	
 }

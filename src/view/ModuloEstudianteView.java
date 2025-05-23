@@ -102,7 +102,7 @@ public class ModuloEstudianteView {
 		JLabel lblInicio = new JLabel("Modulo alumnos");
 		lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblInicio.setBorder(null);
-		lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
+		lblInicio.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
 		lblInicio.setForeground(Color.white);
 		lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE,80));
 		lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
@@ -169,7 +169,7 @@ public class ModuloEstudianteView {
 		lblAlumnos.setBackground(azul2);
 		lblAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAlumnos.setMaximumSize(new Dimension(80, 70));
-		lblAlumnos.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblAlumnos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloAlumnos.add(lblAlumnos);
 		options.add(moduloAlumnos);
 		
@@ -202,7 +202,7 @@ public class ModuloEstudianteView {
 		lblMaestros.setBackground(azul2);
 		lblMaestros.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMaestros.setMaximumSize(new Dimension(80, 70));
-		lblMaestros.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblMaestros.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloMaestros.add(lblMaestros);
 		options.add(moduloMaestros);
 		
@@ -232,7 +232,7 @@ public class ModuloEstudianteView {
 		lblGrupos.setBackground(azul2);
 		lblGrupos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGrupos.setMaximumSize(new Dimension(80, 70));
-		lblGrupos.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblGrupos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloGrupo.add(lblGrupos);
 		options.add(moduloGrupo);
 		
@@ -264,7 +264,7 @@ public class ModuloEstudianteView {
 		lblAsignatura.setBackground(azul2);
 		lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAsignatura.setMaximumSize(new Dimension(80, 70));
-		lblAsignatura.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblAsignatura.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloAsignatura.add(lblAsignatura);
 		options.add(moduloAsignatura);
 		
@@ -278,10 +278,10 @@ public class ModuloEstudianteView {
 		
 		JLabel lblRegistroAlumnos = new JLabel("Registro de alumnos");
 		lblRegistroAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
-		lblRegistroAlumnos.setFont(new Font("Almarai Bold",Font.PLAIN, 20));
+		lblRegistroAlumnos.setFont(new Font("Almarai-Bold",Font.PLAIN, 25));
 		lblRegistroAlumnos.setMaximumSize(new Dimension(Integer.MAX_VALUE,40));
 		lblRegistroAlumnos.setPreferredSize(new Dimension(Integer.MAX_VALUE,40));
-		lblRegistroAlumnos.setForeground(Color.white);
+		lblRegistroAlumnos.setForeground(Color.BLACK);
 		lblRegistroAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
 		contenido.add(lblRegistroAlumnos);		
 		
@@ -510,7 +510,7 @@ public class ModuloEstudianteView {
 			JLabel lblInicio = new JLabel("Modulo alumnos");
 			lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
 			lblInicio.setBorder(null);
-			lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
+			lblInicio.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
 			lblInicio.setForeground(Color.white);
 			lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE,80));
 			lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
@@ -577,7 +577,7 @@ public class ModuloEstudianteView {
 			lblAlumnos.setBackground(azul2);
 			lblAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
 			lblAlumnos.setMaximumSize(new Dimension(80, 70));
-			lblAlumnos.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+			lblAlumnos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 			moduloAlumnos.add(lblAlumnos);
 			options.add(moduloAlumnos);
 			
@@ -610,7 +610,7 @@ public class ModuloEstudianteView {
 			lblMaestros.setBackground(azul2);
 			lblMaestros.setHorizontalAlignment(SwingConstants.CENTER);
 			lblMaestros.setMaximumSize(new Dimension(80, 70));
-			lblMaestros.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+			lblMaestros.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 			moduloMaestros.add(lblMaestros);
 			options.add(moduloMaestros);
 			
@@ -640,7 +640,7 @@ public class ModuloEstudianteView {
 			lblGrupos.setBackground(azul2);
 			lblGrupos.setHorizontalAlignment(SwingConstants.CENTER);
 			lblGrupos.setMaximumSize(new Dimension(80, 70));
-			lblGrupos.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+			lblGrupos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 			moduloGrupo.add(lblGrupos);
 			options.add(moduloGrupo);
 			
@@ -672,7 +672,7 @@ public class ModuloEstudianteView {
 			lblAsignatura.setBackground(azul2);
 			lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
 			lblAsignatura.setMaximumSize(new Dimension(80, 70));
-			lblAsignatura.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+			lblAsignatura.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 			moduloAsignatura.add(lblAsignatura);
 			options.add(moduloAsignatura);
 			
@@ -1044,7 +1044,7 @@ public class ModuloEstudianteView {
 		JLabel lblInicio = new JLabel("Modulo alumnos");
 		lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblInicio.setBorder(null);
-		lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
+		lblInicio.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
 		lblInicio.setForeground(Color.white);
 		lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE,80));
 		lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
@@ -1111,7 +1111,7 @@ public class ModuloEstudianteView {
 		lblAlumnos.setBackground(azul2);
 		lblAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAlumnos.setMaximumSize(new Dimension(80, 70));
-		lblAlumnos.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblAlumnos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloAlumnos.add(lblAlumnos);
 		options.add(moduloAlumnos);
 		
@@ -1144,7 +1144,7 @@ public class ModuloEstudianteView {
 		lblMaestros.setBackground(azul2);
 		lblMaestros.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMaestros.setMaximumSize(new Dimension(80, 70));
-		lblMaestros.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblMaestros.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloMaestros.add(lblMaestros);
 		options.add(moduloMaestros);
 		
@@ -1174,7 +1174,7 @@ public class ModuloEstudianteView {
 		lblGrupos.setBackground(azul2);
 		lblGrupos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGrupos.setMaximumSize(new Dimension(80, 70));
-		lblGrupos.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblGrupos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloGrupo.add(lblGrupos);
 		options.add(moduloGrupo);
 		
@@ -1206,7 +1206,7 @@ public class ModuloEstudianteView {
 		lblAsignatura.setBackground(azul2);
 		lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAsignatura.setMaximumSize(new Dimension(80, 70));
-		lblAsignatura.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblAsignatura.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloAsignatura.add(lblAsignatura);
 		options.add(moduloAsignatura);
 		
@@ -1605,7 +1605,7 @@ public class ModuloEstudianteView {
 		JLabel lblInicio = new JLabel("Modulo alumnos");
 		lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblInicio.setBorder(null);
-		lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
+		lblInicio.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
 		lblInicio.setForeground(Color.white);
 		lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE,80));
 		lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
@@ -1672,7 +1672,7 @@ public class ModuloEstudianteView {
 		lblAlumnos.setBackground(azul2);
 		lblAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAlumnos.setMaximumSize(new Dimension(80, 70));
-		lblAlumnos.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblAlumnos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloAlumnos.add(lblAlumnos);
 		options.add(moduloAlumnos);
 		
@@ -1705,7 +1705,7 @@ public class ModuloEstudianteView {
 		lblMaestros.setBackground(azul2);
 		lblMaestros.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMaestros.setMaximumSize(new Dimension(80, 70));
-		lblMaestros.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblMaestros.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloMaestros.add(lblMaestros);
 		options.add(moduloMaestros);
 		
@@ -1735,7 +1735,7 @@ public class ModuloEstudianteView {
 		lblGrupos.setBackground(azul2);
 		lblGrupos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGrupos.setMaximumSize(new Dimension(80, 70));
-		lblGrupos.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblGrupos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloGrupo.add(lblGrupos);
 		options.add(moduloGrupo);
 		
@@ -1767,7 +1767,7 @@ public class ModuloEstudianteView {
 		lblAsignatura.setBackground(azul2);
 		lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAsignatura.setMaximumSize(new Dimension(80, 70));
-		lblAsignatura.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblAsignatura.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloAsignatura.add(lblAsignatura);
 		options.add(moduloAsignatura);
 		
@@ -2057,7 +2057,7 @@ public class ModuloEstudianteView {
 		JLabel lblInicio = new JLabel("Modulo alumnos");
 		lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblInicio.setBorder(null);
-		lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
+		lblInicio.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
 		lblInicio.setForeground(Color.white);
 		lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
 		lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
@@ -2124,7 +2124,7 @@ public class ModuloEstudianteView {
 		lblAlumnos.setBackground(azul2);
 		lblAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAlumnos.setMaximumSize(new Dimension(80, 70));
-		lblAlumnos.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblAlumnos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloAlumnos.add(lblAlumnos);
 		options.add(moduloAlumnos);
 		
@@ -2157,7 +2157,7 @@ public class ModuloEstudianteView {
 		lblMaestros.setBackground(azul2);
 		lblMaestros.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMaestros.setMaximumSize(new Dimension(80, 70));
-		lblMaestros.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblMaestros.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloMaestros.add(lblMaestros);
 		options.add(moduloMaestros);
 		
@@ -2187,7 +2187,7 @@ public class ModuloEstudianteView {
 		lblGrupos.setBackground(azul2);
 		lblGrupos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGrupos.setMaximumSize(new Dimension(80, 70));
-		lblGrupos.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblGrupos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloGrupo.add(lblGrupos);
 		options.add(moduloGrupo);
 		
@@ -2219,7 +2219,7 @@ public class ModuloEstudianteView {
 		lblAsignatura.setBackground(azul2);
 		lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAsignatura.setMaximumSize(new Dimension(80, 70));
-		lblAsignatura.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblAsignatura.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloAsignatura.add(lblAsignatura);
 		options.add(moduloAsignatura);
 	

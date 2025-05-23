@@ -89,7 +89,7 @@ public class ModuloGrupoView {
 		JLabel lblInicio = new JLabel("Modulo grupo");
 		lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblInicio.setBorder(null);
-		lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
+		lblInicio.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
 		lblInicio.setForeground(Color.white);
 		lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE,80));
 		lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
@@ -263,10 +263,10 @@ public class ModuloGrupoView {
 		
 		JLabel lblRegistroAlumnos = new JLabel("Registro de grupo");
 		lblRegistroAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
-		lblRegistroAlumnos.setFont(new Font("Almarai Bold",Font.PLAIN, 20));
+		lblRegistroAlumnos.setFont(new Font("Almarai-Bold",Font.PLAIN, 25));
 		lblRegistroAlumnos.setMaximumSize(new Dimension(Integer.MAX_VALUE,40));
 		lblRegistroAlumnos.setPreferredSize(new Dimension(Integer.MAX_VALUE,40));
-		lblRegistroAlumnos.setForeground(Color.white);
+		lblRegistroAlumnos.setForeground(Color.BLACK);
 		lblRegistroAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
 		contenido.add(lblRegistroAlumnos);		
 		
@@ -485,7 +485,7 @@ public class ModuloGrupoView {
     	JLabel lblInicio = new JLabel("Modulo grupo");
     	lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
     	lblInicio.setBorder(null);
-    	lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
+    	lblInicio.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
     	lblInicio.setForeground(Color.white);
     	lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
     	lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
@@ -691,7 +691,7 @@ public class ModuloGrupoView {
     	JLabel lblInicio = new JLabel("Modulo grupo");
     	lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
     	lblInicio.setBorder(null);
-    	lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
+    	lblInicio.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
     	lblInicio.setForeground(Color.white);
     	lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
     	lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
@@ -897,7 +897,7 @@ public class ModuloGrupoView {
     	JLabel lblInicio = new JLabel("Modulo grupo");
     	lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
     	lblInicio.setBorder(null);
-    	lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
+    	lblInicio.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
     	lblInicio.setForeground(Color.white);
     	lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
     	lblInicio.setHorizontalAlignment(SwingConstants.CENTER);

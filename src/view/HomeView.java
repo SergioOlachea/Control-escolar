@@ -66,7 +66,7 @@ public class HomeView {
 		lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblInicio.setBorder(null);
 		lblInicio.setForeground(Color.white);
-		lblInicio.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
+		lblInicio.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
 		lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE,80));
 		lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
 		lblInicio.setBackground(azul2);
@@ -131,7 +131,7 @@ public class HomeView {
 		lblAlumnos.setBackground(azul2);
 		lblAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAlumnos.setMaximumSize(new Dimension(80, 70));
-		lblAlumnos.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblAlumnos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloAlumnos.add(lblAlumnos);
 		options.add(moduloAlumnos);
 		
@@ -164,7 +164,7 @@ public class HomeView {
 		lblMaestros.setBackground(azul2);
 		lblMaestros.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMaestros.setMaximumSize(new Dimension(80, 70));
-		lblMaestros.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblMaestros.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloMaestros.add(lblMaestros);
 		options.add(moduloMaestros);
 		
@@ -194,7 +194,7 @@ public class HomeView {
 		lblGrupos.setBackground(azul2);
 		lblGrupos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGrupos.setMaximumSize(new Dimension(80, 70));
-		lblGrupos.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblGrupos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloGrupo.add(lblGrupos);
 		options.add(moduloGrupo);
 		
@@ -226,7 +226,7 @@ public class HomeView {
 		lblAsignatura.setBackground(azul2);
 		lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAsignatura.setMaximumSize(new Dimension(80, 70));
-		lblAsignatura.setFont(new Font("Almarai Bold", Font.PLAIN, 15));
+		lblAsignatura.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloAsignatura.add(lblAsignatura);
 		options.add(moduloAsignatura);
 		
@@ -242,13 +242,13 @@ public class HomeView {
 		
 		JLabel lblBienvenido = new JLabel("Bienvenido/a!");
 		lblBienvenido.setAlignmentY(Component.TOP_ALIGNMENT);
-		lblBienvenido.setFont(new Font("Almarai Bold", Font.PLAIN, 50));
+		lblBienvenido.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
 		lblBienvenido.setAlignmentX(Component.CENTER_ALIGNMENT);
 		contenido.add(lblBienvenido);
 		
 		JLabel lblMensaje = new JLabel("<html><div style='text-align: center;'>Seleccione las opciones de la barra izquierda <br>para navegar el sistema");
 		lblMensaje.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblMensaje.setFont(new Font("Almarai Bold", Font.PLAIN, 28));
+		lblMensaje.setFont(new Font("Almarai-Bold", Font.PLAIN, 28));
 		lblMensaje.setHorizontalAlignment(SwingConstants.CENTER);
 		contenido.add(lblMensaje);
 		

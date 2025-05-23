@@ -97,7 +97,7 @@ public class View {
 		login.add(Box.createRigidArea(new Dimension(0,40)));
 		
 		JLabel lblTitle = new JLabel("Control escolar");
-		lblTitle.setFont(new Font("Almarai ExtraBold",Font.PLAIN, 25));
+		lblTitle.setFont(new Font("Almarai-ExtraBold",Font.PLAIN, 25));
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setPreferredSize(new Dimension(Integer.MAX_VALUE,25));
 		lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -113,7 +113,7 @@ public class View {
 		
 		JLabel lblEmail = new JLabel("Email");
 		lblEmail.setAlignmentX(0.5f);
-		lblEmail.setFont(new Font("Almarai ",Font.PLAIN, 12));
+		lblEmail.setFont(new Font("Almarai",Font.PLAIN, 12));
 		lblEmail.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
 		login.add(lblEmail);
 		
@@ -176,7 +176,7 @@ public class View {
 		JButton btnIniciarSesion =new JButton ("Iniciar sesión");
 		btnIniciarSesion.setAlignmentX(0.5f);
 		btnIniciarSesion.setBackground(azul1);
-		btnIniciarSesion.setFont(new Font("Almarai Bold",Font.PLAIN, 20));
+		btnIniciarSesion.setFont(new Font("Almarai-Bold",Font.PLAIN, 20));
 		btnIniciarSesion.setForeground(Color.WHITE);
 		btnIniciarSesion.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
 		btnIniciarSesion.addActionListener(e->{

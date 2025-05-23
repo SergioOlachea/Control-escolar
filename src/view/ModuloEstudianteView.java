@@ -1223,7 +1223,7 @@ public class ModuloEstudianteView {
 		panelContenido.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		contentPane.add(panelContenido, BorderLayout.CENTER);
 
-		JLabel lblTitulo = new JLabel("Creación de alumno");
+		JLabel lblTitulo = new JLabel("Modificación de alumno");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
         lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelContenido.add(lblTitulo);

@@ -19,8 +19,8 @@ public class ModuloEstudianteController {
 	public void modificar(Estudiante estudiante) {
 		mev.modificar(estudiante);
 	}
-	public void datosGenerales() {
-		mev.datos();
+	public void datosGenerales(Estudiante estudiante) {
+		mev.datos(estudiante);
 	}
 	public void credencial() {
 		mev.credencial();

@@ -14,15 +14,19 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -32,6 +36,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -46,6 +51,7 @@ import javax.swing.RowFilter;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -59,14 +65,21 @@ import controlles.ModuloEstudianteController;
 import controlles.ModuloGrupoController;
 import model.Estudiante;
 import model.ModuloEstudianteModel;
+import model.Utils;
+import model.exception.UniqueKeyViolationException;
 public class ModuloEstudianteView {
 	ModuloEstudianteModel mem = new ModuloEstudianteModel();
 	ArrayList<Estudiante> listaEstudiantes = mem.getEstudiantes();
+	BufferedImage imagenSeleccionada = null;
+	Date fecha = null;
+	
 	Color borde = new Color(206, 207, 202);
 	Color azul2 = new Color(52, 134, 199);
 	Color azul1 = new Color(54, 146, 218);
 	Color azulC = new Color(40, 103, 152);
 	Color azulBorde= new Color(101, 166, 217);
+	
+	
 	public void moduloAlumnos() {
 		
 		JFrame modulo= new JFrame();
@@ -723,11 +736,11 @@ public class ModuloEstudianteView {
 	        }
 	        cbDia.setBorder(BorderFactory.createLineBorder(borde,5));
 	        
-	        String[] mes = {
+	        String[] meses = {
 	        	    "Mes","Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
 	        	    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
 	        	};
-	        JComboBox<String> cbMes = new JComboBox<>(mes);
+	        JComboBox<String> cbMes = new JComboBox<>(meses);
 	        cbMes.setBorder(BorderFactory.createLineBorder(borde,5));
 	        
 	        JComboBox<String> cbAnio = new JComboBox<>();
@@ -743,7 +756,7 @@ public class ModuloEstudianteView {
 	        panelFecha.add(cbAnio);
 
 	        JLabel lblGenero = new JLabel("Género");
-	        String [] genero = new String[]{"Seleccionar","Hombre","mujer","helicoptero"};
+	        String [] genero = new String[]{"Seleccionar","Masculino","Femenino"};
 	        JComboBox<String> cbGenero = new JComboBox<>(genero);
 	        cbGenero.setBorder(BorderFactory.createLineBorder(borde,5));
 
@@ -778,7 +791,30 @@ public class ModuloEstudianteView {
 	        JButton btnCargar = new JButton("📷 Cargar");
 	        btnCargar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	        btnCargar.setAlignmentX(Component.CENTER_ALIGNMENT);
+	        btnCargar.addActionListener(e->{
+	        	
+	        	//codigo para cargar una imagen externa
+	        	
+	        	JFileChooser fileChooser = new JFileChooser();
+	        	fileChooser.setDialogTitle("Seleccionar imagen");
+	        	fileChooser.setFileFilter(new FileNameExtensionFilter("Imágenes", "jpg", "png", "jpeg"));
 
+	        	int result = fileChooser.showOpenDialog(null);
+	        	if (result == JFileChooser.APPROVE_OPTION) {
+	        	    File file = fileChooser.getSelectedFile();
+	        	    try {
+	        	    	int ancho = lblFoto.getWidth() > 0 ? lblFoto.getWidth() : 100;
+	        	    	int alto = lblFoto.getHeight() > 0 ? lblFoto.getHeight() : 100;
+
+	        	        imagenSeleccionada = ImageIO.read(file); 
+	        	        Image scaledImage = imagenSeleccionada.getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+	        	        lblFoto.setIcon(new ImageIcon(scaledImage));
+	        	    } catch (IOException ex) {
+	        	        ex.printStackTrace();
+	        	        JOptionPane.showMessageDialog(null, "Error al cargar la imagen.");
+	        	    }
+	        	}
+	        });
 	        panelFoto.add(Box.createVerticalStrut(10));
 	        panelFoto.add(lblFoto);
 	        panelFoto.add(Box.createVerticalStrut(10));
@@ -890,94 +926,159 @@ public class ModuloEstudianteView {
 		        String nombres = txtNombres.getText().trim();
 		        String apellidos = txtApellidos.getText().trim();
 		        String telefono = txtTelefono.getText().trim();
-		        String grado = txtGrado.getText().trim();
+		        String gradotext = txtGrado.getText().trim();
 		        String domicilio = txtDomicilio.getText().trim();
 		        String correo = txtCorreo.getText().trim();
 		        String curp = txtCurp.getText().trim();
-		        String dia = (String) cbDia.getSelectedItem();
-		        String mesSeleccionado = (String) cbMes.getSelectedItem();
-		        String anio = (String) cbAnio.getSelectedItem();
+		        String diatext = (String) cbDia.getSelectedItem();
+		        String mestext = (String) cbMes.getSelectedItem();
+		        String aniotext = (String) cbAnio.getSelectedItem();
 		        String generoSeleccionado = (String) cbGenero.getSelectedItem();
+		        System.out.println(generoSeleccionado);
+		        
+		        int mes = -1;
+		        for (int i = 0; i < meses.length; i++) {
+		            if (meses[i].equalsIgnoreCase(mestext)) {
+		                mes = i + 1; 
+		                break;
+		            }
+		        }
+
+		        
+		        int grado= Integer.parseInt(gradotext);
+		        
+		        byte[] fotoBytes = Utils.toByte(imagenSeleccionada);
 		
 		        boolean camposValidos = true;
-		
-		        if (nombres.isEmpty()) {
+		        StringBuilder errores = new StringBuilder("Por favor corrige los siguientes campos:\n");
+		        
+		        Pattern soloLetras = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$");
+		        Pattern soloNumeros = Pattern.compile("^\\d{7,15}$");
+		        Pattern soloDireccion = Pattern.compile("^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\\-#]+$");
+		        Pattern correoValido = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$");
+		        Pattern curpValida = Pattern.compile("^[A-Z0-9]{18}$");
+		        Pattern gradoNumerico = Pattern.compile("^\\d+$");
+
+		        if (nombres.isEmpty() || !soloLetras.matcher(nombres).matches()) {
 		            txtNombres.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+		            errores.append("Nombres (solo letras)\n");
 		            camposValidos = false;
 		        } else {
 		            txtNombres.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
-		
-		        if (apellidos.isEmpty()) {
+
+		        if (apellidos.isEmpty() || !soloLetras.matcher(apellidos).matches()) {
 		            txtApellidos.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+		            errores.append("Apellidos (solo letras)\n");
 		            camposValidos = false;
 		        } else {
 		            txtApellidos.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
-		
-		        if (telefono.isEmpty()) {
+
+		        if (telefono.isEmpty() || !soloNumeros.matcher(telefono).matches()) {
 		            txtTelefono.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+		            errores.append("Teléfono (solo números de 7 a 15 dígitos)\n");
 		            camposValidos = false;
 		        } else {
 		            txtTelefono.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
-		
-		        if (curp.isEmpty()) {
+
+		        if (curp.isEmpty() || !curpValida.matcher(curp).matches()) {
 		            txtCurp.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+		            errores.append("CURP (18 caracteres alfanuméricos)\n");
 		            camposValidos = false;
 		        } else {
 		            txtCurp.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
-		
-		        if (correo.isEmpty()) {
+
+		        if (correo.isEmpty() || !correoValido.matcher(correo).matches()) {
 		            txtCorreo.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+		            errores.append("Correo (formato inválido)\n");
 		            camposValidos = false;
 		        } else {
 		            txtCorreo.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
-		
-		        if (domicilio.isEmpty()) {
+
+		        if (domicilio.isEmpty() || !soloDireccion.matcher(domicilio).matches()) {
 		            txtDomicilio.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+		            errores.append("Domicilio (letras y números solamente)\n");
 		            camposValidos = false;
 		        } else {
 		            txtDomicilio.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
-		
-		        if (grado.isEmpty()) {
+
+		        if (gradotext.isEmpty() || !gradoNumerico.matcher(gradotext).matches()) {
+		        	 int gradoNum = Integer.parseInt(gradotext);
 		            txtGrado.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+		            errores.append("Grado (solo números)\n");
 		            camposValidos = false;
 		        } else {
 		            txtGrado.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
-		
-		        if (dia.equals("Día")) {
+
+		        if (diatext.equals("Día")) {
 		            cbDia.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+		            errores.append("Día (selecciona una opción)\n");
 		            camposValidos = false;
 		        } else {
 		            cbDia.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
-		        if (mesSeleccionado.equals("Mes")) {
+
+		        if (mestext.equals("Mes")) {
 		            cbMes.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+		            errores.append("Mes (selecciona una opción)\n");
 		            camposValidos = false;
 		        } else {
 		            cbMes.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
-		        if (anio.equals("Año")) {
+
+		        if (aniotext.equals("Año")) {
 		            cbAnio.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+		            errores.append("Año (selecciona una opción)\n");
 		            camposValidos = false;
 		        } else {
 		            cbAnio.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
+
 		        if (generoSeleccionado.equals("Seleccionar")) {
 		            cbGenero.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+		            errores.append("Género (selecciona una opción)\n");
 		            camposValidos = false;
 		        } else {
 		            cbGenero.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
+
 		        if (camposValidos) {
+		        	
+		        	 int dia = Integer.parseInt(diatext);
+		             int anio = Integer.parseInt(aniotext);
+		             
+
+
+		             try {
+		            	 Calendar calendar = Calendar.getInstance();
+		            	    calendar.setLenient(false); 
+		            	    calendar.set(anio, mes - 2, dia);  
+		            	    fecha = calendar.getTime(); 
+		            	    System.out.println(fecha);
+		             } catch (Exception e1) {
+		                 JOptionPane.showMessageDialog(null, "La fecha seleccionada no es válida.");
+		             }
+		             Estudiante nEstudiante= new Estudiante(nombres, apellidos, fecha, generoSeleccionado, grado, domicilio, correo, telefono, curp, imagenSeleccionada);
+		            
+		             try {
+						mem.add(nEstudiante);
+					} catch (UniqueKeyViolationException e1) {
+						e1.printStackTrace();
+					
+					}
 		            JOptionPane.showMessageDialog(null, "Alumno creado correctamente.");
+		            ModuloEstudianteController mec= new ModuloEstudianteController();
+		            crear.dispose();
+		            mec.ModuloEstudiante();
+		            
 		        } else {
-		            JOptionPane.showMessageDialog(null, "No se pudo crear el alumno. Por favor, completa todos los campos obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
+		            JOptionPane.showMessageDialog(null, errores.toString(), "Campos inválidos", JOptionPane.WARNING_MESSAGE);
 		        }
 	        });
 	        panelBotones.add(btnCancelar);
@@ -1330,20 +1431,17 @@ public class ModuloEstudianteView {
         txtCorreo.setText(estudiante.getCorreo());
         txtCurp.setText(estudiante.getCurp());
 
-        // Género
         cbGenero.setSelectedItem(estudiante.getGenero());
 
-        // Fecha de nacimiento: dividir la fecha en día, mes, año
         if (estudiante.getFechaNacimiento() != null) {
             Date fecha = estudiante.getFechaNacimiento();
             cbDia.setSelectedItem(String.valueOf(fecha.getDay()));
-            cbMes.setSelectedIndex(fecha.getMonth()); // Enero = 1
+            cbMes.setSelectedIndex(fecha.getMonth()); 
             cbAnio.setSelectedItem(String.valueOf(fecha.getYear()));
         }
 
-        // Foto (si tienes imagen como byte[], o ruta de imagen)
         if (estudiante.getFoto() != null) {
-            ImageIcon icon = new ImageIcon(estudiante.getFoto()); // Asegúrate de convertir si es byte[]
+            ImageIcon icon = new ImageIcon(estudiante.getFoto()); 
             Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
             lblFoto.setIcon(new ImageIcon(scaledImage));
         }        
@@ -1889,6 +1987,11 @@ public class ModuloEstudianteView {
         txtGrado.setText(estudiante.getGrupo());
         txtDomicilio.setText(estudiante.getDomicilio());
        
+        if (estudiante.getFoto() != null) {
+            ImageIcon icon = new ImageIcon(estudiante.getFoto()); 
+            Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            lblFoto.setIcon(new ImageIcon(scaledImage));
+        }  
         int fila = 0;
 
         organizador.gridx = 0; 
@@ -2368,5 +2471,5 @@ public class ModuloEstudianteView {
             return label;
         }
     };
-   
+
 }

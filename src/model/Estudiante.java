@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Estudiante {
+
 	private int id;
 	private long numeroControl;
 	private String nombres;
@@ -37,6 +38,24 @@ public class Estudiante {
 		this.grupos = grupos;
 	}
 	
+	//Constructor para insertar estudiantes
+	public Estudiante(String nombres, String apellidos, Date fechaNacimiento, String genero, int grado,
+			String domicilio, String correo, String telefono, String curp, Image foto) {
+		super();
+		this.nombres = nombres;
+		this.apellidos = apellidos;
+		this.fechaNacimiento = fechaNacimiento;
+		this.genero = genero;
+		this.grado = grado;
+		this.domicilio = domicilio;
+		this.correo = correo;
+		this.telefono = telefono;
+		this.curp = curp;
+		this.foto = foto;
+	}
+
+
+
 	public int getId() {
 		return id;
 	}

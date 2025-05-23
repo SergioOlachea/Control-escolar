@@ -5,11 +5,15 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
 import javax.imageio.ImageIO;
+
+import model.exception.UniqueKeyViolationException;
+
 
 public class ModuloEstudianteModel {
 	
@@ -53,5 +57,42 @@ public class ModuloEstudianteModel {
 			e.printStackTrace();
 		}
 		return estudiantes;
+	}
+	
+	public boolean add(Estudiante estudiante) throws UniqueKeyViolationException {
+		String query = "INSERT INTO students (first_name, last_name, gender, birthday, "
+				+ 				"phone_number, email, semester, "
+				+ "				curp, address, picture)"
+				+ "		VALUES (?,?,?,?,?,?,?,?,?,?)";
+		
+		try (
+				Connection conn = ConexionBD.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(query);
+			){
+			stmt.setString(1, estudiante.getNombres());
+			stmt.setString(2, estudiante.getApellidos());
+			stmt.setString(3, estudiante.getGenero());
+			java.sql.Date fechaConvertida =  new java.sql.Date(estudiante.getFechaNacimiento().getTime());
+			stmt.setDate(4, fechaConvertida);
+			stmt.setString(5, estudiante.getTelefono());
+			stmt.setString(6, estudiante.getCorreo());
+			stmt.setInt(7, estudiante.getGrado());
+			stmt.setString(8, estudiante.getCurp());
+			stmt.setString(9, estudiante.getDomicilio());
+			stmt.setBytes(10, Utils.toByte(Utils.toBufferedImage(estudiante.getFoto())));
+			
+			int rs = stmt.executeUpdate();
+			if(rs>0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			if(e.getErrorCode() == 1062) {
+				//Se introdujo un email o CURP que ya existe
+				throw UniqueKeyViolationException.fromSQLException(e);
+			}
+			e.printStackTrace();
+			return false;
+		}
+		return false;
 	}
 }

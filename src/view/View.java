@@ -213,6 +213,8 @@ public class View {
 				 hc.home();
 				 
 				}else {
+					txtEmail.setBorder(BorderFactory.createLineBorder(Color.red,3));
+					password.setBorder(BorderFactory.createLineBorder(Color.red,3));
 					JOptionPane.showMessageDialog(ventana, "email o contraseña incorrectos","Datos incorrectos",JOptionPane.WARNING_MESSAGE);
 				}
 			}else {

@@ -205,6 +205,7 @@ public class View {
 			}if(flag1 && flag2) {
 				
 				boolean user_auth = funciones.access(username,passText); 
+				if(user_auth) {
 				 System.out.println("Validacion");
 				 JOptionPane.showMessageDialog(ventana, "Bienvenido.");
 				 ventana.dispose();
@@ -213,7 +214,10 @@ public class View {
 				 
 				}else {
 					JOptionPane.showMessageDialog(ventana, "email o contraseña incorrectos","Datos incorrectos",JOptionPane.WARNING_MESSAGE);
-				}	
+				}
+			}else {
+				JOptionPane.showMessageDialog(ventana, "email o contraseña incorrectos","Datos incorrectos",JOptionPane.WARNING_MESSAGE);
+			}
 		});
 		login.add(btnIniciarSesion);
 		

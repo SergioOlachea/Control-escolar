@@ -2123,7 +2123,7 @@ public class ModuloEstudianteView {
 		}
     }
     
-	public void credencial() {
+	public void credencial(Estudiante estudiante) {
 	    Color borde = new Color(206, 207, 202);
 		Color azul2 = new Color(52, 134, 199);
 		Color azul1 = new Color(54, 146, 218);
@@ -2325,15 +2325,78 @@ public class ModuloEstudianteView {
 		lblAsignatura.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloAsignatura.add(lblAsignatura);
 		options.add(moduloAsignatura);
-	
+
 		JPanel contenido = new JPanel();
-		contentPane.add(contenido, BorderLayout.CENTER);
-		contenido.setBackground(Color.white);
-		contenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
-		contenido.setLayout(new BoxLayout(contenido, BoxLayout.PAGE_AXIS));
+		contenido.setLayout(new BoxLayout(contenido, BoxLayout.Y_AXIS));
+		contenido.setBorder(new EmptyBorder(20, 20, 20, 20));
+		contenido.setBackground(Color.WHITE);
+		modulo.add(contenido);
+
+		JLabel titulo = new JLabel("Credencial de alumno");
+		titulo.setFont(new Font("Arial", Font.BOLD, 24));
+		titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+		contenido.add(titulo);
+
+		contenido.add(Box.createRigidArea(new Dimension(0, 20)));
+
+		JPanel credencial = new JPanel();
+		credencial.setPreferredSize(new Dimension(250, 350));
+		credencial.setMaximumSize(new Dimension(250, 350));
+		credencial.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		credencial.setLayout(new BoxLayout(credencial, BoxLayout.Y_AXIS));
+		credencial.setBackground(Color.WHITE);
+		credencial.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 		
-		JLabel temporal = new JLabel("CREDENCIAL ESTUDIANTE");
-		contenido.add(temporal);
+		 
+		JLabel lblFoto = new JLabel();
+		lblFoto.setAlignmentX(Component.CENTER_ALIGNMENT);
+		if (estudiante.getFoto() != null) {
+            ImageIcon icon = new ImageIcon(estudiante.getFoto()); 
+            Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            lblFoto.setIcon(new ImageIcon(scaledImage));
+        } 
+		credencial.add(Box.createRigidArea(new Dimension(0, 15)));
+		credencial.add(lblFoto);
+
+		credencial.add(Box.createRigidArea(new Dimension(0, 15)));
+
+		JLabel id = new JLabel("Identificador: "+estudiante.getId());
+		id.setFont(new Font("Arial", Font.PLAIN, 14));
+		id.setAlignmentX(Component.CENTER_ALIGNMENT);
+		credencial.add(id);
+
+		JLabel tipo = new JLabel("ALUMNO");
+		tipo.setFont(new Font("Arial", Font.BOLD, 16));
+		tipo.setAlignmentX(Component.CENTER_ALIGNMENT);
+		credencial.add(tipo);
+
+		JLabel nombre = new JLabel(estudiante.getNombres()+" "+estudiante.getApellidos());
+		nombre.setFont(new Font("Arial", Font.PLAIN, 14));
+		nombre.setAlignmentX(Component.CENTER_ALIGNMENT);
+		credencial.add(nombre);
+
+		ImageIcon logoUabcsMini = new ImageIcon(this.getClass().getResource("/imagenes/uabcs (1).png"));
+		JLabel logoAbajo = new JLabel(logoUabcsMini);
+		logoAbajo.setAlignmentX(Component.CENTER_ALIGNMENT);
+		credencial.add(Box.createRigidArea(new Dimension(0, 15)));
+		credencial.add(logoAbajo);
+
+		contenido.add(credencial);
+
+		contenido.add(Box.createRigidArea(new Dimension(0, 25)));
+
+		JButton btnRegresar = new JButton("Regresar");
+		btnRegresar.setBackground(azul2);
+		btnRegresar.setForeground(Color.WHITE);
+		btnRegresar.setFont(new Font("Arial", Font.BOLD, 16));
+		btnRegresar.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnRegresar.setFocusPainted(false);
+		btnRegresar.setPreferredSize(new Dimension(120, 40));
+		btnRegresar.addActionListener(e -> {
+		    modulo.dispose();
+		});
+		contenido.add(btnRegresar);
 	}
 	
 	 // Renderizador simple para botones
@@ -2364,8 +2427,12 @@ public class ModuloEstudianteView {
 	    public Object getCellEditorValue() {
 	        ModuloEstudianteController mec = new ModuloEstudianteController();
 	        if (texto.equals("Generar")) {
+	        	int filaSeleccionada = tabla.getSelectedRow();
+                if (filaSeleccionada >= 0) {
+                    Estudiante eSeleccionado = listaEstudiantes.get(filaSeleccionada);
 	            modulo.dispose();
-	            mec.credencial();
+	            mec.credencial(eSeleccionado);
+                }
 	        } else if (texto.equals("Datos completos")) {
 	        	int filaSeleccionada = tabla.getSelectedRow();
                 if (filaSeleccionada >= 0) {

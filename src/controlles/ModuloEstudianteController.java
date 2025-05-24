@@ -22,8 +22,8 @@ public class ModuloEstudianteController {
 	public void datosGenerales(Estudiante estudiante) {
 		mev.datos(estudiante);
 	}
-	public void credencial() {
-		mev.credencial();
+	public void credencial(Estudiante estudiante) {
+		mev.credencial(estudiante);
 	}
 
 }

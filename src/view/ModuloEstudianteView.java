@@ -1532,7 +1532,7 @@ public class ModuloEstudianteView {
 
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton btnCancelar = new JButton("Cancelar");
-        JButton btnCrear = new JButton("Crear");
+        JButton btnCrear = new JButton("Modificar");
         btnCancelar.setBackground(azulC);
         btnCancelar.setForeground(Color.white);
         btnCancelar.setBorder(BorderFactory.createLineBorder(azul2,5));
@@ -2078,11 +2078,13 @@ public class ModuloEstudianteView {
         panelContenido.add(Box.createVerticalStrut(20));
 
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton btnCancelar = new JButton("Cancelar");
-        JButton btnCrear = new JButton("Crear");
+        JButton btnCancelar = new JButton("Regresar");
+        JButton btnCrear = new JButton("Descargar PDF");
         btnCancelar.setBackground(azulC);
+        btnCancelar.setForeground(Color.white);
         btnCancelar.setBorder(BorderFactory.createLineBorder(azul2,5));
         btnCrear.setBackground(azul1);
+        btnCrear.setForeground(Color.white);
         btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde,5));
         btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnCrear.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -2394,7 +2396,9 @@ public class ModuloEstudianteView {
 		btnRegresar.setFocusPainted(false);
 		btnRegresar.setPreferredSize(new Dimension(120, 40));
 		btnRegresar.addActionListener(e -> {
-		    modulo.dispose();
+			ModuloEstudianteController mec = new ModuloEstudianteController();
+        	modulo.dispose();
+        	mec.ModuloEstudiante();
 		});
 		contenido.add(btnRegresar);
 	}

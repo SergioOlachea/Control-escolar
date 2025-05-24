@@ -670,6 +670,7 @@ public class ModuloAsignturaView {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		panel_1.setBackground(Color.white);
 		contenido.add(panel_1, BorderLayout.CENTER);
 		panel_1.setLayout(null);
 		
@@ -680,8 +681,9 @@ public class ModuloAsignturaView {
 		
 		JTextField nameInput = new JTextField();
 		nameInput.setBounds(148, 39, 205, 29);
-		panel_1.add(nameInput);
+		nameInput.setBorder(BorderFactory.createLineBorder(borde,5));
 		nameInput.setColumns(10);
+		panel_1.add(nameInput);
 		
 		JLabel identifierTag = new JLabel("Identificador");
 		identifierTag.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
@@ -690,6 +692,7 @@ public class ModuloAsignturaView {
 		
 		JTextField identifierInput = new JTextField();
 		identifierInput.setColumns(10);
+		identifierInput.setBorder(BorderFactory.createLineBorder(borde,5));
 		identifierInput.setBounds(534, 39, 205, 29);
 		panel_1.add(identifierInput);
 		
@@ -700,22 +703,31 @@ public class ModuloAsignturaView {
 		panel_1.add(descriptionTag);
 		
 		JTextPane descriptionInput = new JTextPane();
+		descriptionInput.setBorder(BorderFactory.createLineBorder(borde,5));
 		descriptionInput.setBounds(88, 135, 651, 260);
 		panel_1.add(descriptionInput);
 		
 		JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		panelBotones.setBackground(Color.white);
-        JButton btnCancelar = new JButton("Cancelar");
+		
+        JButton btnRegresar = new JButton("Cancelar");
+        btnRegresar.setBackground(azulC);
+        btnRegresar.setForeground(Color.white);
+        btnRegresar.setBorder(BorderFactory.createLineBorder(azul2,5));
+        btnRegresar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnRegresar.addActionListener(e -> {
+			ModuloAsignaturaController mac = new ModuloAsignaturaController();
+        	crear.dispose();
+        	mac.moduloAsignatura();
+		});
+        panelBotones.add(btnRegresar);
+        
+        
         JButton btnCrear = new JButton("Crear");
-        btnCancelar.setBackground(azulC);
-        btnCancelar.setForeground(Color.white);
-        btnCancelar.setBorder(BorderFactory.createLineBorder(azul2,5));
         btnCrear.setBackground(azul1);
         btnCrear.setForeground(Color.white);
         btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde,5));
-        btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnCrear.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        panelBotones.add(btnCancelar);
         panelBotones.add(btnCrear);
         
 		contenido.add(panelBotones, BorderLayout.SOUTH);

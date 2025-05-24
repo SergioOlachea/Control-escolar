@@ -1083,7 +1083,7 @@ public class ModuloEstudianteView {
 	        });
 	        panelBotones.add(btnCancelar);
 	        panelBotones.add(btnCrear);
-
+	        
 	        panelContenido.add(panelBotones);
 
 			// fuentes 

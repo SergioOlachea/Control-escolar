@@ -141,4 +141,20 @@ public class ModuloEstudianteModel {
 		}
 		return false;
 	}
+	
+	public boolean delete(int id) {
+		String query = "DELETE FROM students WHERE id = ?";
+		
+		try (
+				Connection conn = ConexionBD.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(query);
+			){
+			stmt.setInt(1, id);
+			int rs = stmt.executeUpdate();
+			return rs > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

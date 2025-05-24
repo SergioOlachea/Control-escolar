@@ -2389,7 +2389,7 @@ public class ModuloEstudianteView {
 		JButton btnRegresar = new JButton("Regresar");
 		btnRegresar.setBackground(azul2);
 		btnRegresar.setForeground(Color.WHITE);
-		btnRegresar.setFont(new Font("Arial", Font.BOLD, 16));
+		btnRegresar.setFont(new Font("Almarai-Light", Font.BOLD, 16));
 		btnRegresar.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnRegresar.setFocusPainted(false);
 		btnRegresar.setPreferredSize(new Dimension(120, 40));

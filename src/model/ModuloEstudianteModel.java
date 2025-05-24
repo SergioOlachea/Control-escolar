@@ -95,4 +95,50 @@ public class ModuloEstudianteModel {
 		}
 		return false;
 	}
+	
+	public boolean update(int id, Estudiante estudiante) throws UniqueKeyViolationException {
+		String query = "UPDATE students "
+				+ "		   SET first_name=?, "
+				+ "			   last_name=?, "
+				+ "	           gender=?, "
+				+ "			   birthday=?, "
+				+ "			   phone_number=?, "
+				+ "			   email=?, "
+				+ "			   semester=?, "
+				+ "			   curp=?, "
+				+ "            address=?, "
+				+ "            picture=? "
+				+ "		WHERE  id=?";
+		
+		try (
+				Connection conn = ConexionBD.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(query);
+			){
+			stmt.setString(1, estudiante.getNombres());
+			stmt.setString(2, estudiante.getApellidos());
+			stmt.setString(3, estudiante.getGenero());
+			java.sql.Date fechaConvertida =  new java.sql.Date(estudiante.getFechaNacimiento().getTime());
+			stmt.setDate(4, fechaConvertida);
+			stmt.setString(5, estudiante.getTelefono());
+			stmt.setString(6, estudiante.getCorreo());
+			stmt.setInt(7, estudiante.getGrado());
+			stmt.setString(8, estudiante.getCurp());
+			stmt.setString(9, estudiante.getDomicilio());
+			stmt.setBytes(10, Utils.toByte(Utils.toBufferedImage(estudiante.getFoto())));
+			stmt.setInt(11, id);
+			
+			int rs = stmt.executeUpdate();
+			if(rs>0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			if(e.getErrorCode() == 1062) {
+				//Se introdujo un email o CURP que ya existe
+				throw UniqueKeyViolationException.fromSQLException(e);
+			}
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+	}
 }

@@ -3,11 +3,13 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -1300,13 +1302,79 @@ public class ModuloDocenteView {
 		options.add(moduloAsignatura);
 	
 		JPanel contenido = new JPanel();
-		contentPane.add(contenido, BorderLayout.CENTER);
-		contenido.setBackground(Color.white);
-		contenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
-		contenido.setLayout(new BoxLayout(contenido, BoxLayout.PAGE_AXIS));
+		contenido.setLayout(new BoxLayout(contenido, BoxLayout.Y_AXIS));
+		contenido.setBorder(new EmptyBorder(20, 20, 20, 20));
+		contenido.setBackground(Color.WHITE);
+		modulo.add(contenido);
+
+		JLabel titulo = new JLabel("Credencial de docente");
+		titulo.setFont(new Font("Arial", Font.BOLD, 24));
+		titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+		contenido.add(titulo);
+
+		contenido.add(Box.createRigidArea(new Dimension(0, 20)));
+
+		JPanel credencial = new JPanel();
+		credencial.setPreferredSize(new Dimension(250, 350));
+		credencial.setMaximumSize(new Dimension(250, 350));
+		credencial.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		credencial.setLayout(new BoxLayout(credencial, BoxLayout.Y_AXIS));
+		credencial.setBackground(Color.WHITE);
+		credencial.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 		
-		JLabel temporal = new JLabel("CREDENCIAL DOCENTE");
-		contenido.add(temporal);
+		 
+		JLabel lblFoto = new JLabel();
+		lblFoto.setAlignmentX(Component.CENTER_ALIGNMENT);
+		/*if (docente.getFoto() != null) {
+            ImageIcon icon = new ImageIcon();//docente.getFoto()); 
+            Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            lblFoto.setIcon(new ImageIcon(scaledImage));
+        }*/ 
+		credencial.add(Box.createRigidArea(new Dimension(0, 15)));
+		credencial.add(lblFoto);
+
+		credencial.add(Box.createRigidArea(new Dimension(0, 15)));
+
+		JLabel id = new JLabel("Identificador: ");//+docente.getId());
+		id.setFont(new Font("Arial", Font.PLAIN, 14));
+		id.setAlignmentX(Component.CENTER_ALIGNMENT);
+		credencial.add(id);
+
+		JLabel tipo = new JLabel("DOCENTE");
+		tipo.setFont(new Font("Arial", Font.BOLD, 16));
+		tipo.setAlignmentX(Component.CENTER_ALIGNMENT);
+		credencial.add(tipo);
+
+		JLabel nombre = new JLabel();//docente.getNombres()+" "+docente.getApellidos());
+		nombre.setFont(new Font("Arial", Font.PLAIN, 14));
+		nombre.setAlignmentX(Component.CENTER_ALIGNMENT);
+		credencial.add(nombre);
+
+		ImageIcon logoUabcsMini = new ImageIcon(this.getClass().getResource("/imagenes/uabcs (1).png"));
+		JLabel logoAbajo = new JLabel(logoUabcsMini);
+		logoAbajo.setAlignmentX(Component.CENTER_ALIGNMENT);
+		credencial.add(Box.createRigidArea(new Dimension(0, 15)));
+		credencial.add(logoAbajo);
+
+		contenido.add(credencial);
+
+		contenido.add(Box.createRigidArea(new Dimension(0, 25)));
+
+		JButton btnRegresar = new JButton("Regresar");
+		btnRegresar.setBackground(azul2);
+		btnRegresar.setForeground(Color.WHITE);
+		btnRegresar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnRegresar.setFont(new Font("Almarai-Light", Font.BOLD, 16));
+		btnRegresar.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnRegresar.setFocusPainted(false);
+		btnRegresar.setPreferredSize(new Dimension(120, 40));
+		btnRegresar.addActionListener(e -> {
+			ModuloDocenteController mdc = new ModuloDocenteController();
+        	modulo.dispose();
+        	mdc.moduloDocente();
+		});
+		contenido.add(btnRegresar);
 	}
 	
 	

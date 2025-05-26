@@ -3,12 +3,14 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,17 +20,20 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
@@ -153,6 +158,7 @@ public class View {
 		JButton btnMostrar = new JButton(iconMostrar);
 		btnMostrar.setAlignmentX(-0.5f);
 		btnMostrar.setBorderPainted(false);
+		btnMostrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnMostrar.setPreferredSize(new Dimension(40, 40));
 		btnMostrar.setMaximumSize(new Dimension(40, 40));
 		btnMostrar.setMinimumSize(new Dimension(40, 40));
@@ -176,6 +182,7 @@ public class View {
 		JButton btnIniciarSesion =new JButton ("Iniciar sesión");
 		btnIniciarSesion.setAlignmentX(0.5f);
 		btnIniciarSesion.setBackground(azul1);
+		btnIniciarSesion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnIniciarSesion.setFont(new Font("Almarai-Bold",Font.PLAIN, 20));
 		btnIniciarSesion.setForeground(Color.WHITE);
 		btnIniciarSesion.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
@@ -222,6 +229,16 @@ public class View {
 			}
 		});
 		login.add(btnIniciarSesion);
+		
+		login.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+			    KeyStroke.getKeyStroke("ENTER"), "presionarBoton"
+			);
+			login.getActionMap().put("presionarBoton", new AbstractAction() {
+			    @Override
+			    public void actionPerformed(ActionEvent e) {
+			        btnIniciarSesion.doClick(); 
+			    }
+			});
 		
 		ventana.repaint();
 		ventana.revalidate();

@@ -126,6 +126,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnCerrarSesion = new JButton(iconCerrarSesion);
 		btnCerrarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnCerrarSesion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCerrarSesion.setBackground(azul2);
 		btnCerrarSesion.setBorder(null);
 		btnCerrarSesion.setPreferredSize(new Dimension(120,120));
@@ -166,6 +167,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnAlumnos = new JButton(iconAlumnos);
 		btnAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnAlumnos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAlumnos.setBackground(azulBorde);
 		btnAlumnos.setBorder(null);
 		btnAlumnos.addActionListener(e->{
@@ -200,6 +202,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnMaestros = new JButton(iconDocentnes);
 		btnMaestros.setBorder(null);
+		btnMaestros.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnMaestros.setBackground(azul2);
 		btnMaestros.addActionListener(e->{
@@ -231,6 +234,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnGrupos = new JButton(iconGrupo);
 		btnGrupos.setBorder(null);
+		btnGrupos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnGrupos.setBackground(azul2);
 		btnGrupos.addActionListener(e->{
@@ -261,6 +265,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnAsignatura = new JButton(iconAsignatura);
 		btnAsignatura.setBorder(null);
+		btnAsignatura.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnAsignatura.setBackground(azul2);
 		btnAsignatura.addActionListener(e->{
@@ -1056,7 +1061,7 @@ public class ModuloEstudianteView {
 		             try {
 		            	 Calendar calendar = Calendar.getInstance();
 		            	    calendar.setLenient(false); 
-		            	    calendar.set(anio, mes - 2, dia);  
+		            	    calendar.set(anio, mes - 1, dia);  
 		            	    fecha = calendar.getTime(); 
 		            	    System.out.println(fecha);
 		             } catch (Exception e1) {
@@ -1153,6 +1158,7 @@ public class ModuloEstudianteView {
 		ImageIcon iconCerrarSesion = new ImageIcon(this.getClass().getResource("/imagenes/cerrarsesion (1).png"));
 		
 		JButton btnCerrarSesion = new JButton(iconCerrarSesion);
+		btnCerrarSesion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCerrarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnCerrarSesion.setBackground(azul2);
 		btnCerrarSesion.setBorder(null);
@@ -1194,6 +1200,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnAlumnos = new JButton(iconAlumnos);
 		btnAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnAlumnos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAlumnos.setBackground(azulBorde);
 		btnAlumnos.setBorder(null);
 		btnAlumnos.addActionListener(e->{
@@ -1228,6 +1235,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnMaestros = new JButton(iconDocentnes);
 		btnMaestros.setBorder(null);
+		btnMaestros.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnMaestros.setBackground(azul2);
 		btnMaestros.addActionListener(e->{
@@ -1259,6 +1267,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnGrupos = new JButton(iconGrupo);
 		btnGrupos.setBorder(null);
+		btnGrupos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnGrupos.setBackground(azul2);
 		btnGrupos.addActionListener(e->{
@@ -1289,6 +1298,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnAsignatura = new JButton(iconAsignatura);
 		btnAsignatura.setBorder(null);
+		btnAsignatura.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnAsignatura.setBackground(azul2);
 		btnAsignatura.addActionListener(e->{
@@ -1337,7 +1347,6 @@ public class ModuloEstudianteView {
 
         JLabel lblNombres = new JLabel("Nombres");
         JTextField txtNombres = new JTextField(15);
-        //txtNombres.setText(e.getNombre());
         txtNombres.setBorder(BorderFactory.createLineBorder(borde,5));
 
         JLabel lblApellidos = new JLabel("Apellidos");
@@ -1357,11 +1366,11 @@ public class ModuloEstudianteView {
         }
         cbDia.setBorder(BorderFactory.createLineBorder(borde,5));
         
-        String[] mes = {
+        String[] meses = {
         	    "Mes","Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
         	    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
         	};
-        JComboBox<String> cbMes = new JComboBox<>(mes);
+        JComboBox<String> cbMes = new JComboBox<>(meses);
         cbMes.setBorder(BorderFactory.createLineBorder(borde,5));
         
         JComboBox<String> cbAnio = new JComboBox<>();
@@ -1377,7 +1386,7 @@ public class ModuloEstudianteView {
         panelFecha.add(cbAnio);
 
         JLabel lblGenero = new JLabel("Género");
-        String [] genero = new String[]{"Seleccionar","Hombre","mujer","helicoptero"};
+        String [] genero = new String[]{"Seleccionar","Masculino","Femenino"};
         JComboBox<String> cbGenero = new JComboBox<>(genero);
         cbGenero.setBorder(BorderFactory.createLineBorder(borde,5));
 
@@ -1387,7 +1396,6 @@ public class ModuloEstudianteView {
 
         JLabel lblGrado = new JLabel("Grado");
         JTextField txtGrado = new JTextField(15);
-       // txtGrado.setText(estudiante.);
         txtGrado.setBorder(BorderFactory.createLineBorder(borde,5));
 
         JLabel lblDomicilio = new JLabel("Domicilio");
@@ -1413,6 +1421,30 @@ public class ModuloEstudianteView {
         JButton btnCargar = new JButton("📷 Cargar");
         btnCargar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnCargar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnCargar.addActionListener(e->{
+ 	        	
+        	//codigo para cargar una imagen externa
+        	
+        	JFileChooser fileChooser = new JFileChooser();
+        	fileChooser.setDialogTitle("Seleccionar imagen");
+        	fileChooser.setFileFilter(new FileNameExtensionFilter("Imágenes", "jpg", "png", "jpeg"));
+
+        	int result = fileChooser.showOpenDialog(null);
+        	if (result == JFileChooser.APPROVE_OPTION) {
+        	    File file = fileChooser.getSelectedFile();
+        	    try {
+        	    	int ancho = lblFoto.getWidth() > 0 ? lblFoto.getWidth() : 100;
+        	    	int alto = lblFoto.getHeight() > 0 ? lblFoto.getHeight() : 100;
+
+        	        imagenSeleccionada = ImageIO.read(file); 
+        	        Image scaledImage = imagenSeleccionada.getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+        	        lblFoto.setIcon(new ImageIcon(scaledImage));
+        	    } catch (IOException ex) {
+        	        ex.printStackTrace();
+        	        JOptionPane.showMessageDialog(null, "Error al cargar la imagen.");
+        	    }
+        	}
+        });
 
         panelFoto.add(Box.createVerticalStrut(10));
         panelFoto.add(lblFoto);
@@ -1433,11 +1465,18 @@ public class ModuloEstudianteView {
 
         if (estudiante.getFechaNacimiento() != null) {
             Date fecha = estudiante.getFechaNacimiento();
-            cbDia.setSelectedItem(String.valueOf(fecha.getDay()));
-            cbMes.setSelectedIndex(fecha.getMonth()); 
-            cbAnio.setSelectedItem(String.valueOf(fecha.getYear()));
-        }
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(fecha);
 
+            int dia = cal.get(Calendar.DAY_OF_MONTH);  
+            int mes = cal.get(Calendar.MONTH);        
+            int anio = cal.get(Calendar.YEAR);         
+
+            cbDia.setSelectedItem(String.valueOf(dia));
+            cbMes.setSelectedIndex(mes+1);            
+            cbAnio.setSelectedItem(String.valueOf(anio));
+        }
+        
         if (estudiante.getFoto() != null) {
             ImageIcon icon = new ImageIcon(estudiante.getFoto()); 
             Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
@@ -1530,116 +1569,182 @@ public class ModuloEstudianteView {
 
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton btnCancelar = new JButton("Cancelar");
-        JButton btnCrear = new JButton("Modificar");
+        JButton btnModificar = new JButton("Modificar");
         btnCancelar.setBackground(azulC);
         btnCancelar.setForeground(Color.white);
         btnCancelar.setBorder(BorderFactory.createLineBorder(azul2,5));
-        btnCrear.setBackground(azul1);
-        btnCrear.setForeground(Color.white);
-        btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde,5));
         btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btnCrear.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnModificar.setBackground(azul1);
+        btnModificar.setForeground(Color.white);
+        btnModificar.setBorder(BorderFactory.createLineBorder(azulBorde,5));
+        btnModificar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnCancelar.addActionListener(e->{
         	crear.dispose();
         	ModuloEstudianteController mec= new ModuloEstudianteController();
         	mec.ModuloEstudiante();
         });
-        btnCrear.addActionListener(e->{
+        btnModificar.addActionListener(e->{
 	        String nombres = txtNombres.getText().trim();
 	        String apellidos = txtApellidos.getText().trim();
 	        String telefono = txtTelefono.getText().trim();
-	        String grado = txtGrado.getText().trim();
+	        String gradotext = txtGrado.getText().trim();
 	        String domicilio = txtDomicilio.getText().trim();
 	        String correo = txtCorreo.getText().trim();
 	        String curp = txtCurp.getText().trim();
-	        String dia = (String) cbDia.getSelectedItem();
-	        String mesSeleccionado = (String) cbMes.getSelectedItem();
-	        String anio = (String) cbAnio.getSelectedItem();
+	        String diatext = (String) cbDia.getSelectedItem();
+	        String mestext = (String) cbMes.getSelectedItem();
+	        String aniotext = (String) cbAnio.getSelectedItem();
 	        String generoSeleccionado = (String) cbGenero.getSelectedItem();
+	        System.out.println(generoSeleccionado);
+	        
+	        int mes = -1;
+	        for (int i = 0; i < meses.length; i++) {
+	            if (meses[i].equalsIgnoreCase(mestext)) {
+	                mes = i + 1; 
+	                break;
+	            }
+	        }
+
+	        
+	        int grado= Integer.parseInt(gradotext);
+	        
+	        byte[] fotoBytes = Utils.toByte(imagenSeleccionada);
 	
 	        boolean camposValidos = true;
-	
-	        if (nombres.isEmpty()) {
+	        StringBuilder errores = new StringBuilder("Por favor corrige los siguientes campos:\n");
+	        
+	        Pattern soloLetras = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$");
+	        Pattern soloNumeros = Pattern.compile("^\\d{7,15}$");
+	        Pattern soloDireccion = Pattern.compile("^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\\-#]+$");
+	        Pattern correoValido = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$");
+	        Pattern curpValida = Pattern.compile("^[A-Z0-9]{18}$");
+	        Pattern gradoNumerico = Pattern.compile("^\\d+$");
+
+	        if (nombres.isEmpty() || !soloLetras.matcher(nombres).matches()) {
 	            txtNombres.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+	            errores.append("Nombres (solo letras)\n");
 	            camposValidos = false;
 	        } else {
 	            txtNombres.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 	        }
-	
-	        if (apellidos.isEmpty()) {
+
+	        if (apellidos.isEmpty() || !soloLetras.matcher(apellidos).matches()) {
 	            txtApellidos.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+	            errores.append("Apellidos (solo letras)\n");
 	            camposValidos = false;
 	        } else {
 	            txtApellidos.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 	        }
-	
-	        if (telefono.isEmpty()) {
+
+	        if (telefono.isEmpty() || !soloNumeros.matcher(telefono).matches()) {
 	            txtTelefono.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+	            errores.append("Teléfono (solo números de 7 a 15 dígitos)\n");
 	            camposValidos = false;
 	        } else {
 	            txtTelefono.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 	        }
-	
-	        if (curp.isEmpty()) {
+
+	        if (curp.isEmpty() || !curpValida.matcher(curp).matches()) {
 	            txtCurp.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+	            errores.append("CURP (18 caracteres alfanuméricos)\n");
 	            camposValidos = false;
 	        } else {
 	            txtCurp.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 	        }
-	
-	        if (correo.isEmpty()) {
+
+	        if (correo.isEmpty() || !correoValido.matcher(correo).matches()) {
 	            txtCorreo.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+	            errores.append("Correo (formato inválido)\n");
 	            camposValidos = false;
 	        } else {
 	            txtCorreo.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 	        }
-	
-	        if (domicilio.isEmpty()) {
+
+	        if (domicilio.isEmpty() || !soloDireccion.matcher(domicilio).matches()) {
 	            txtDomicilio.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+	            errores.append("Domicilio (letras y números solamente)\n");
 	            camposValidos = false;
 	        } else {
 	            txtDomicilio.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 	        }
-	
-	        if (grado.isEmpty()) {
+
+	        if (gradotext.isEmpty() || !gradoNumerico.matcher(gradotext).matches()) {
+	        	 int gradoNum = Integer.parseInt(gradotext);
 	            txtGrado.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+	            errores.append("Grado (solo números)\n");
 	            camposValidos = false;
 	        } else {
 	            txtGrado.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 	        }
-	
-	        if (dia.equals("Día")) {
+
+	        if (diatext.equals("Día")) {
 	            cbDia.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+	            errores.append("Día (selecciona una opción)\n");
 	            camposValidos = false;
 	        } else {
 	            cbDia.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 	        }
-	        if (mesSeleccionado.equals("Mes")) {
+
+	        if (mestext.equals("Mes")) {
 	            cbMes.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+	            errores.append("Mes (selecciona una opción)\n");
 	            camposValidos = false;
 	        } else {
 	            cbMes.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 	        }
-	        if (anio.equals("Año")) {
+
+	        if (aniotext.equals("Año")) {
 	            cbAnio.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+	            errores.append("Año (selecciona una opción)\n");
 	            camposValidos = false;
 	        } else {
 	            cbAnio.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 	        }
+
 	        if (generoSeleccionado.equals("Seleccionar")) {
 	            cbGenero.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+	            errores.append("Género (selecciona una opción)\n");
 	            camposValidos = false;
 	        } else {
 	            cbGenero.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 	        }
+
 	        if (camposValidos) {
-	            JOptionPane.showMessageDialog(null, "Alumno creado correctamente.");
+	        	
+	        	 int dia = Integer.parseInt(diatext);
+	             int anio = Integer.parseInt(aniotext);
+
+	             try {
+	            	 Calendar calendar = Calendar.getInstance();
+	            	    calendar.setLenient(false); 
+	            	    calendar.set(anio, mes - 1, dia);  
+	            	    fecha = calendar.getTime(); 
+	            	    System.out.println(fecha);
+	             } catch (Exception e1) {
+	                 JOptionPane.showMessageDialog(null, "La fecha seleccionada no es válida.");
+	             }
+	             Estudiante estudianteMod= new Estudiante(nombres, apellidos, fecha, generoSeleccionado, grado, domicilio, correo, telefono, curp, imagenSeleccionada);
+	            
+	             try {
+	                 boolean actualizado = mem.update(estudiante.getId(), estudianteMod);
+	                 if (actualizado) {
+	                	 JOptionPane.showMessageDialog(null, "Estudiante modificado correctamente.");
+	                     ModuloEstudianteController mec= new ModuloEstudianteController();
+	                     crear.dispose();
+	                     mec.ModuloEstudiante();
+	                 } else {
+	                	 JOptionPane.showMessageDialog(null,"No se pudo actualizar el estudiante.");
+	                 }
+	             } catch (UniqueKeyViolationException e1) {
+	            	 JOptionPane.showMessageDialog(null,"Error: Ya existe un estudiante con el mismo CURP o correo.");
+	             }
+	            
 	        } else {
-	            JOptionPane.showMessageDialog(null, "No se pudo crear el alumno. Por favor, completa todos los campos obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
+	            JOptionPane.showMessageDialog(null, errores.toString(), "Campos inválidos", JOptionPane.WARNING_MESSAGE);
 	        }
         });
         panelBotones.add(btnCancelar);
-        panelBotones.add(btnCrear);
+        panelBotones.add(btnModificar);
 
         panelContenido.add(panelBotones);
 
@@ -1712,6 +1817,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnCerrarSesion = new JButton(iconCerrarSesion);
 		btnCerrarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnCerrarSesion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCerrarSesion.setBackground(azul2);
 		btnCerrarSesion.setBorder(null);
 		btnCerrarSesion.setPreferredSize(new Dimension(120,120));
@@ -1752,6 +1858,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnAlumnos = new JButton(iconAlumnos);
 		btnAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnAlumnos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAlumnos.setBackground(azulBorde);
 		btnAlumnos.setBorder(null);
 		btnAlumnos.addActionListener(e->{
@@ -1786,6 +1893,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnMaestros = new JButton(iconDocentnes);
 		btnMaestros.setBorder(null);
+		btnMaestros.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnMaestros.setBackground(azul2);
 		btnMaestros.addActionListener(e->{
@@ -1817,6 +1925,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnGrupos = new JButton(iconGrupo);
 		btnGrupos.setBorder(null);
+		btnGrupos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnGrupos.setBackground(azul2);
 		btnGrupos.addActionListener(e->{
@@ -1847,6 +1956,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnAsignatura = new JButton(iconAsignatura);
 		btnAsignatura.setBorder(null);
+		btnAsignatura.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnAsignatura.setBackground(azul2);
 		btnAsignatura.addActionListener(e->{
@@ -2171,6 +2281,7 @@ public class ModuloEstudianteView {
 	
 		JButton btnCerrarSesion = new JButton(iconCerrarSesion);
 		btnCerrarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnCerrarSesion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCerrarSesion.setBackground(azul2);
 		btnCerrarSesion.setBorder(null);
 		btnCerrarSesion.setPreferredSize(new Dimension(120,120));
@@ -2180,7 +2291,7 @@ public class ModuloEstudianteView {
 		            "Estas seguro que quieres cerrar sesión?",
 		            "Cerrar sesión",
 		            JOptionPane.YES_NO_OPTION);
-	
+
 		        if(n==0){
 		            modulo.dispose();
 		            Controller c = new Controller();
@@ -2211,6 +2322,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnAlumnos = new JButton(iconAlumnos);
 		btnAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnAlumnos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAlumnos.setBackground(azulBorde);
 		btnAlumnos.setBorder(null);
 		btnAlumnos.addActionListener(e->{
@@ -2245,6 +2357,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnMaestros = new JButton(iconDocentnes);
 		btnMaestros.setBorder(null);
+		btnMaestros.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnMaestros.setBackground(azul2);
 		btnMaestros.addActionListener(e->{
@@ -2276,6 +2389,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnGrupos = new JButton(iconGrupo);
 		btnGrupos.setBorder(null);
+		btnGrupos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnGrupos.setBackground(azul2);
 		btnGrupos.addActionListener(e->{
@@ -2306,6 +2420,7 @@ public class ModuloEstudianteView {
 		
 		JButton btnAsignatura = new JButton(iconAsignatura);
 		btnAsignatura.setBorder(null);
+		btnAsignatura.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnAsignatura.setBackground(azul2);
 		btnAsignatura.addActionListener(e->{
@@ -2389,6 +2504,7 @@ public class ModuloEstudianteView {
 		JButton btnRegresar = new JButton("Regresar");
 		btnRegresar.setBackground(azul2);
 		btnRegresar.setForeground(Color.WHITE);
+		btnRegresar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnRegresar.setFont(new Font("Almarai-Light", Font.BOLD, 16));
 		btnRegresar.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnRegresar.setFocusPainted(false);
@@ -2455,8 +2571,10 @@ public class ModuloEstudianteView {
             JButton btnBorrar = new JButton(new ImageIcon(this.getClass().getResource("/imagenes/delete (1).png")));
             btnEditar.setPreferredSize(new Dimension(20, 20));
             btnEditar.setBorder(null);
+            btnEditar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             btnEditar.setBackground(Color.white);
             btnBorrar.setBorder(null);
+            btnBorrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); 
             btnBorrar.setPreferredSize(new Dimension(20, 20));
             btnBorrar.setBackground(Color.white);
             this.setBackground(Color.white);

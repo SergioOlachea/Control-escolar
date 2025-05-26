@@ -3,6 +3,7 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -76,6 +77,7 @@ public class HomeView {
 		
 		JButton btnCerrarSesion = new JButton(iconCerrarSesion);
 		btnCerrarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnCerrarSesion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCerrarSesion.setBackground(azul2);
 		btnCerrarSesion.setBorder(null);
 		btnCerrarSesion.setPreferredSize(new Dimension(120,120));
@@ -115,6 +117,7 @@ public class HomeView {
 		
 		JButton btnAlumnos = new JButton(iconAlumnos);
 		btnAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnAlumnos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAlumnos.setBackground(azul2);
 		btnAlumnos.setBorder(null);
 		btnAlumnos.addActionListener(e->{
@@ -149,6 +152,7 @@ public class HomeView {
 		
 		JButton btnMaestros = new JButton(iconDocentnes);
 		btnMaestros.setBorder(null);
+		btnMaestros.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnMaestros.setBackground(azul2);
 		btnMaestros.addActionListener(e->{
@@ -180,6 +184,7 @@ public class HomeView {
 		
 		JButton btnGrupos = new JButton(iconGrupo);
 		btnGrupos.setBorder(null);
+		btnGrupos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));	
 		btnGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnGrupos.setBackground(azul2);
 		btnGrupos.addActionListener(e->{
@@ -210,6 +215,7 @@ public class HomeView {
 		
 		JButton btnAsignatura = new JButton(iconAsignatura);
 		btnAsignatura.setBorder(null);
+		btnAsignatura.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnAsignatura.setBackground(azul2);
 		btnAsignatura.addActionListener(e->{

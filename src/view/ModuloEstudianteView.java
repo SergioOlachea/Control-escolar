@@ -1052,8 +1052,6 @@ public class ModuloEstudianteView {
 		        	
 		        	 int dia = Integer.parseInt(diatext);
 		             int anio = Integer.parseInt(aniotext);
-		             
-
 
 		             try {
 		            	 Calendar calendar = Calendar.getInstance();
@@ -2515,10 +2513,30 @@ public class ModuloEstudianteView {
             });
 
             borrar.addActionListener(e -> {
-                ((DefaultTableModel) tabla.getModel()).removeRow(row);
-                JOptionPane.showMessageDialog(null, "Fila eliminada " + (row + 1));
-                fireEditingStopped();
-                System.out.println(borrar.getSize());
+            	int filaSeleccionada = tabla.getSelectedRow();
+            	 if (filaSeleccionada >= 0) {
+            		 
+            		 int n = JOptionPane.showConfirmDialog(
+         		            null,
+         		            "Estas seguro que quieres eliminar este registro?",
+         		            "Eliminar registro",
+         		            JOptionPane.YES_NO_OPTION);
+
+         		        if(n==0){
+         		        	((DefaultTableModel) tabla.getModel()).removeRow(row);
+         	                ModuloEstudianteModel mem = new ModuloEstudianteModel();
+         	                Estudiante eSeleccionado = listaEstudiantes.get(filaSeleccionada);
+         	                mem.delete(eSeleccionado.getId());
+         	                
+         	                JOptionPane.showMessageDialog(null, "Fila eliminada " + (row + 1));
+         	                fireEditingStopped();
+         	                System.out.println(borrar.getSize());
+         		        }
+         		        else if(n==1) {
+         		            
+         		        }
+	                
+            	 }
             });
 
             panel.add(editar);

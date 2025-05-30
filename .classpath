@@ -7,5 +7,11 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="src/libs/mysql-connector-j-9.2.0.jar"/>
+	<classpathentry kind="lib" path="src/libs/layout-9.2.0.jar"/>
+	<classpathentry kind="lib" path="src/libs/kernel-9.2.0.jar"/>
+	<classpathentry kind="lib" path="src/libs/commons-9.2.0.jar"/>
+	<classpathentry kind="lib" path="src/libs/io-9.2.0.jar"/>
+	<classpathentry kind="lib" path="src/libs/slf4j-simple-2.0.17.jar"/>
+	<classpathentry kind="lib" path="src/libs/slf4j-api-2.0.17.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -17,6 +17,15 @@ public class ModuloGrupoController {
 	public void datos() {
 		mgv.detalles();
 	}
+	public void addDocente() {
+		//mgv.addDocente();
+	}
+	public void AddEstudiante() {
+		mgv.addAlumno();
+	}
+	public void addAsignatura() {
+		mgv.detalles();
+	}
 
 
 }

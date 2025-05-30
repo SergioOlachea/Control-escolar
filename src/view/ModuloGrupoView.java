@@ -66,7 +66,6 @@ import view.ModuloDocenteView.PanelBotonesEditor;
 import view.ModuloDocenteView.PanelBotonesRenderer;
 
 public class ModuloGrupoView {
-	ModuloGrupoController mgc = new ModuloGrupoController();
 	ModuloEstudianteModel mem =new ModuloEstudianteModel();
 	ArrayList<Estudiante> estudiantes =mem.getEstudiantes();
 	
@@ -1326,6 +1325,8 @@ public class ModuloGrupoView {
     	btnCancelar.setPreferredSize(new Dimension(80, 30));
     	btnCancelar.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
     	btnCancelar.addActionListener(e -> {
+    		ModuloGrupoController mgc = new ModuloGrupoController();
+
     		mgc.crear();
     	    modulo.dispose();
     	});

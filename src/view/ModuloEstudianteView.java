@@ -2202,6 +2202,29 @@ public class ModuloEstudianteView {
         	mec.ModuloEstudiante();
         });
         btnCrear.addActionListener(e->{
+        	JFileChooser fileChooser = new JFileChooser();
+        	fileChooser.setDialogTitle("Guardar PDF");
+
+        	// Establecer filtro para solo permitir archivos PDF
+        	FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
+        	fileChooser.setFileFilter(filter);
+
+        	// Mostrar cuadro de diálogo de guardar
+        	int userSelection = fileChooser.showSaveDialog(null);
+
+        	if (userSelection == JFileChooser.APPROVE_OPTION) {
+        	    File fileToSave = fileChooser.getSelectedFile();
+
+        	    // Asegurarse de que el archivo tenga extensión .pdf
+        	    String ruta = fileToSave.getAbsolutePath();
+        	    if (!ruta.toLowerCase().endsWith(".pdf")) {
+        	        ruta += ".pdf";
+        	    }
+
+        	    System.out.println(ruta);
+        	    // Aquí llamas tu método pasando la ruta y el estudiante
+        	    mem.descargarInformacion(ruta, estudiante);
+        	}
         	
         });
         panelBotones.add(btnCancelar);

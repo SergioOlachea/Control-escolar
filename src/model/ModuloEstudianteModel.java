@@ -76,7 +76,7 @@ public class ModuloEstudianteModel {
 				Estudiante estudiante = new Estudiante(id, numeroControl, nombres, apellidos,
 						fechaNacimiento, genero, grado, 
 						domicilio, correo, telefono,curp, foto, grupos);
-				System.out.println(estudiante);
+				//System.out.println(estudiante);
 				estudiantes.add(estudiante);
 			}
 		} catch (Exception e) {

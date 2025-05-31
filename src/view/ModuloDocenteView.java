@@ -1754,7 +1754,7 @@ public class ModuloDocenteView {
 			}
 	    }
 	    
-	 public void datos() {
+	 public void datos(/*Docente docente*/) {
 	    	Color borde = new Color(206, 207, 202);
 	    	Color azul2 = new Color(52, 134, 199);
 	    	Color azul1 = new Color(54, 146, 218);

@@ -3,6 +3,7 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -11,6 +12,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -27,10 +29,12 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -45,6 +49,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -67,8 +72,14 @@ import view.ModuloDocenteView.PanelBotonesRenderer;
 
 public class ModuloGrupoView {
 	ModuloEstudianteModel mem =new ModuloEstudianteModel();
-	ArrayList<Estudiante> estudiantes =mem.getEstudiantes();
+	ArrayList<Estudiante> listaEstudiantes =mem.getEstudiantes();
 	
+	
+	private ArrayList<Estudiante> estudiantesAñadidos;
+	
+	//private Docente docenteGrupo;
+	
+	ImageIcon buscar = new ImageIcon("/imagenes/buscar.png");
 	ModuloDocenteModel mdm= new ModuloDocenteModel();
 	ModuloAsignaturaModel mam = new ModuloAsignaturaModel();
 	Color borde = new Color(206, 207, 202);
@@ -735,21 +746,38 @@ public class ModuloGrupoView {
         btnBuscarAsignatura.setBorder(BorderFactory.createLineBorder(azulBorde,5));
         btnBuscarAsignatura.setFont(new Font("Arial", Font.PLAIN, 10));
         
-        JList<String> listaAlumnos = new JList<>();
-        DefaultListModel<String> modelo = new DefaultListModel<>();
-        listaAlumnos.setModel(modelo);
+        inicializarListaEstudiantes();
         
-        for (Estudiante estudiante : estudiantes) {
-            String nombreCompleto = estudiante.getNombres() + " " + estudiante.getApellidos();
-            modelo.addElement(nombreCompleto);
+        DefaultListModel<Estudiante> modelo = new DefaultListModel<>();
+        
+        modelo.clear();
+        for(Estudiante e : estudiantesAñadidos) {
+        	modelo.addElement(e);
+        	System.out.println("estufiante"+e.getNombres());
+        
         }
-        listaAlumnos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        DefaultListCellRenderer renderer = new DefaultListCellRenderer();
-        renderer.setHorizontalAlignment(SwingConstants.CENTER);
-        listaAlumnos.setCellRenderer(renderer);
-        listaAlumnos.setBorder(BorderFactory.createLineBorder(borde,4));
-        JScrollPane scrollLista = new JScrollPane(listaAlumnos);
-        scrollLista.setMaximumSize(new Dimension(300, 200));
+        JList<Estudiante> listaAñadidos = new JList<>(modelo);
+        listaAñadidos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        listaAñadidos.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, 
+                    int index, boolean isSelected, boolean cellHasFocus) {
+                
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                
+                if (value instanceof Estudiante) {
+                    Estudiante estudiante = (Estudiante) value;
+                    setText(estudiante.getNombres());
+                }
+                
+                setHorizontalAlignment(SwingConstants.CENTER);
+                return this;
+            }
+        });
+
+        listaAñadidos.setBorder(BorderFactory.createLineBorder(borde,4));
+        JScrollPane scrollLista = new JScrollPane(listaAñadidos);
         
         JButton btnAnadir = new JButton("⊕ Añadir");
         btnAnadir.setBackground(azul2);
@@ -877,20 +905,26 @@ public class ModuloGrupoView {
         panelInferior.add(btnCrear);
         contenido.add(panelInferior, BorderLayout.SOUTH);
         
-        btnBuscarDocente.addActionListener(e -> {
-            JOptionPane.showMessageDialog(modulo, "Función de búsqueda de docente");
+        btnBuscarDocente.addActionListener(e->{
+        	ModuloGrupoController mgc = new ModuloGrupoController();
+        	mgc.addDocente();
+        	modulo.dispose();
         });
         
         btnBuscarAsignatura.addActionListener(e -> {
-            JOptionPane.showMessageDialog(modulo, "Función de búsqueda de asignatura");
+        	ModuloGrupoController mgc = new ModuloGrupoController();
+        	mgc.addAsignatura();
+        	modulo.dispose();
         });
         
         btnAnadir.addActionListener(e -> {
-            JOptionPane.showMessageDialog(modulo, "Función para añadir alumno a la lista");
+            ModuloGrupoController mgc = new ModuloGrupoController();
+            modulo.dispose();
+            mgc.AddEstudiante();
         });
         
         btnEliminar.addActionListener(e -> {
-            if (listaAlumnos.getSelectedIndex() != -1) {
+            if (listaAñadidos.getSelectedIndex() != -1) {
                 JOptionPane.showMessageDialog(modulo, "Función para eliminar alumno seleccionado");
             } else {
                 JOptionPane.showMessageDialog(modulo, "Seleccione un alumno para eliminar");
@@ -912,6 +946,10 @@ public class ModuloGrupoView {
         btnCrear.addActionListener(e -> {
            JOptionPane.showMessageDialog(modulo, "Función para crear grupo");
         });
+        
+
+        contenido.revalidate();
+        contenido.repaint();
 	}
    
 	public void modificar() {
@@ -1116,351 +1154,7 @@ public class ModuloGrupoView {
     	contenido.add(temporal);
     }
 	
-	public void addAlumno() {
-		JFrame modulo = new JFrame();
-    	modulo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	modulo.setBounds(100, 100, 982, 647);
-    	JPanel contentPane = new JPanel();
-    	modulo.setLocationRelativeTo(null);
-    	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-    	modulo.setVisible(true);
-    	modulo.setContentPane(contentPane);
-    	contentPane.setLayout(new BorderLayout(0, 0));
-
-    	JPanel header = new JPanel();
-    	contentPane.add(header, BorderLayout.NORTH);
-    	header.setBackground(azul2);
-    	header.setPreferredSize(new Dimension(2147483647, 90));
-    	header.setLayout(new BoxLayout(header, BoxLayout.LINE_AXIS));
-    	header.setMaximumSize(new Dimension(2147483647, 40));
-
-    	header.add(Box.createRigidArea(new Dimension(10, 0)));
-    	ImageIcon logo = new ImageIcon(this.getClass().getResource("/imagenes/uabcs (1).png"));
-
-    	JLabel logoUabcs = new JLabel(logo);
-    	logoUabcs.setBackground(azul2);
-    	logoUabcs.setBorder(null);
-    	logoUabcs.setPreferredSize(new Dimension(100, 100));
-    	logoUabcs.setMaximumSize(new Dimension(60, 100));
-    	header.add(logoUabcs);
-
-    	header.add(Box.createRigidArea(new Dimension(50, 0)));
-
-    	JLabel lblInicio = new JLabel("Modulo grupo");
-    	lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
-    	lblInicio.setBorder(null);
-    	lblInicio.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
-    	lblInicio.setForeground(Color.white);
-    	lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
-    	lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
-    	lblInicio.setBackground(azul2);
-    	header.add(lblInicio);
-
-    	ImageIcon iconCerrarSesion = new ImageIcon(this.getClass().getResource("/imagenes/cerrarsesion (1).png"));
-
-    	JButton btnCerrarSesion = new JButton(iconCerrarSesion);
-    	btnCerrarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
-    	btnCerrarSesion.setBackground(azul2);
-    	btnCerrarSesion.setBorder(null);
-    	btnCerrarSesion.setPreferredSize(new Dimension(120, 120));
-    	btnCerrarSesion.addActionListener(e -> {
-    	    int n = JOptionPane.showConfirmDialog(
-    	            null,
-    	            "Estas seguro que quieres cerrar sesión?",
-    	            "Cerrar sesión",
-    	            JOptionPane.YES_NO_OPTION);
-
-    	    if (n == 0) {
-    	        Controller c = new Controller();
-    	        modulo.dispose();
-    	        c.despliegue();
-    	    } else if (n == 1) {
-    	        JOptionPane.showMessageDialog(null, "GOODBYE");
-    	    }
-    	});
-    	header.add(btnCerrarSesion);
-
-    	header.add(Box.createRigidArea(new Dimension(10, 0)));
-
-    	JPanel options = new JPanel();
-    	contentPane.add(options, BorderLayout.WEST);
-    	options.setPreferredSize(new Dimension(120, 2147483647));
-    	options.setMaximumSize(new Dimension(120, 2147483647));
-    	options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
-
-    	JPanel moduloAlumnos = new JPanel();
-    	moduloAlumnos.setAlignmentX(Component.RIGHT_ALIGNMENT);
-    	moduloAlumnos.setPreferredSize(new Dimension(130, 120));
-    	moduloAlumnos.setMaximumSize(new Dimension(130, 130));
-    	moduloAlumnos.setBackground(azul2);
-
-    	ImageIcon iconAlumnos = new ImageIcon(this.getClass().getResource("/imagenes/alumnos (1).png"));
-    	moduloAlumnos.setLayout(new BoxLayout(moduloAlumnos, BoxLayout.Y_AXIS));
-
-    	JButton btnAlumnos = new JButton(iconAlumnos);
-    	btnAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
-    	btnAlumnos.setBackground(azul2);
-    	btnAlumnos.setBorder(null);
-    	btnAlumnos.addActionListener(e -> {
-    	    ModuloEstudianteController mac = new ModuloEstudianteController();
-    	    modulo.dispose();
-    	    mac.ModuloEstudiante();
-    	});
-
-    	moduloAlumnos.add(btnAlumnos);
-
-    	JLabel lblAlumnos = new JLabel("<html><div style='text-align: center;'>Modulo de<br>alumnos");
-    	lblAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
-    	lblAlumnos.setForeground(new Color(255, 255, 255));
-    	lblAlumnos.setBackground(azul2);
-    	lblAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
-    	lblAlumnos.setMaximumSize(new Dimension(80, 70));
-    	moduloAlumnos.add(lblAlumnos);
-    	options.add(moduloAlumnos);
-
-    	JPanel moduloMaestros = new JPanel();
-    	moduloMaestros.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-    	moduloMaestros.setAlignmentX(Component.RIGHT_ALIGNMENT);
-    	moduloMaestros.setPreferredSize(new Dimension(130, 140));
-    	moduloMaestros.setMaximumSize(new Dimension(130, 130));
-    	moduloMaestros.setBackground(azul2);
-
-    	ImageIcon iconDocentnes = new ImageIcon(this.getClass().getResource("/imagenes/docentes (1).png"));
-    	moduloMaestros.setLayout(new BoxLayout(moduloMaestros, BoxLayout.Y_AXIS));
-
-    	JButton btnMaestros = new JButton(iconDocentnes);
-    	btnMaestros.setBorder(null);
-    	btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
-    	btnMaestros.setBackground(azul2);
-    	btnMaestros.addActionListener(e -> {
-    	    ModuloDocenteController mdc = new ModuloDocenteController();
-    	    modulo.dispose();
-    	    mdc.moduloDocente();
-    	});
-    	moduloMaestros.add(btnMaestros);
-
-    	JLabel lblMaestros = new JLabel("<html><div style='text-align: center;'>Modulo de<br>maestros");
-    	lblMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
-    	lblMaestros.setForeground(new Color(255, 255, 255));
-    	lblMaestros.setBackground(azul2);
-    	lblMaestros.setHorizontalAlignment(SwingConstants.CENTER);
-    	lblMaestros.setMaximumSize(new Dimension(80, 70));
-    	moduloMaestros.add(lblMaestros);
-    	options.add(moduloMaestros);
-
-    	JPanel moduloGrupo = new JPanel();
-    	moduloGrupo.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-    	moduloGrupo.setAlignmentX(Component.RIGHT_ALIGNMENT);
-    	moduloGrupo.setPreferredSize(new Dimension(130, 120));
-    	moduloGrupo.setMaximumSize(new Dimension(130, 130));
-    	moduloGrupo.setBackground(azulBorde);
-
-    	ImageIcon iconGrupo = new ImageIcon(this.getClass().getResource("/imagenes/grupos (1).png"));
-    	moduloGrupo.setLayout(new BoxLayout(moduloGrupo, BoxLayout.Y_AXIS));
-
-    	JButton btnGrupos = new JButton(iconGrupo);
-    	btnGrupos.setBorder(null);
-    	btnGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
-    	btnGrupos.setBackground(azulBorde);
-    	btnGrupos.addActionListener(e -> {
-    	    ModuloGrupoController mgc = new ModuloGrupoController();
-    	    modulo.dispose();
-    	    mgc.moduloGrupo();
-    	});
-    	moduloGrupo.add(btnGrupos);
-
-    	JLabel lblGrupos = new JLabel("<html><div style='text-align: center;'>Modulo de<br>grupos");
-    	lblGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
-    	lblGrupos.setForeground(new Color(255, 255, 255));
-    	lblGrupos.setBackground(azul2);
-    	lblGrupos.setHorizontalAlignment(SwingConstants.CENTER);
-    	lblGrupos.setMaximumSize(new Dimension(80, 70));
-    	moduloGrupo.add(lblGrupos);
-    	options.add(moduloGrupo);
-
-    	JPanel moduloAsignatura = new JPanel();
-    	moduloAsignatura.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-    	moduloAsignatura.setAlignmentX(Component.RIGHT_ALIGNMENT);
-    	moduloAsignatura.setPreferredSize(new Dimension(150, 150));
-    	moduloAsignatura.setMaximumSize(new Dimension(150, 150));
-    	moduloAsignatura.setBackground(azul2);
-
-    	ImageIcon iconAsignatura = new ImageIcon(this.getClass().getResource("/imagenes/asignaturas (1).png"));
-    	moduloAsignatura.setLayout(new BoxLayout(moduloAsignatura, BoxLayout.Y_AXIS));
-
-    	JButton btnAsignatura = new JButton(iconAsignatura);
-    	btnAsignatura.setBorder(null);
-    	btnAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
-    	btnAsignatura.setBackground(azul2);
-    	btnAsignatura.addActionListener(e -> {
-    	    ModuloAsignaturaController mac = new ModuloAsignaturaController();
-    	    modulo.dispose();
-    	    mac.moduloAsignatura();
-    	});
-    	moduloAsignatura.add(btnAsignatura);
-
-    	JLabel lblAsignatura = new JLabel("<html><div style='text-align: center;'>Modulo de<br>asignaturas");
-    	lblAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
-    	lblAsignatura.setForeground(new Color(255, 255, 255));
-    	lblAsignatura.setBackground(azul2);
-    	lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
-    	lblAsignatura.setMaximumSize(new Dimension(80, 70));
-    	moduloAsignatura.add(lblAsignatura);
-    	options.add(moduloAsignatura);
-    	
-    	// Reemplazar el contenido del panel "contenido" con esta interfaz
-    	JPanel contenido = new JPanel();
-    	contentPane.add(contenido, BorderLayout.CENTER);
-    	contenido.setBackground(Color.white);
-    	contenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
-    	contenido.setLayout(new BorderLayout(0, 10));
-
-    	// Panel superior con título y botón cancelar
-    	JPanel panelSuperior = new JPanel(new BorderLayout());
-    	panelSuperior.setBackground(Color.white);
-
-    	JButton btnCancelar = new JButton("Cancelar");
-    	btnCancelar.setBackground(new Color(108, 117, 125));
-    	btnCancelar.setForeground(Color.white);
-    	btnCancelar.setPreferredSize(new Dimension(80, 30));
-    	btnCancelar.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-    	btnCancelar.addActionListener(e -> {
-    		ModuloGrupoController mgc = new ModuloGrupoController();
-
-    		mgc.crear();
-    	    modulo.dispose();
-    	});
-
-    	JLabel lblTitulo = new JLabel("Añadir un docente");
-    	lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
-    	lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-
-    	panelSuperior.add(btnCancelar, BorderLayout.WEST);
-    	panelSuperior.add(lblTitulo, BorderLayout.CENTER);
-
-    	contenido.add(panelSuperior, BorderLayout.NORTH);
-
-    	// Panel de búsqueda
-    	JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-    	panelBusqueda.setBackground(Color.white);
-
-    	JTextField txtBusqueda = new JTextField(20);
-    	txtBusqueda.setPreferredSize(new Dimension(200, 30));
-
-    	JButton btnBuscar = new JButton("🔍");
-    	btnBuscar.setBackground(new Color(52, 144, 220));
-    	btnBuscar.setForeground(Color.white);
-    	btnBuscar.setPreferredSize(new Dimension(40, 30));
-    	btnBuscar.setBorder(null);
-
-    	JButton btnActualizar = new JButton("🔄");
-    	btnActualizar.setBackground(new Color(52, 144, 220));
-    	btnActualizar.setForeground(Color.white);
-    	btnActualizar.setPreferredSize(new Dimension(40, 30));
-    	btnActualizar.setBorder(null);
-
-    	panelBusqueda.add(new JLabel("Buscar:"));
-    	panelBusqueda.add(txtBusqueda);
-    	panelBusqueda.add(btnBuscar);
-    	panelBusqueda.add(btnActualizar);
-
-    	contenido.add(panelBusqueda, BorderLayout.CENTER);
-
-    	JPanel panelTabla = new JPanel(new BorderLayout());
-    	panelTabla.setBackground(Color.white);
-
-    	String[] columnas = {"Identificador", "Nombre completo", "Detalles del docente", "Añadir docente"};
-    	Object[][] datos = {
-    	    {"001", "Marco Antonio Nuñez Muñoz", "Datos completos", "👁️"},
-    	    {"002", "Marco Antonio Nuñez Muñoz", "Datos completos", "👁️"},
-    	    {"003", "Marco Antonio Nuñez Muñoz", "Datos completos", "👁️"},
-    	    {"004", "Marco Antonio Nuñez Muñoz", "Datos completos", "👁️"},
-    	    {"005", "Marco Antonio Nuñez Muñoz", "Datos completos", "👁️"},
-    	    {"006", "Marco Antonio Nuñez Muñoz", "Datos completos", "👁️"},
-    	    {"007", "Marco Antonio Nuñez Muñoz", "Datos completos", "👁️"},
-    	    {"008", "Marco Antonio Nuñez Muñoz", "Datos completos", "👁️"},
-    	    {"009", "Marco Antonio Nuñez Muñoz", "Datos completos", "👁️"},
-    	    {"010", "Marco Antonio Nuñez Muñoz", "Datos completos", "👁️"}
-    	};
-
-    	JTable tabla = new JTable(datos, columnas) {
-    	    @Override
-    	    public boolean isCellEditable(int row, int column) {
-    	        return false;
-    	    }
-    	    
-    	    @Override
-    	    public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-    	        Component component = super.prepareRenderer(renderer, row, column);
-    	        
-    	        if (row % 2 == 0) {
-    	            component.setBackground(Color.white);
-    	        } else {
-    	            component.setBackground(new Color(248, 249, 250));
-    	        }
-    	        
-    	        if (column == 2) {
-    	            component.setForeground(new Color(52, 144, 220));
-    	        } else {
-    	            component.setForeground(Color.black);
-    	        }
-    	        
-    	        if (column == 3) {
-    	            component.setBackground(new Color(52, 144, 220));
-    	            component.setForeground(Color.white);
-    	        }
-    	        
-    	        return component;
-    	    }
-    	};
-
-    	tabla.setRowHeight(35);
-    	tabla.setFont(new Font("Arial", Font.PLAIN, 12));
-    	tabla.getTableHeader().setBackground(new Color(233, 236, 239));
-    	tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-    	tabla.setSelectionBackground(new Color(52, 144, 220));
-    	tabla.setSelectionForeground(Color.white);
-
-    	tabla.getColumnModel().getColumn(0).setPreferredWidth(100);
-    	tabla.getColumnModel().getColumn(1).setPreferredWidth(250);
-    	tabla.getColumnModel().getColumn(2).setPreferredWidth(150);
-    	tabla.getColumnModel().getColumn(3).setPreferredWidth(120);
-
-    	tabla.addMouseListener(new MouseAdapter() {
-    	    @Override
-    	    public void mouseClicked(MouseEvent e) {
-    	        int fila = tabla.rowAtPoint(e.getPoint());
-    	        int columna = tabla.columnAtPoint(e.getPoint());
-    	        
-    	        if (columna == 2) { 
-    	            JOptionPane.showMessageDialog(modulo, 
-    	                "Ver detalles del docente: " + tabla.getValueAt(fila, 1));
-    	        } else if (columna == 3) {
-    	            int respuesta = JOptionPane.showConfirmDialog(modulo,
-    	                "¿Desea añadir al docente " + tabla.getValueAt(fila, 1) + " al grupo?",
-    	                "Confirmar",
-    	                JOptionPane.YES_NO_OPTION);
-    	            
-    	            if (respuesta == JOptionPane.YES_OPTION) {
-    	                JOptionPane.showMessageDialog(modulo, 
-    	                    "Docente añadido correctamente al grupo");
-    	            }
-    	        }
-    	    }
-    	});
-
-    	JScrollPane scrollPane = new JScrollPane(tabla);
-    	scrollPane.setPreferredSize(new Dimension(700, 400));
-    	panelTabla.add(scrollPane, BorderLayout.CENTER);
-
-    	JPanel contenidoCentral = new JPanel(new BorderLayout(0, 10));
-    	contenidoCentral.setBackground(Color.white);
-    	contenidoCentral.add(panelBusqueda, BorderLayout.NORTH);
-    	contenidoCentral.add(panelTabla, BorderLayout.CENTER);
-
-    	contenido.add(contenidoCentral, BorderLayout.CENTER);
-
-	}
+	
     
     public void detalles() {
     	Color borde = new Color(206, 207, 202);
@@ -1668,8 +1362,1988 @@ public class ModuloGrupoView {
     	contenido.add(temporal);
     }
 
+    //metodos para agregar y mostrar estudiantes asignaturas y docentes
+    
+    public void addAlumno() {
+		JFrame modulo = new JFrame();
+    	modulo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	modulo.setBounds(100, 100, 982, 647);
+    	JPanel contentPane = new JPanel();
+    	modulo.setLocationRelativeTo(null);
+    	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+    	modulo.setVisible(true);
+    	modulo.setContentPane(contentPane);
+    	contentPane.setLayout(new BorderLayout(0, 0));
 
-	
+    	JPanel header = new JPanel();
+    	contentPane.add(header, BorderLayout.NORTH);
+    	header.setBackground(azul2);
+    	header.setPreferredSize(new Dimension(2147483647, 90));
+    	header.setLayout(new BoxLayout(header, BoxLayout.LINE_AXIS));
+    	header.setMaximumSize(new Dimension(2147483647, 40));
+
+    	header.add(Box.createRigidArea(new Dimension(10, 0)));
+    	ImageIcon logo = new ImageIcon(this.getClass().getResource("/imagenes/uabcs (1).png"));
+
+    	JLabel logoUabcs = new JLabel(logo);
+    	logoUabcs.setBackground(azul2);
+    	logoUabcs.setBorder(null);
+    	logoUabcs.setPreferredSize(new Dimension(100, 100));
+    	logoUabcs.setMaximumSize(new Dimension(60, 100));
+    	header.add(logoUabcs);
+
+    	header.add(Box.createRigidArea(new Dimension(50, 0)));
+
+    	JLabel lblInicio = new JLabel("Modulo grupo");
+    	lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblInicio.setBorder(null);
+    	lblInicio.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
+    	lblInicio.setForeground(Color.white);
+    	lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
+    	lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblInicio.setBackground(azul2);
+    	header.add(lblInicio);
+
+    	ImageIcon iconCerrarSesion = new ImageIcon(this.getClass().getResource("/imagenes/cerrarsesion (1).png"));
+
+    	JButton btnCerrarSesion = new JButton(iconCerrarSesion);
+    	btnCerrarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnCerrarSesion.setBackground(azul2);
+    	btnCerrarSesion.setBorder(null);
+    	btnCerrarSesion.setPreferredSize(new Dimension(120, 120));
+    	btnCerrarSesion.addActionListener(e -> {
+    	    int n = JOptionPane.showConfirmDialog(
+    	            null,
+    	            "Estas seguro que quieres cerrar sesión?",
+    	            "Cerrar sesión",
+    	            JOptionPane.YES_NO_OPTION);
+
+    	    if (n == 0) {
+    	        Controller c = new Controller();
+    	        modulo.dispose();
+    	        c.despliegue();
+    	    } else if (n == 1) {
+    	        JOptionPane.showMessageDialog(null, "GOODBYE");
+    	    }
+    	});
+    	header.add(btnCerrarSesion);
+
+    	header.add(Box.createRigidArea(new Dimension(10, 0)));
+
+    	JPanel options = new JPanel();
+    	contentPane.add(options, BorderLayout.WEST);
+    	options.setPreferredSize(new Dimension(120, 2147483647));
+    	options.setMaximumSize(new Dimension(120, 2147483647));
+    	options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
+
+    	JPanel moduloAlumnos = new JPanel();
+    	moduloAlumnos.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    	moduloAlumnos.setPreferredSize(new Dimension(130, 120));
+    	moduloAlumnos.setMaximumSize(new Dimension(130, 130));
+    	moduloAlumnos.setBackground(azul2);
+
+    	ImageIcon iconAlumnos = new ImageIcon(this.getClass().getResource("/imagenes/alumnos (1).png"));
+    	moduloAlumnos.setLayout(new BoxLayout(moduloAlumnos, BoxLayout.Y_AXIS));
+
+    	JButton btnAlumnos = new JButton(iconAlumnos);
+    	btnAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnAlumnos.setBackground(azul2);
+    	btnAlumnos.setBorder(null);
+    	btnAlumnos.addActionListener(e -> {
+    	    ModuloEstudianteController mac = new ModuloEstudianteController();
+    	    modulo.dispose();
+    	    mac.ModuloEstudiante();
+    	});
+
+    	moduloAlumnos.add(btnAlumnos);
+
+    	JLabel lblAlumnos = new JLabel("<html><div style='text-align: center;'>Modulo de<br>alumnos");
+    	lblAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblAlumnos.setForeground(new Color(255, 255, 255));
+    	lblAlumnos.setBackground(azul2);
+    	lblAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblAlumnos.setMaximumSize(new Dimension(80, 70));
+    	moduloAlumnos.add(lblAlumnos);
+    	options.add(moduloAlumnos);
+
+    	JPanel moduloMaestros = new JPanel();
+    	moduloMaestros.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+    	moduloMaestros.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    	moduloMaestros.setPreferredSize(new Dimension(130, 140));
+    	moduloMaestros.setMaximumSize(new Dimension(130, 130));
+    	moduloMaestros.setBackground(azul2);
+
+    	ImageIcon iconDocentnes = new ImageIcon(this.getClass().getResource("/imagenes/docentes (1).png"));
+    	moduloMaestros.setLayout(new BoxLayout(moduloMaestros, BoxLayout.Y_AXIS));
+
+    	JButton btnMaestros = new JButton(iconDocentnes);
+    	btnMaestros.setBorder(null);
+    	btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnMaestros.setBackground(azul2);
+    	btnMaestros.addActionListener(e -> {
+    	    ModuloDocenteController mdc = new ModuloDocenteController();
+    	    modulo.dispose();
+    	    mdc.moduloDocente();
+    	});
+    	moduloMaestros.add(btnMaestros);
+
+    	JLabel lblMaestros = new JLabel("<html><div style='text-align: center;'>Modulo de<br>maestros");
+    	lblMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblMaestros.setForeground(new Color(255, 255, 255));
+    	lblMaestros.setBackground(azul2);
+    	lblMaestros.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblMaestros.setMaximumSize(new Dimension(80, 70));
+    	moduloMaestros.add(lblMaestros);
+    	options.add(moduloMaestros);
+
+    	JPanel moduloGrupo = new JPanel();
+    	moduloGrupo.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+    	moduloGrupo.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    	moduloGrupo.setPreferredSize(new Dimension(130, 120));
+    	moduloGrupo.setMaximumSize(new Dimension(130, 130));
+    	moduloGrupo.setBackground(azulBorde);
+
+    	ImageIcon iconGrupo = new ImageIcon(this.getClass().getResource("/imagenes/grupos (1).png"));
+    	moduloGrupo.setLayout(new BoxLayout(moduloGrupo, BoxLayout.Y_AXIS));
+
+    	JButton btnGrupos = new JButton(iconGrupo);
+    	btnGrupos.setBorder(null);
+    	btnGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnGrupos.setBackground(azulBorde);
+    	btnGrupos.addActionListener(e -> {
+    	    ModuloGrupoController mgc = new ModuloGrupoController();
+    	    modulo.dispose();
+    	    mgc.moduloGrupo();
+    	});
+    	moduloGrupo.add(btnGrupos);
+
+    	JLabel lblGrupos = new JLabel("<html><div style='text-align: center;'>Modulo de<br>grupos");
+    	lblGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblGrupos.setForeground(new Color(255, 255, 255));
+    	lblGrupos.setBackground(azul2);
+    	lblGrupos.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblGrupos.setMaximumSize(new Dimension(80, 70));
+    	moduloGrupo.add(lblGrupos);
+    	options.add(moduloGrupo);
+
+    	JPanel moduloAsignatura = new JPanel();
+    	moduloAsignatura.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+    	moduloAsignatura.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    	moduloAsignatura.setPreferredSize(new Dimension(150, 150));
+    	moduloAsignatura.setMaximumSize(new Dimension(150, 150));
+    	moduloAsignatura.setBackground(azul2);
+
+    	ImageIcon iconAsignatura = new ImageIcon(this.getClass().getResource("/imagenes/asignaturas (1).png"));
+    	moduloAsignatura.setLayout(new BoxLayout(moduloAsignatura, BoxLayout.Y_AXIS));
+
+    	JButton btnAsignatura = new JButton(iconAsignatura);
+    	btnAsignatura.setBorder(null);
+    	btnAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnAsignatura.setBackground(azul2);
+    	btnAsignatura.addActionListener(e -> {
+    	    ModuloAsignaturaController mac = new ModuloAsignaturaController();
+    	    modulo.dispose();
+    	    mac.moduloAsignatura();
+    	});
+    	moduloAsignatura.add(btnAsignatura);
+
+    	JLabel lblAsignatura = new JLabel("<html><div style='text-align: center;'>Modulo de<br>asignaturas");
+    	lblAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblAsignatura.setForeground(new Color(255, 255, 255));
+    	lblAsignatura.setBackground(azul2);
+    	lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblAsignatura.setMaximumSize(new Dimension(80, 70));
+    	moduloAsignatura.add(lblAsignatura);
+    	options.add(moduloAsignatura);
+    	
+    	JPanel contenido = new JPanel();
+    	contentPane.add(contenido, BorderLayout.CENTER);
+    	contenido.setBackground(Color.white);
+    	contenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
+    	contenido.setLayout(new BorderLayout(0, 10));
+
+    	JPanel panelSuperior = new JPanel(new BorderLayout());
+    	panelSuperior.setBackground(Color.white);
+
+    	JButton btnCancelar = new JButton("Cancelar");
+    	btnCancelar.setBackground(new Color(108, 117, 125));
+    	btnCancelar.setForeground(Color.white);
+    	btnCancelar.setPreferredSize(new Dimension(80, 30));
+    	btnCancelar.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+    	btnCancelar.addActionListener(e -> {
+    		ModuloGrupoController mgc = new ModuloGrupoController();
+
+    		mgc.crear();
+    	    modulo.dispose();
+    	});
+
+    	JLabel lblTitulo = new JLabel("Añadir un estudiante");
+    	lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
+    	lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+    	panelSuperior.add(btnCancelar, BorderLayout.WEST);
+    	panelSuperior.add(lblTitulo, BorderLayout.CENTER);
+
+    	contenido.add(panelSuperior, BorderLayout.NORTH);
+
+    	// Panel de búsqueda
+    	JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+    	panelBusqueda.setBackground(Color.white);
+
+    	JTextField txtBusqueda = new JTextField(20);
+    	txtBusqueda.setPreferredSize(new Dimension(200, 30));
+
+    	ImageIcon buscar = new ImageIcon(getClass().getResource("/imagenes/busqueda.png"));
+    	JButton btnBuscar = new JButton(buscar);
+    	btnBuscar.setBackground(new Color(52, 144, 220));
+    	btnBuscar.setForeground(Color.white);
+    	btnBuscar.setPreferredSize(new Dimension(40, 30));
+    	btnBuscar.setBorder(null);
+
+    	JButton btnActualizar = new JButton("🔄");
+    	btnActualizar.setBackground(new Color(52, 144, 220));
+    	btnActualizar.setForeground(Color.white);
+    	btnActualizar.setPreferredSize(new Dimension(40, 30));
+    	btnActualizar.setBorder(null);
+
+    	panelBusqueda.add(new JLabel("Buscar:"));
+    	panelBusqueda.add(txtBusqueda);
+    	panelBusqueda.add(btnBuscar);
+    	panelBusqueda.add(btnActualizar);
+
+    	contenido.add(panelBusqueda, BorderLayout.CENTER);
+
+    	JPanel panelTabla = new JPanel(new BorderLayout());
+    	panelTabla.setBackground(Color.white);
+
+    	String[] columnas = {"Identificador", "Nombre completo", "Detalles", "Añadir"};
+    	Object[][] datos = new Object[listaEstudiantes.size()][4];
+
+    	// Carga el ícono (debe existir en esa ruta)
+    	ImageIcon iconoOjo = new ImageIcon("/imagenes/añadir.png");
+
+    	for (int i = 0; i < listaEstudiantes.size(); i++) {
+    	    Estudiante est = listaEstudiantes.get(i);
+    	    datos[i][0] = est.getNumeroControl();
+    	    datos[i][1] = est.getNombres() + " " + est.getApellidos();
+    	    datos[i][2] = "Datos completos";
+    	    datos[i][3] = iconoOjo;
+    	}
+
+    	// Crear tabla
+    	JTable tabla = new JTable(datos, columnas) {
+    	    @Override
+    	    public boolean isCellEditable(int row, int column) {
+    	        return false;
+    	    }
+
+    	    @Override
+    	    public Class<?> getColumnClass(int column) {
+    	        return column == 3 ? Icon.class : String.class;
+    	    }
+
+    	    @Override
+    	    public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+    	        Component comp = super.prepareRenderer(renderer, row, column);
+
+    	        if (row % 2 == 0) {
+    	            comp.setBackground(Color.white);
+    	        } else {
+    	            comp.setBackground(new Color(248, 249, 250));
+    	        }
+
+    	        if (column == 2) {
+    	            comp.setForeground(new Color(52, 144, 220));
+    	        } else {
+    	            comp.setForeground(Color.black);
+    	        }
+
+    	        return comp;
+    	    }
+    	};
+
+
+    	tabla.addMouseListener(new MouseAdapter() {
+    	    @Override
+    	    public void mouseClicked(MouseEvent e) {
+    	    	inicializarListaEstudiantes();
+    	        int fila = tabla.rowAtPoint(e.getPoint());
+    	        int columna = tabla.columnAtPoint(e.getPoint());
+    	        
+    	        if (columna == 2) { 
+    	            ModuloGrupoController mec = new ModuloGrupoController();
+                    if (fila >= 0) {
+                        Estudiante eSeleccionado = listaEstudiantes.get(fila);
+	    	            modulo.dispose(); 
+	    	            mec.datosGenerales(eSeleccionado);
+                    }
+    	        } else if (columna == 3) {
+    	        	Estudiante eSeleccionado = listaEstudiantes.get(fila);
+                    
+                        
+                    int respuesta = JOptionPane.showConfirmDialog(modulo,
+                        "¿Desea añadir al estudiante " + tabla.getValueAt(fila, 1) + " al grupo?",
+                        "Confirmar",
+                        JOptionPane.YES_NO_OPTION);
+                    
+                    if (respuesta == JOptionPane.YES_OPTION) {
+                        estudiantesAñadidos.add(eSeleccionado);
+                        
+                        JOptionPane.showMessageDialog(modulo, 
+                            "Estudiante añadido correctamente al grupo");
+                        
+                        modulo.dispose();
+                        crear();
+    	            }
+    	        }
+    	    }
+    	});
+
+    	JScrollPane scrollPane = new JScrollPane(tabla);
+    	scrollPane.setPreferredSize(new Dimension(700, 400));
+    	panelTabla.add(scrollPane, BorderLayout.CENTER);
+
+    	JPanel contenidoCentral = new JPanel(new BorderLayout(0, 10));
+    	contenidoCentral.setBackground(Color.white);
+    	contenidoCentral.add(panelBusqueda, BorderLayout.NORTH);
+    	contenidoCentral.add(panelTabla, BorderLayout.CENTER);
+
+    	contenido.add(contenidoCentral, BorderLayout.CENTER);
+
+	}
+    
+    public void datoEstudiante(Estudiante estudiante) {
+    	JFrame modulo= new JFrame();
+		modulo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		modulo.setBounds(100, 100, 982, 647);
+		JPanel contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		modulo.setLocationRelativeTo(null);
+		modulo.setVisible(true);
+
+		modulo.setContentPane(contentPane);
+		contentPane.setLayout(new BorderLayout(0, 0));
+		
+		JPanel header = new JPanel();
+		contentPane.add(header, BorderLayout.NORTH);
+		header.setBackground(azul2);
+		header.setPreferredSize(new Dimension(2147483647, 90));
+		header.setLayout(new BoxLayout(header, BoxLayout.LINE_AXIS));
+		header.setMaximumSize(new Dimension(2147483647, 40));
+		
+		header.add(Box.createRigidArea(new Dimension(10,0)));
+		ImageIcon logo = new ImageIcon(this.getClass().getResource("/imagenes/uabcs (1).png"));
+		
+		JLabel logoUabcs = new JLabel(logo);
+		logoUabcs.setBackground(azul2);
+		logoUabcs.setBorder(null);
+		logoUabcs.setPreferredSize(new Dimension(100, 100));
+		logoUabcs.setMaximumSize(new Dimension(60, 100));
+		header.add(logoUabcs);
+		
+		header.add(Box.createRigidArea(new Dimension(50,0)));
+		
+		JLabel lblInicio = new JLabel("Modulo alumnos");
+		lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblInicio.setBorder(null);
+		lblInicio.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
+		lblInicio.setForeground(Color.white);
+		lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE,80));
+		lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
+		lblInicio.setBackground(azul2);
+		header.add(lblInicio);
+		
+		ImageIcon iconCerrarSesion = new ImageIcon(this.getClass().getResource("/imagenes/cerrarsesion (1).png"));
+		
+		JButton btnCerrarSesion = new JButton(iconCerrarSesion);
+		btnCerrarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnCerrarSesion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnCerrarSesion.setBackground(azul2);
+		btnCerrarSesion.setBorder(null);
+		btnCerrarSesion.setPreferredSize(new Dimension(120,120));
+		btnCerrarSesion.addActionListener(e->{
+			int n = JOptionPane.showConfirmDialog(
+		            null,
+		            "Estas seguro que quieres cerrar sesión?",
+		            "Cerrar sesión",
+		            JOptionPane.YES_NO_OPTION);
+
+		        if(n==0){
+		            modulo.dispose();
+		            Controller c = new Controller();
+		            c.despliegue();
+		            JOptionPane.showMessageDialog(null,"Sesión cerrada correctamente");
+		        }
+		        else if(n==1) {
+		            
+		        }
+		});
+		header.add(btnCerrarSesion);
+		
+		header.add(Box.createRigidArea(new Dimension(10,0)));
+		
+		JPanel options = new JPanel();
+		modulo.add(options, BorderLayout.WEST);
+		options.setPreferredSize(new Dimension(120, 120));
+		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
+		
+		JPanel moduloAlumnos = new JPanel ();
+		moduloAlumnos.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		moduloAlumnos.setPreferredSize(new Dimension(130, 120));
+		moduloAlumnos.setMaximumSize(new Dimension(130, 130));
+		moduloAlumnos.setBackground(azulBorde);
+		
+		ImageIcon iconAlumnos = new ImageIcon (this.getClass().getResource("/imagenes/alumnos (1).png"));
+		moduloAlumnos.setLayout(new BoxLayout(moduloAlumnos, BoxLayout.Y_AXIS));
+		
+		JButton btnAlumnos = new JButton(iconAlumnos);
+		btnAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnAlumnos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnAlumnos.setBackground(azulBorde);
+		btnAlumnos.setBorder(null);
+		btnAlumnos.addActionListener(e->{
+			ModuloEstudianteController mac = new ModuloEstudianteController();
+			modulo.dispose();
+			mac.ModuloEstudiante();
+		});
+		
+		moduloAlumnos.add(btnAlumnos);
+		
+		JLabel lblAlumnos = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>alumnos");
+		lblAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblAlumnos.setForeground(new Color(255, 255, 255));
+		lblAlumnos.setBackground(azul2);
+		lblAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAlumnos.setMaximumSize(new Dimension(80, 70));
+		lblAlumnos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
+		moduloAlumnos.add(lblAlumnos);
+		options.add(moduloAlumnos);
+		
+		
+		
+		JPanel moduloMaestros = new JPanel ();
+		moduloMaestros.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		moduloMaestros.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		moduloMaestros.setPreferredSize(new Dimension(130, 140));
+		moduloMaestros.setMaximumSize(new Dimension(130, 130));
+		moduloMaestros.setBackground(azul2);
+		
+		ImageIcon iconDocentnes = new ImageIcon (this.getClass().getResource("/imagenes/docentes (1).png"));
+		moduloMaestros.setLayout(new BoxLayout(moduloMaestros, BoxLayout.Y_AXIS));
+		
+		JButton btnMaestros = new JButton(iconDocentnes);
+		btnMaestros.setBorder(null);
+		btnMaestros.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnMaestros.setBackground(azul2);
+		btnMaestros.addActionListener(e->{
+			ModuloDocenteController mdc= new ModuloDocenteController();
+			modulo.dispose();
+			mdc.moduloDocente();
+		});
+		moduloMaestros.add(btnMaestros);
+		
+		JLabel lblMaestros = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>docentes");
+		lblMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblMaestros.setForeground(new Color(255, 255, 255));
+		lblMaestros.setBackground(azul2);
+		lblMaestros.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMaestros.setMaximumSize(new Dimension(80, 70));
+		lblMaestros.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
+		moduloMaestros.add(lblMaestros);
+		options.add(moduloMaestros);
+		
+		JPanel moduloGrupo = new JPanel ();
+		moduloGrupo.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		moduloGrupo.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		moduloGrupo.setPreferredSize(new Dimension(130, 120));
+		moduloGrupo.setMaximumSize(new Dimension(130, 130));
+		moduloGrupo.setBackground(azul2);
+		
+		ImageIcon iconGrupo = new ImageIcon (this.getClass().getResource("/imagenes/grupos (1).png"));
+		moduloGrupo.setLayout(new BoxLayout(moduloGrupo, BoxLayout.Y_AXIS));
+		
+		JButton btnGrupos = new JButton(iconGrupo);
+		btnGrupos.setBorder(null);
+		btnGrupos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnGrupos.setBackground(azul2);
+		btnGrupos.addActionListener(e->{
+			ModuloGrupoController mgc= new ModuloGrupoController();
+			modulo.dispose();
+			mgc.moduloGrupo();
+		});		moduloGrupo.add(btnGrupos);
+		
+		JLabel lblGrupos = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>grupos");
+		lblGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblGrupos.setForeground(new Color(255, 255, 255));
+		lblGrupos.setBackground(azul2);
+		lblGrupos.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGrupos.setMaximumSize(new Dimension(80, 70));
+		lblGrupos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
+		moduloGrupo.add(lblGrupos);
+		options.add(moduloGrupo);
+		
+		JPanel moduloAsignatura = new JPanel ();
+		moduloAsignatura.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		moduloAsignatura.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		moduloAsignatura.setPreferredSize(new Dimension(150, 150));
+		moduloAsignatura.setMaximumSize(new Dimension(150, 150));
+		moduloAsignatura.setBackground(azul2);
+		
+		ImageIcon iconAsignatura = new ImageIcon (this.getClass().getResource("/imagenes/asignaturas (1).png"));
+		moduloAsignatura.setLayout(new BoxLayout(moduloAsignatura, BoxLayout.Y_AXIS));
+		
+		JButton btnAsignatura = new JButton(iconAsignatura);
+		btnAsignatura.setBorder(null);
+		btnAsignatura.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnAsignatura.setBackground(azul2);
+		btnAsignatura.addActionListener(e->{
+			ModuloAsignaturaController mac= new ModuloAsignaturaController();
+			modulo.dispose();
+			mac.moduloAsignatura();
+			
+		});
+		moduloAsignatura.add(btnAsignatura);
+		
+		JLabel lblAsignatura = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>asignaturas");
+		lblAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblAsignatura.setForeground(new Color(255, 255, 255));
+		lblAsignatura.setBackground(azul2);
+		lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAsignatura.setMaximumSize(new Dimension(80, 70));
+		lblAsignatura.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
+		moduloAsignatura.add(lblAsignatura);
+		options.add(moduloAsignatura);
+		
+		// Panel de contenido
+		JPanel contenido = new JPanel();
+		contentPane.add(contenido, BorderLayout.CENTER);
+		contenido.setBackground(Color.white);
+		contenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
+		System.out.println(contenido.getHeight());
+		contenido.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panelContenido = new JPanel();
+		panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
+		panelContenido.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+		panelContenido.setBackground(Color.white);
+		contentPane.add(panelContenido, BorderLayout.CENTER);
+
+		JLabel lblTitulo = new JLabel("Datos generales de alumno");
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
+        lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(lblTitulo);
+        panelContenido.add(Box.createVerticalStrut(20));
+
+        JPanel Formulario = new JPanel(new GridBagLayout());
+        Formulario.setBackground(Color.white);
+        Formulario.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        GridBagConstraints organizador = new GridBagConstraints();
+        organizador.insets = new Insets(8, 10, 8, 10);
+        organizador.anchor = GridBagConstraints.WEST;
+        organizador.fill = GridBagConstraints.HORIZONTAL;
+
+        JLabel lblNombres = new JLabel("Nombres");
+        JTextField txtNombres = new JTextField(15);
+        txtNombres.setBackground(Color.WHITE);
+        txtNombres.setBorder(null);
+        txtNombres.setEditable(false);
+
+        JLabel lblApellidos = new JLabel("Apellidos");
+        JTextField txtApellidos = new JTextField(15);
+        txtApellidos.setBackground(Color.WHITE);
+        txtApellidos.setBorder(null);
+        txtApellidos.setEditable(false);
+        
+        JLabel lblId = new JLabel("Identificador");
+        JTextField txtId = new JTextField();
+        txtId.setEditable(false);
+        txtId.setBackground(Color.WHITE);
+        txtId.setBorder(null);
+        
+        JLabel lblFecha = new JLabel("Fecha de nacimiento");
+        JTextField txtFecha = new JTextField();
+        txtFecha.setBackground(Color.WHITE);
+        txtFecha.setBorder(null);
+        txtFecha.setEditable(false);
+        
+        JLabel lblGenero = new JLabel("Género");
+        JTextField txtGenero= new JTextField();
+        txtGenero.setBackground(Color.WHITE);
+        txtGenero.setBorder(null);
+        txtGenero.setEditable(false);
+        
+        JLabel lblTelefono = new JLabel("Teléfono");
+        JTextField txtTelefono = new JTextField(15);
+        txtTelefono.setBackground(Color.WHITE);
+        txtTelefono.setBorder(null);
+        txtTelefono.setEditable(false);
+        
+        JLabel lblGrado = new JLabel("Grado");
+        JTextField txtGrado = new JTextField(15);
+        txtGrado.setBackground(Color.WHITE);
+        txtGrado.setBorder(null);
+        txtGrado.setEditable(false);
+        
+        JLabel lblDomicilio = new JLabel("Domicilio");
+        JTextField txtDomicilio = new JTextField(15);
+        txtDomicilio.setBackground(Color.WHITE);
+        txtDomicilio.setBorder(null);
+        txtDomicilio.setEditable(false);
+        
+        JLabel lblCorreo = new JLabel("Correo electrónico");
+        JTextField txtCorreo = new JTextField(15);
+        txtCorreo.setBackground(Color.WHITE);
+        txtCorreo.setBorder(null);
+        txtCorreo.setEditable(false);
+        
+        JLabel lblCurp = new JLabel("CURP");
+        JTextField txtCurp = new JTextField(15);
+        txtCurp.setBackground(Color.WHITE);
+        txtCurp.setBorder(null);
+        txtCurp.setEditable(false);
+        
+        JPanel panelFoto = new JPanel();
+        panelFoto.setLayout(new BoxLayout(panelFoto, BoxLayout.Y_AXIS));
+        panelFoto.setBorder(BorderFactory.createTitledBorder("Foto"));
+        panelFoto.setBackground(Color.white);
+
+        JLabel lblFoto = new JLabel(); 
+        lblFoto.setPreferredSize(new Dimension(100, 100));
+        lblFoto.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JButton btnCargar = new JButton("📷 Cargar");
+        btnCargar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnCargar.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        panelFoto.add(Box.createVerticalStrut(10));
+        panelFoto.add(lblFoto);
+        panelFoto.add(Box.createVerticalStrut(10));
+        panelFoto.add(btnCargar);
+
+        // Carga de datos
+        txtId.setText(String.valueOf(estudiante.getId()));
+        txtNombres.setText(estudiante.getNombres());
+        txtApellidos.setText(estudiante.getApellidos());
+        txtCorreo.setText(estudiante.getCorreo());
+        txtCurp.setText(estudiante.getCurp());
+        txtFecha.setText(String.valueOf(estudiante.getFechaNacimiento()));
+        txtGenero.setText(estudiante.getGenero());
+        txtTelefono.setText(estudiante.getTelefono());
+        txtGrado.setText(estudiante.getGrupo());
+        txtDomicilio.setText(estudiante.getDomicilio());
+       
+        if (estudiante.getFoto() != null) {
+            ImageIcon icon = new ImageIcon(estudiante.getFoto()); 
+            Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            lblFoto.setIcon(new ImageIcon(scaledImage));
+        }  
+        int fila = 0;
+
+        organizador.gridx = 0; 
+        organizador.gridy = fila;
+        Formulario.add(lblNombres, organizador);
+        
+        organizador.gridx = 1;
+        Formulario.add(txtNombres, organizador);
+        
+        organizador.gridx = 2;
+        Formulario.add(lblCorreo, organizador);
+        
+        organizador.gridx = 3;
+        Formulario.add(txtCorreo, organizador);
+        fila++;
+
+        organizador.gridx = 0; 
+        organizador.gridy = fila;
+        Formulario.add(lblApellidos, organizador);
+        
+        organizador.gridx = 1;
+        Formulario.add(txtApellidos, organizador);
+        
+        organizador.gridx = 2;
+        Formulario.add(lblCurp, organizador);
+        
+        organizador.gridx = 3;
+        Formulario.add(txtCurp, organizador);
+        fila++;
+
+        organizador.gridx = 0; 
+        organizador.gridy = fila;
+        Formulario.add(lblId, organizador);
+        
+        organizador.gridx = 1;
+        Formulario.add(txtId, organizador);
+        fila++;
+
+        organizador.gridx = 0; 
+        organizador.gridy = fila;
+        Formulario.add(lblFecha, organizador);
+        
+        organizador.gridx = 1;
+        Formulario.add(txtFecha, organizador);
+        fila++;
+
+        organizador.gridx = 0; 
+        organizador.gridy = fila;
+        Formulario.add(lblGenero, organizador);
+        
+        organizador.gridx = 1;
+        Formulario.add(txtGenero, organizador);
+        fila++;
+
+        organizador.gridx = 0; 
+        organizador.gridy = fila;
+        Formulario.add(lblTelefono, organizador);
+        
+        organizador.gridx = 1;
+        Formulario.add(txtTelefono, organizador);
+        fila++;
+
+        organizador.gridx = 0; 
+        organizador.gridy = fila;
+        Formulario.add(lblGrado, organizador);
+        
+        organizador.gridx = 1;
+        Formulario.add(txtGrado, organizador);
+        fila++;
+
+        organizador.gridx = 0; 
+        organizador.gridy = fila;
+        Formulario.add(lblDomicilio, organizador);
+        
+        organizador.gridx = 1;
+        Formulario.add(txtDomicilio, organizador);
+
+        organizador.gridx = 3;
+        organizador.gridy = 2;
+        organizador.gridheight = 6;
+        Formulario.add(panelFoto, organizador);
+
+        panelContenido.add(Formulario);
+        panelContenido.add(Box.createVerticalStrut(20));
+
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton btnCancelar = new JButton("Regresar");
+        JButton btnCrear = new JButton("Descargar PDF");
+        btnCancelar.setBackground(azulC);
+        btnCancelar.setForeground(Color.white);
+        btnCancelar.setBorder(BorderFactory.createLineBorder(azul2,5));
+        btnCrear.setBackground(azul1);
+        btnCrear.setForeground(Color.white);
+        btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde,5));
+        btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnCrear.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnCancelar.addActionListener(e->{
+        	ModuloGrupoController mgc = new ModuloGrupoController();
+        	modulo.dispose();
+        	mgc.crear();
+        });
+        btnCrear.addActionListener(e->{
+        	JFileChooser fileChooser = new JFileChooser();
+        	fileChooser.setDialogTitle("Guardar PDF");
+
+        	FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
+        	fileChooser.setFileFilter(filter);
+
+        	int userSelection = fileChooser.showSaveDialog(null);
+
+        	if (userSelection == JFileChooser.APPROVE_OPTION) {
+        	    File fileToSave = fileChooser.getSelectedFile();
+
+        	    String ruta = fileToSave.getAbsolutePath();
+        	    if (!ruta.toLowerCase().endsWith(".pdf")) {
+        	        ruta += ".pdf";
+        	    }
+
+        	    System.out.println(ruta);
+        	    mem.descargarInformacion(ruta, estudiante);
+        	}
+        	
+        });
+        panelBotones.add(btnCancelar);
+        panelBotones.add(btnCrear);
+
+        panelContenido.add(panelBotones);
+
+		// fuentes 
+		System.out.println(getClass().getResource("/Fonts/Almarai-Light.ttf"));
+		final GraphicsEnvironment GE = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		final List<String> AVAILABLE_FONT_FAMILY_NAMES = Arrays.asList(GE.getAvailableFontFamilyNames());
+		try {
+		    final List<File> LIST = Arrays.asList(
+	    		new File("src/Fonts/Almarai-ExtraBold.ttf"),
+		        new File("src/Fonts/Almarai-Light.ttf"),
+		        new File("src/Fonts/Almarai-Regular.ttf"),
+		        new File("src/Fonts/Almarai-Bold.ttf")
+		     );
+		     for (File LIST_ITEM : LIST) {
+		         if (LIST_ITEM.exists()) {
+		             Font FONT = Font.createFont(Font.TRUETYPE_FONT, LIST_ITEM);
+		             if (!AVAILABLE_FONT_FAMILY_NAMES.contains(FONT.getFontName())){ 
+		                 GE.registerFont(FONT);
+		             }
+		         }
+		     }
+		} catch (FontFormatException | IOException exception) {
+		    JOptionPane.showMessageDialog(null, exception.getMessage());
+		}
+    }
+    
+    public void addDocente() {
+		JFrame modulo = new JFrame();
+    	modulo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	modulo.setBounds(100, 100, 982, 647);
+    	JPanel contentPane = new JPanel();
+    	modulo.setLocationRelativeTo(null);
+    	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+    	modulo.setVisible(true);
+    	modulo.setContentPane(contentPane);
+    	contentPane.setLayout(new BorderLayout(0, 0));
+
+    	JPanel header = new JPanel();
+    	contentPane.add(header, BorderLayout.NORTH);
+    	header.setBackground(azul2);
+    	header.setPreferredSize(new Dimension(2147483647, 90));
+    	header.setLayout(new BoxLayout(header, BoxLayout.LINE_AXIS));
+    	header.setMaximumSize(new Dimension(2147483647, 40));
+
+    	header.add(Box.createRigidArea(new Dimension(10, 0)));
+    	ImageIcon logo = new ImageIcon(this.getClass().getResource("/imagenes/uabcs (1).png"));
+
+    	JLabel logoUabcs = new JLabel(logo);
+    	logoUabcs.setBackground(azul2);
+    	logoUabcs.setBorder(null);
+    	logoUabcs.setPreferredSize(new Dimension(100, 100));
+    	logoUabcs.setMaximumSize(new Dimension(60, 100));
+    	header.add(logoUabcs);
+
+    	header.add(Box.createRigidArea(new Dimension(50, 0)));
+
+    	JLabel lblInicio = new JLabel("Modulo grupo");
+    	lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblInicio.setBorder(null);
+    	lblInicio.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
+    	lblInicio.setForeground(Color.white);
+    	lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
+    	lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblInicio.setBackground(azul2);
+    	header.add(lblInicio);
+
+    	ImageIcon iconCerrarSesion = new ImageIcon(this.getClass().getResource("/imagenes/cerrarsesion (1).png"));
+
+    	JButton btnCerrarSesion = new JButton(iconCerrarSesion);
+    	btnCerrarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnCerrarSesion.setBackground(azul2);
+    	btnCerrarSesion.setBorder(null);
+    	btnCerrarSesion.setPreferredSize(new Dimension(120, 120));
+    	btnCerrarSesion.addActionListener(e -> {
+    	    int n = JOptionPane.showConfirmDialog(
+    	            null,
+    	            "Estas seguro que quieres cerrar sesión?",
+    	            "Cerrar sesión",
+    	            JOptionPane.YES_NO_OPTION);
+
+    	    if (n == 0) {
+    	        Controller c = new Controller();
+    	        modulo.dispose();
+    	        c.despliegue();
+    	    } else if (n == 1) {
+    	        JOptionPane.showMessageDialog(null, "GOODBYE");
+    	    }
+    	});
+    	header.add(btnCerrarSesion);
+
+    	header.add(Box.createRigidArea(new Dimension(10, 0)));
+
+    	JPanel options = new JPanel();
+    	contentPane.add(options, BorderLayout.WEST);
+    	options.setPreferredSize(new Dimension(120, 2147483647));
+    	options.setMaximumSize(new Dimension(120, 2147483647));
+    	options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
+
+    	JPanel moduloAlumnos = new JPanel();
+    	moduloAlumnos.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    	moduloAlumnos.setPreferredSize(new Dimension(130, 120));
+    	moduloAlumnos.setMaximumSize(new Dimension(130, 130));
+    	moduloAlumnos.setBackground(azul2);
+
+    	ImageIcon iconAlumnos = new ImageIcon(this.getClass().getResource("/imagenes/alumnos (1).png"));
+    	moduloAlumnos.setLayout(new BoxLayout(moduloAlumnos, BoxLayout.Y_AXIS));
+
+    	JButton btnAlumnos = new JButton(iconAlumnos);
+    	btnAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnAlumnos.setBackground(azul2);
+    	btnAlumnos.setBorder(null);
+    	btnAlumnos.addActionListener(e -> {
+    	    ModuloEstudianteController mac = new ModuloEstudianteController();
+    	    modulo.dispose();
+    	    mac.ModuloEstudiante();
+    	});
+
+    	moduloAlumnos.add(btnAlumnos);
+
+    	JLabel lblAlumnos = new JLabel("<html><div style='text-align: center;'>Modulo de<br>alumnos");
+    	lblAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblAlumnos.setForeground(new Color(255, 255, 255));
+    	lblAlumnos.setBackground(azul2);
+    	lblAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblAlumnos.setMaximumSize(new Dimension(80, 70));
+    	moduloAlumnos.add(lblAlumnos);
+    	options.add(moduloAlumnos);
+
+    	JPanel moduloMaestros = new JPanel();
+    	moduloMaestros.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+    	moduloMaestros.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    	moduloMaestros.setPreferredSize(new Dimension(130, 140));
+    	moduloMaestros.setMaximumSize(new Dimension(130, 130));
+    	moduloMaestros.setBackground(azul2);
+
+    	ImageIcon iconDocentnes = new ImageIcon(this.getClass().getResource("/imagenes/docentes (1).png"));
+    	moduloMaestros.setLayout(new BoxLayout(moduloMaestros, BoxLayout.Y_AXIS));
+
+    	JButton btnMaestros = new JButton(iconDocentnes);
+    	btnMaestros.setBorder(null);
+    	btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnMaestros.setBackground(azul2);
+    	btnMaestros.addActionListener(e -> {
+    	    ModuloDocenteController mdc = new ModuloDocenteController();
+    	    modulo.dispose();
+    	    mdc.moduloDocente();
+    	});
+    	moduloMaestros.add(btnMaestros);
+
+    	JLabel lblMaestros = new JLabel("<html><div style='text-align: center;'>Modulo de<br>maestros");
+    	lblMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblMaestros.setForeground(new Color(255, 255, 255));
+    	lblMaestros.setBackground(azul2);
+    	lblMaestros.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblMaestros.setMaximumSize(new Dimension(80, 70));
+    	moduloMaestros.add(lblMaestros);
+    	options.add(moduloMaestros);
+
+    	JPanel moduloGrupo = new JPanel();
+    	moduloGrupo.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+    	moduloGrupo.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    	moduloGrupo.setPreferredSize(new Dimension(130, 120));
+    	moduloGrupo.setMaximumSize(new Dimension(130, 130));
+    	moduloGrupo.setBackground(azulBorde);
+
+    	ImageIcon iconGrupo = new ImageIcon(this.getClass().getResource("/imagenes/grupos (1).png"));
+    	moduloGrupo.setLayout(new BoxLayout(moduloGrupo, BoxLayout.Y_AXIS));
+
+    	JButton btnGrupos = new JButton(iconGrupo);
+    	btnGrupos.setBorder(null);
+    	btnGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnGrupos.setBackground(azulBorde);
+    	btnGrupos.addActionListener(e -> {
+    	    ModuloGrupoController mgc = new ModuloGrupoController();
+    	    modulo.dispose();
+    	    mgc.moduloGrupo();
+    	});
+    	moduloGrupo.add(btnGrupos);
+
+    	JLabel lblGrupos = new JLabel("<html><div style='text-align: center;'>Modulo de<br>grupos");
+    	lblGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblGrupos.setForeground(new Color(255, 255, 255));
+    	lblGrupos.setBackground(azul2);
+    	lblGrupos.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblGrupos.setMaximumSize(new Dimension(80, 70));
+    	moduloGrupo.add(lblGrupos);
+    	options.add(moduloGrupo);
+
+    	JPanel moduloAsignatura = new JPanel();
+    	moduloAsignatura.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+    	moduloAsignatura.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    	moduloAsignatura.setPreferredSize(new Dimension(150, 150));
+    	moduloAsignatura.setMaximumSize(new Dimension(150, 150));
+    	moduloAsignatura.setBackground(azul2);
+
+    	ImageIcon iconAsignatura = new ImageIcon(this.getClass().getResource("/imagenes/asignaturas (1).png"));
+    	moduloAsignatura.setLayout(new BoxLayout(moduloAsignatura, BoxLayout.Y_AXIS));
+
+    	JButton btnAsignatura = new JButton(iconAsignatura);
+    	btnAsignatura.setBorder(null);
+    	btnAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnAsignatura.setBackground(azul2);
+    	btnAsignatura.addActionListener(e -> {
+    	    ModuloAsignaturaController mac = new ModuloAsignaturaController();
+    	    modulo.dispose();
+    	    mac.moduloAsignatura();
+    	});
+    	moduloAsignatura.add(btnAsignatura);
+
+    	JLabel lblAsignatura = new JLabel("<html><div style='text-align: center;'>Modulo de<br>asignaturas");
+    	lblAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblAsignatura.setForeground(new Color(255, 255, 255));
+    	lblAsignatura.setBackground(azul2);
+    	lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblAsignatura.setMaximumSize(new Dimension(80, 70));
+    	moduloAsignatura.add(lblAsignatura);
+    	options.add(moduloAsignatura);
+    	
+    	JPanel contenido = new JPanel();
+    	contentPane.add(contenido, BorderLayout.CENTER);
+    	contenido.setBackground(Color.white);
+    	contenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
+    	contenido.setLayout(new BorderLayout(0, 10));
+
+    	JPanel panelSuperior = new JPanel(new BorderLayout());
+    	panelSuperior.setBackground(Color.white);
+
+    	JButton btnCancelar = new JButton("Cancelar");
+    	btnCancelar.setBackground(new Color(108, 117, 125));
+    	btnCancelar.setForeground(Color.white);
+    	btnCancelar.setPreferredSize(new Dimension(80, 30));
+    	btnCancelar.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+    	btnCancelar.addActionListener(e -> {
+    		ModuloGrupoController mgc = new ModuloGrupoController();
+
+    		mgc.crear();
+    	    modulo.dispose();
+    	});
+
+    	JLabel lblTitulo = new JLabel("Añadir un docente");
+    	lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
+    	lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+    	panelSuperior.add(btnCancelar, BorderLayout.WEST);
+    	panelSuperior.add(lblTitulo, BorderLayout.CENTER);
+
+    	contenido.add(panelSuperior, BorderLayout.NORTH);
+
+    	// Panel de búsqueda
+    	JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+    	panelBusqueda.setBackground(Color.white);
+
+    	JTextField txtBusqueda = new JTextField(20);
+    	txtBusqueda.setPreferredSize(new Dimension(200, 30));
+
+    	JButton btnBuscar = new JButton("🔍");
+    	btnBuscar.setBackground(new Color(52, 144, 220));
+    	btnBuscar.setForeground(Color.white);
+    	btnBuscar.setPreferredSize(new Dimension(40, 30));
+    	btnBuscar.setBorder(null);
+
+    	JButton btnActualizar = new JButton("🔄");
+    	btnActualizar.setBackground(new Color(52, 144, 220));
+    	btnActualizar.setForeground(Color.white);
+    	btnActualizar.setPreferredSize(new Dimension(40, 30));
+    	btnActualizar.setBorder(null);
+
+    	panelBusqueda.add(new JLabel("Buscar:"));
+    	panelBusqueda.add(txtBusqueda);
+    	panelBusqueda.add(btnBuscar);
+    	panelBusqueda.add(btnActualizar);
+
+    	contenido.add(panelBusqueda, BorderLayout.CENTER);
+
+    	JPanel panelTabla = new JPanel(new BorderLayout());
+    	panelTabla.setBackground(Color.white);
+
+    	String[] columnas = {"Identificador", "Nombre completo", "Detalles", "Añadir"};
+    	Object[][] datos = new Object[listaEstudiantes.size()][4];
+
+    	// Carga el ícono (debe existir en esa ruta)
+    	ImageIcon iconoOjo = new ImageIcon("/imagenes/añadir.png");
+
+    	/*for (int i = 0; i < listaDocente.size(); i++) {
+    	    Docente doc = listaDocente.get(i);
+    	    datos[i][0] = doc.getNumeroControl();
+    	    datos[i][1] = doc.getNombres() + " " + doc.getApellidos();
+    	    datos[i][2] = "Datos completos";
+    	    datos[i][3] = iconoOjo;
+    	}*/
+
+    	// Crear tabla
+    	JTable tabla = new JTable(datos, columnas) {
+    	    @Override
+    	    public boolean isCellEditable(int row, int column) {
+    	        return false;
+    	    }
+
+    	    @Override
+    	    public Class<?> getColumnClass(int column) {
+    	        return column == 3 ? Icon.class : String.class;
+    	    }
+
+    	    @Override
+    	    public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+    	        Component comp = super.prepareRenderer(renderer, row, column);
+
+    	        if (row % 2 == 0) {
+    	            comp.setBackground(Color.white);
+    	        } else {
+    	            comp.setBackground(new Color(248, 249, 250));
+    	        }
+
+    	        if (column == 2) {
+    	            comp.setForeground(new Color(52, 144, 220));
+    	        } else {
+    	            comp.setForeground(Color.black);
+    	        }
+
+    	        return comp;
+    	    }
+    	};
+
+
+    	tabla.addMouseListener(new MouseAdapter() {
+    	    @Override
+    	    public void mouseClicked(MouseEvent e) {
+    	        int fila = tabla.rowAtPoint(e.getPoint());
+    	        int columna = tabla.columnAtPoint(e.getPoint());
+    	        
+    	        if (columna == 2) { 
+    	            ModuloGrupoController mec = new ModuloGrupoController();
+                    if (fila >= 0) {
+                        Estudiante eSeleccionado = listaEstudiantes.get(fila);
+	    	            modulo.dispose(); 
+	    	            mec.datosGenerales(eSeleccionado);
+                    }
+    	        } else if (columna == 3) {
+    	            int respuesta = JOptionPane.showConfirmDialog(modulo,
+    	                "¿Desea añadir al docente " + tabla.getValueAt(fila, 1) + " al grupo?",
+    	                "Confirmar",
+    	                JOptionPane.YES_NO_OPTION);
+    	            
+    	            if (respuesta == JOptionPane.YES_OPTION) {
+    	            	//Docente dSeleccionado= listaDocente.get(fila);
+    	            	
+    	            	//docentesAñadidos.add(dSeleccionado);
+    	            	ModuloGrupoController mgc = new ModuloGrupoController();
+    	            	modulo.dispose();
+    	            	mgc.crear();
+    	                JOptionPane.showMessageDialog(modulo, 
+    	                    "Docente añadido correctamente al grupo");
+    	            }
+    	        }
+    	    }
+    	});
+
+    	JScrollPane scrollPane = new JScrollPane(tabla);
+    	scrollPane.setPreferredSize(new Dimension(700, 400));
+    	panelTabla.add(scrollPane, BorderLayout.CENTER);
+
+    	JPanel contenidoCentral = new JPanel(new BorderLayout(0, 10));
+    	contenidoCentral.setBackground(Color.white);
+    	contenidoCentral.add(panelBusqueda, BorderLayout.NORTH);
+    	contenidoCentral.add(panelTabla, BorderLayout.CENTER);
+
+    	contenido.add(contenidoCentral, BorderLayout.CENTER);
+
+	}
+
+    public void datosDocente(/*Docente docente*/) {
+    	Color borde = new Color(206, 207, 202);
+    	Color azul2 = new Color(52, 134, 199);
+    	Color azul1 = new Color(54, 146, 218);
+    	Color azulBorde = new Color(101, 166, 217);
+    	JFrame modulo = new JFrame();
+    	modulo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	modulo.setBounds(100, 100, 982, 647);
+    	JPanel contentPane = new JPanel();
+    	modulo.setLocationRelativeTo(null);
+    	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+    	modulo.setVisible(true);
+    	modulo.setContentPane(contentPane);
+    	contentPane.setLayout(new BorderLayout(0, 0));
+
+    	JPanel header = new JPanel();
+    	contentPane.add(header, BorderLayout.NORTH);
+    	header.setBackground(azul2);
+    	header.setPreferredSize(new Dimension(2147483647, 90));
+    	header.setLayout(new BoxLayout(header, BoxLayout.LINE_AXIS));
+    	header.setMaximumSize(new Dimension(2147483647, 40));
+
+    	header.add(Box.createRigidArea(new Dimension(10, 0)));
+    	ImageIcon logo = new ImageIcon(this.getClass().getResource("/imagenes/uabcs (1).png"));
+
+    	JLabel logoUabcs = new JLabel(logo);
+    	logoUabcs.setBackground(azul2);
+    	logoUabcs.setBorder(null);
+    	logoUabcs.setPreferredSize(new Dimension(100, 100));
+    	logoUabcs.setMaximumSize(new Dimension(60, 100));
+    	header.add(logoUabcs);
+
+    	header.add(Box.createRigidArea(new Dimension(50, 0)));
+
+    	JLabel lblInicio = new JLabel("Modulo docente");
+    	lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblInicio.setBorder(null);
+    	lblInicio.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
+    	lblInicio.setForeground(Color.white);
+    	lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
+    	lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblInicio.setBackground(azul2);
+    	header.add(lblInicio);
+
+    	ImageIcon iconCerrarSesion = new ImageIcon(this.getClass().getResource("/imagenes/cerrarsesion (1).png"));
+
+    	JButton btnCerrarSesion = new JButton(iconCerrarSesion);
+		btnCerrarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnCerrarSesion.setBackground(azul2);
+		btnCerrarSesion.setBorder(null);
+		btnCerrarSesion.setPreferredSize(new Dimension(120,120));
+		btnCerrarSesion.addActionListener(e->{
+			int n = JOptionPane.showConfirmDialog(
+		            null,
+		            "Estas seguro que quieres cerrar sesión?",
+		            "Cerrar sesión",
+		            JOptionPane.YES_NO_OPTION);
+
+		        if(n==0){
+		            modulo.dispose();
+		            Controller c = new Controller();
+		            c.despliegue();
+		            JOptionPane.showMessageDialog(null,"Sesión cerrada correctamente");
+		        }
+		        else if(n==1) {
+		            
+		        }
+		});
+		header.add(btnCerrarSesion);
+		
+		header.add(Box.createRigidArea(new Dimension(10,0)));
+		
+		JPanel options = new JPanel();
+		modulo.add(options, BorderLayout.WEST);
+		options.setPreferredSize(new Dimension(120, 120));
+		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
+		
+		JPanel moduloAlumnos = new JPanel ();
+		moduloAlumnos.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		moduloAlumnos.setPreferredSize(new Dimension(130, 120));
+		moduloAlumnos.setMaximumSize(new Dimension(130, 130));
+		moduloAlumnos.setBackground(azul2);
+		
+		ImageIcon iconAlumnos = new ImageIcon (this.getClass().getResource("/imagenes/alumnos (1).png"));
+		moduloAlumnos.setLayout(new BoxLayout(moduloAlumnos, BoxLayout.Y_AXIS));
+		
+		JButton btnAlumnos = new JButton(iconAlumnos);
+		btnAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnAlumnos.setBackground(azul2);
+		btnAlumnos.setBorder(null);
+		btnAlumnos.addActionListener(e->{
+			ModuloEstudianteController mac = new ModuloEstudianteController();
+			modulo.dispose();
+			mac.ModuloEstudiante();
+		});
+		
+		moduloAlumnos.add(btnAlumnos);
+		
+		JLabel lblAlumnos = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>alumnos");
+		lblAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblAlumnos.setForeground(new Color(255, 255, 255));
+		lblAlumnos.setBackground(azul2);
+		lblAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAlumnos.setMaximumSize(new Dimension(80, 70));
+		lblAlumnos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
+		moduloAlumnos.add(lblAlumnos);
+		options.add(moduloAlumnos);
+		
+		
+		
+		JPanel moduloMaestros = new JPanel ();
+		moduloMaestros.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		moduloMaestros.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		moduloMaestros.setPreferredSize(new Dimension(130, 140));
+		moduloMaestros.setMaximumSize(new Dimension(130, 130));
+		moduloMaestros.setBackground(azulBorde);
+		
+		ImageIcon iconDocentnes = new ImageIcon (this.getClass().getResource("/imagenes/docentes (1).png"));
+		moduloMaestros.setLayout(new BoxLayout(moduloMaestros, BoxLayout.Y_AXIS));
+		
+		JButton btnMaestros = new JButton(iconDocentnes);
+		btnMaestros.setBorder(null);
+		btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnMaestros.setBackground(azulBorde);
+		btnMaestros.addActionListener(e->{
+			ModuloDocenteController mdc= new ModuloDocenteController();
+			modulo.dispose();
+			mdc.moduloDocente();
+		});
+		moduloMaestros.add(btnMaestros);
+		
+		JLabel lblMaestros = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>docentes");
+		lblMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblMaestros.setForeground(new Color(255, 255, 255));
+		lblMaestros.setBackground(azul2);
+		lblMaestros.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMaestros.setMaximumSize(new Dimension(80, 70));
+		lblMaestros.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
+		moduloMaestros.add(lblMaestros);
+		options.add(moduloMaestros);
+		
+		JPanel moduloGrupo = new JPanel ();
+		moduloGrupo.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		moduloGrupo.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		moduloGrupo.setPreferredSize(new Dimension(130, 120));
+		moduloGrupo.setMaximumSize(new Dimension(130, 130));
+		moduloGrupo.setBackground(azul2);
+		
+		ImageIcon iconGrupo = new ImageIcon (this.getClass().getResource("/imagenes/grupos (1).png"));
+		moduloGrupo.setLayout(new BoxLayout(moduloGrupo, BoxLayout.Y_AXIS));
+		
+		JButton btnGrupos = new JButton(iconGrupo);
+		btnGrupos.setBorder(null);
+		btnGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnGrupos.setBackground(azul2);
+		btnGrupos.addActionListener(e->{
+			ModuloGrupoController mgc= new ModuloGrupoController();
+			modulo.dispose();
+			mgc.moduloGrupo();
+		});		moduloGrupo.add(btnGrupos);
+		
+		JLabel lblGrupos = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>grupos");
+		lblGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblGrupos.setForeground(new Color(255, 255, 255));
+		lblGrupos.setBackground(azul2);
+		lblGrupos.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGrupos.setMaximumSize(new Dimension(80, 70));
+		lblGrupos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
+		moduloGrupo.add(lblGrupos);
+		options.add(moduloGrupo);
+		
+		JPanel moduloAsignatura = new JPanel ();
+		moduloAsignatura.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		moduloAsignatura.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		moduloAsignatura.setPreferredSize(new Dimension(150, 150));
+		moduloAsignatura.setMaximumSize(new Dimension(150, 150));
+		moduloAsignatura.setBackground(azul2);
+		
+		ImageIcon iconAsignatura = new ImageIcon (this.getClass().getResource("/imagenes/asignaturas (1).png"));
+		moduloAsignatura.setLayout(new BoxLayout(moduloAsignatura, BoxLayout.Y_AXIS));
+		
+		JButton btnAsignatura = new JButton(iconAsignatura);
+		btnAsignatura.setBorder(null);
+		btnAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnAsignatura.setBackground(azul2);
+		btnAsignatura.addActionListener(e->{
+			ModuloAsignaturaController mac= new ModuloAsignaturaController();
+			modulo.dispose();
+			mac.moduloAsignatura();
+			
+		});
+		moduloAsignatura.add(btnAsignatura);
+		
+		JLabel lblAsignatura = new JLabel ("<html><div style='text-align: center;'>Modulo de<br>asignaturas");
+		lblAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblAsignatura.setForeground(new Color(255, 255, 255));
+		lblAsignatura.setBackground(azul2);
+		lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAsignatura.setMaximumSize(new Dimension(80, 70));
+		lblAsignatura.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
+		moduloAsignatura.add(lblAsignatura);
+		options.add(moduloAsignatura);
+
+    	// Panel de contenido
+		JPanel contenido = new JPanel();
+		contentPane.add(contenido, BorderLayout.CENTER);
+		contenido.setBackground(Color.white);
+		contenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
+		System.out.println(contenido.getHeight());
+		contenido.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panelContenido = new JPanel();
+		panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
+		panelContenido.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+		panelContenido.setBackground(Color.white);
+		contentPane.add(panelContenido, BorderLayout.CENTER);
+
+		JLabel lblTitulo = new JLabel("Datos generales de docente");
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
+        lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(lblTitulo);
+        panelContenido.add(Box.createVerticalStrut(20));
+
+        JPanel Formulario = new JPanel(new GridBagLayout());
+        Formulario.setBackground(Color.white);
+        Formulario.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        GridBagConstraints organizador = new GridBagConstraints();
+        organizador.insets = new Insets(8, 10, 8, 10);
+        organizador.anchor = GridBagConstraints.WEST;
+        organizador.fill = GridBagConstraints.HORIZONTAL;
+
+        JLabel lblNombres = new JLabel("Nombres");
+        JTextField txtNombres = new JTextField(15);
+        txtNombres.setBackground(Color.WHITE);
+        txtNombres.setBorder(null);
+        txtNombres.setEditable(false);
+
+        JLabel lblApellidos = new JLabel("Apellidos");
+        JTextField txtApellidos = new JTextField(15);
+        txtApellidos.setBackground(Color.WHITE);
+        txtApellidos.setBorder(null);
+        txtApellidos.setEditable(false);
+        
+        JLabel lblId = new JLabel("Identificador");
+        JTextField txtId = new JTextField();
+        txtId.setEditable(false);
+        txtId.setBackground(Color.WHITE);
+        txtId.setBorder(null);
+        
+        JLabel lblFecha = new JLabel("Fecha de nacimiento");
+        JTextField txtFecha = new JTextField();
+        txtFecha.setBackground(Color.WHITE);
+        txtFecha.setBorder(null);
+        txtFecha.setEditable(false);
+        
+        JLabel lblGenero = new JLabel("Género");
+        JTextField txtGenero= new JTextField();
+        txtGenero.setBackground(Color.WHITE);
+        txtGenero.setBorder(null);
+        txtGenero.setEditable(false);
+        
+        JLabel lblTelefono = new JLabel("Teléfono");
+        JTextField txtTelefono = new JTextField(15);
+        txtTelefono.setBackground(Color.WHITE);
+        txtTelefono.setBorder(null);
+        txtTelefono.setEditable(false);
+        
+        JLabel lblGrado = new JLabel("Grado de estudios");
+        JTextField txtGrado = new JTextField(15);
+        txtGrado.setBackground(Color.WHITE);
+        txtGrado.setBorder(null);
+        txtGrado.setEditable(false);
+        
+        JLabel lblDomicilio = new JLabel("Domicilio");
+        JTextField txtDomicilio = new JTextField(15);
+        txtDomicilio.setBackground(Color.WHITE);
+        txtDomicilio.setBorder(null);
+        txtDomicilio.setEditable(false);
+        
+        JLabel lblCorreo = new JLabel("Correo electrónico");
+        JTextField txtCorreo = new JTextField(15);
+        txtCorreo.setBackground(Color.WHITE);
+        txtCorreo.setBorder(null);
+        txtCorreo.setEditable(false);
+        
+        JLabel lblCurp = new JLabel("CURP");
+        JTextField txtCurp = new JTextField(15);
+        txtCurp.setBackground(Color.WHITE);
+        txtCurp.setBorder(null);
+        txtCurp.setEditable(false);
+        
+        JPanel panelFoto = new JPanel();
+        panelFoto.setLayout(new BoxLayout(panelFoto, BoxLayout.Y_AXIS));
+        panelFoto.setBorder(BorderFactory.createTitledBorder("Foto"));
+        panelFoto.setBackground(Color.white);
+
+        JLabel lblFoto = new JLabel(); 
+        lblFoto.setPreferredSize(new Dimension(100, 100));
+        lblFoto.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JButton btnCargar = new JButton("📷 Cargar");
+        btnCargar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnCargar.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        panelFoto.add(Box.createVerticalStrut(10));
+        panelFoto.add(lblFoto);
+        panelFoto.add(Box.createVerticalStrut(10));
+        panelFoto.add(btnCargar);
+
+        // Carga de datos
+        /*txtId.setText(String.valueOf(docente.getId()));
+        txtNombres.setText(docente.getNombres());
+        txtApellidos.setText(docente.getApellidos());
+        txtCorreo.setText(docente.getCorreo());
+        txtCurp.setText(docente.getCurp());
+        txtFecha.setText(String.valueOf(docente.getFechaNacimiento()));
+        txtGenero.setText(estudiante.getGenero());
+        txtTelefono.setText(docente.getTelefono());
+        txtGrado.setText(docente.getGrupo());
+        txtDomicilio.setText(docente.getDomicilio());
+       
+        if (docente.getFoto() != null) {
+            ImageIcon icon = new ImageIcon(docente.getFoto()); 
+            Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            lblFoto.setIcon(new ImageIcon(scaledImage));
+        }  */
+        int fila = 0;
+
+        organizador.gridx = 0; 
+        organizador.gridy = fila;
+        Formulario.add(lblNombres, organizador);
+        
+        organizador.gridx = 1;
+        Formulario.add(txtNombres, organizador);
+        
+        organizador.gridx = 2;
+        Formulario.add(lblCorreo, organizador);
+        
+        organizador.gridx = 3;
+        Formulario.add(txtCorreo, organizador);
+        fila++;
+
+        organizador.gridx = 0; 
+        organizador.gridy = fila;
+        Formulario.add(lblApellidos, organizador);
+        
+        organizador.gridx = 1;
+        Formulario.add(txtApellidos, organizador);
+        
+        organizador.gridx = 2;
+        Formulario.add(lblCurp, organizador);
+        
+        organizador.gridx = 3;
+        Formulario.add(txtCurp, organizador);
+        fila++;
+
+        organizador.gridx = 0; 
+        organizador.gridy = fila;
+        Formulario.add(lblId, organizador);
+        
+        organizador.gridx = 1;
+        Formulario.add(txtId, organizador);
+        fila++;
+
+        organizador.gridx = 0; 
+        organizador.gridy = fila;
+        Formulario.add(lblFecha, organizador);
+        
+        organizador.gridx = 1;
+        Formulario.add(txtFecha, organizador);
+        fila++;
+
+        organizador.gridx = 0; 
+        organizador.gridy = fila;
+        Formulario.add(lblGenero, organizador);
+        
+        organizador.gridx = 1;
+        Formulario.add(txtGenero, organizador);
+        fila++;
+
+        organizador.gridx = 0; 
+        organizador.gridy = fila;
+        Formulario.add(lblTelefono, organizador);
+        
+        organizador.gridx = 1;
+        Formulario.add(txtTelefono, organizador);
+        fila++;
+
+        organizador.gridx = 0; 
+        organizador.gridy = fila;
+        Formulario.add(lblGrado, organizador);
+        
+        organizador.gridx = 1;
+        Formulario.add(txtGrado, organizador);
+        fila++;
+
+        organizador.gridx = 0; 
+        organizador.gridy = fila;
+        Formulario.add(lblDomicilio, organizador);
+        
+        organizador.gridx = 1;
+        Formulario.add(txtDomicilio, organizador);
+
+        organizador.gridx = 3;
+        organizador.gridy = 2;
+        organizador.gridheight = 6;
+        Formulario.add(panelFoto, organizador);
+
+        panelContenido.add(Formulario);
+        panelContenido.add(Box.createVerticalStrut(20));
+
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton btnCancelar = new JButton("Regresar");
+        JButton btnCrear = new JButton("Descargar PDF");
+        btnCancelar.setBackground(azulC);
+        btnCancelar.setForeground(Color.white);
+        btnCancelar.setBorder(BorderFactory.createLineBorder(azul2,5));
+        btnCrear.setBackground(azul1);
+        btnCrear.setForeground(Color.white);
+        btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde,5));
+        btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnCrear.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnCancelar.addActionListener(e->{
+        	ModuloDocenteController mdc = new ModuloDocenteController();
+        	modulo.dispose();
+        	mdc.moduloDocente();
+        });
+        btnCrear.addActionListener(e->{
+        	
+        });
+        panelBotones.add(btnCancelar);
+        panelBotones.add(btnCrear);
+
+        panelContenido.add(panelBotones);
+
+		// fuentes 
+		System.out.println(getClass().getResource("/Fonts/Almarai-Light.ttf"));
+		final GraphicsEnvironment GE = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		final List<String> AVAILABLE_FONT_FAMILY_NAMES = Arrays.asList(GE.getAvailableFontFamilyNames());
+		try {
+		    final List<File> LIST = Arrays.asList(
+	    		new File("src/Fonts/Almarai-ExtraBold.ttf"),
+		        new File("src/Fonts/Almarai-Light.ttf"),
+		        new File("src/Fonts/Almarai-Regular.ttf"),
+		        new File("src/Fonts/Almarai-Bold.ttf")
+		     );
+		     for (File LIST_ITEM : LIST) {
+		         if (LIST_ITEM.exists()) {
+		             Font FONT = Font.createFont(Font.TRUETYPE_FONT, LIST_ITEM);
+		             if (!AVAILABLE_FONT_FAMILY_NAMES.contains(FONT.getFontName())){ 
+		                 GE.registerFont(FONT);
+		             }
+		         }
+		     }
+		} catch (FontFormatException | IOException exception) {
+		    JOptionPane.showMessageDialog(null, exception.getMessage());
+		}
+    }
+    
+    public void addAsignatura() {
+		JFrame modulo = new JFrame();
+    	modulo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	modulo.setBounds(100, 100, 982, 647);
+    	JPanel contentPane = new JPanel();
+    	modulo.setLocationRelativeTo(null);
+    	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+    	modulo.setVisible(true);
+    	modulo.setContentPane(contentPane);
+    	contentPane.setLayout(new BorderLayout(0, 0));
+
+    	JPanel header = new JPanel();
+    	contentPane.add(header, BorderLayout.NORTH);
+    	header.setBackground(azul2);
+    	header.setPreferredSize(new Dimension(2147483647, 90));
+    	header.setLayout(new BoxLayout(header, BoxLayout.LINE_AXIS));
+    	header.setMaximumSize(new Dimension(2147483647, 40));
+
+    	header.add(Box.createRigidArea(new Dimension(10, 0)));
+    	ImageIcon logo = new ImageIcon(this.getClass().getResource("/imagenes/uabcs (1).png"));
+
+    	JLabel logoUabcs = new JLabel(logo);
+    	logoUabcs.setBackground(azul2);
+    	logoUabcs.setBorder(null);
+    	logoUabcs.setPreferredSize(new Dimension(100, 100));
+    	logoUabcs.setMaximumSize(new Dimension(60, 100));
+    	header.add(logoUabcs);
+
+    	header.add(Box.createRigidArea(new Dimension(50, 0)));
+
+    	JLabel lblInicio = new JLabel("Modulo grupo");
+    	lblInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblInicio.setBorder(null);
+    	lblInicio.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
+    	lblInicio.setForeground(Color.white);
+    	lblInicio.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
+    	lblInicio.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblInicio.setBackground(azul2);
+    	header.add(lblInicio);
+
+    	ImageIcon iconCerrarSesion = new ImageIcon(this.getClass().getResource("/imagenes/cerrarsesion (1).png"));
+
+    	JButton btnCerrarSesion = new JButton(iconCerrarSesion);
+    	btnCerrarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnCerrarSesion.setBackground(azul2);
+    	btnCerrarSesion.setBorder(null);
+    	btnCerrarSesion.setPreferredSize(new Dimension(120, 120));
+    	btnCerrarSesion.addActionListener(e -> {
+    	    int n = JOptionPane.showConfirmDialog(
+    	            null,
+    	            "Estas seguro que quieres cerrar sesión?",
+    	            "Cerrar sesión",
+    	            JOptionPane.YES_NO_OPTION);
+
+    	    if (n == 0) {
+    	        Controller c = new Controller();
+    	        modulo.dispose();
+    	        c.despliegue();
+    	    } else if (n == 1) {
+    	        JOptionPane.showMessageDialog(null, "GOODBYE");
+    	    }
+    	});
+    	header.add(btnCerrarSesion);
+
+    	header.add(Box.createRigidArea(new Dimension(10, 0)));
+
+    	JPanel options = new JPanel();
+    	contentPane.add(options, BorderLayout.WEST);
+    	options.setPreferredSize(new Dimension(120, 2147483647));
+    	options.setMaximumSize(new Dimension(120, 2147483647));
+    	options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
+
+    	JPanel moduloAlumnos = new JPanel();
+    	moduloAlumnos.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    	moduloAlumnos.setPreferredSize(new Dimension(130, 120));
+    	moduloAlumnos.setMaximumSize(new Dimension(130, 130));
+    	moduloAlumnos.setBackground(azul2);
+
+    	ImageIcon iconAlumnos = new ImageIcon(this.getClass().getResource("/imagenes/alumnos (1).png"));
+    	moduloAlumnos.setLayout(new BoxLayout(moduloAlumnos, BoxLayout.Y_AXIS));
+
+    	JButton btnAlumnos = new JButton(iconAlumnos);
+    	btnAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnAlumnos.setBackground(azul2);
+    	btnAlumnos.setBorder(null);
+    	btnAlumnos.addActionListener(e -> {
+    	    ModuloEstudianteController mac = new ModuloEstudianteController();
+    	    modulo.dispose();
+    	    mac.ModuloEstudiante();
+    	});
+
+    	moduloAlumnos.add(btnAlumnos);
+
+    	JLabel lblAlumnos = new JLabel("<html><div style='text-align: center;'>Modulo de<br>alumnos");
+    	lblAlumnos.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblAlumnos.setForeground(new Color(255, 255, 255));
+    	lblAlumnos.setBackground(azul2);
+    	lblAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblAlumnos.setMaximumSize(new Dimension(80, 70));
+    	moduloAlumnos.add(lblAlumnos);
+    	options.add(moduloAlumnos);
+
+    	JPanel moduloMaestros = new JPanel();
+    	moduloMaestros.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+    	moduloMaestros.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    	moduloMaestros.setPreferredSize(new Dimension(130, 140));
+    	moduloMaestros.setMaximumSize(new Dimension(130, 130));
+    	moduloMaestros.setBackground(azul2);
+
+    	ImageIcon iconDocentnes = new ImageIcon(this.getClass().getResource("/imagenes/docentes (1).png"));
+    	moduloMaestros.setLayout(new BoxLayout(moduloMaestros, BoxLayout.Y_AXIS));
+
+    	JButton btnMaestros = new JButton(iconDocentnes);
+    	btnMaestros.setBorder(null);
+    	btnMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnMaestros.setBackground(azul2);
+    	btnMaestros.addActionListener(e -> {
+    	    ModuloDocenteController mdc = new ModuloDocenteController();
+    	    modulo.dispose();
+    	    mdc.moduloDocente();
+    	});
+    	moduloMaestros.add(btnMaestros);
+
+    	JLabel lblMaestros = new JLabel("<html><div style='text-align: center;'>Modulo de<br>maestros");
+    	lblMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblMaestros.setForeground(new Color(255, 255, 255));
+    	lblMaestros.setBackground(azul2);
+    	lblMaestros.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblMaestros.setMaximumSize(new Dimension(80, 70));
+    	moduloMaestros.add(lblMaestros);
+    	options.add(moduloMaestros);
+
+    	JPanel moduloGrupo = new JPanel();
+    	moduloGrupo.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+    	moduloGrupo.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    	moduloGrupo.setPreferredSize(new Dimension(130, 120));
+    	moduloGrupo.setMaximumSize(new Dimension(130, 130));
+    	moduloGrupo.setBackground(azulBorde);
+
+    	ImageIcon iconGrupo = new ImageIcon(this.getClass().getResource("/imagenes/grupos (1).png"));
+    	moduloGrupo.setLayout(new BoxLayout(moduloGrupo, BoxLayout.Y_AXIS));
+
+    	JButton btnGrupos = new JButton(iconGrupo);
+    	btnGrupos.setBorder(null);
+    	btnGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnGrupos.setBackground(azulBorde);
+    	btnGrupos.addActionListener(e -> {
+    	    ModuloGrupoController mgc = new ModuloGrupoController();
+    	    modulo.dispose();
+    	    mgc.moduloGrupo();
+    	});
+    	moduloGrupo.add(btnGrupos);
+
+    	JLabel lblGrupos = new JLabel("<html><div style='text-align: center;'>Modulo de<br>grupos");
+    	lblGrupos.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblGrupos.setForeground(new Color(255, 255, 255));
+    	lblGrupos.setBackground(azul2);
+    	lblGrupos.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblGrupos.setMaximumSize(new Dimension(80, 70));
+    	moduloGrupo.add(lblGrupos);
+    	options.add(moduloGrupo);
+
+    	JPanel moduloAsignatura = new JPanel();
+    	moduloAsignatura.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+    	moduloAsignatura.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    	moduloAsignatura.setPreferredSize(new Dimension(150, 150));
+    	moduloAsignatura.setMaximumSize(new Dimension(150, 150));
+    	moduloAsignatura.setBackground(azul2);
+
+    	ImageIcon iconAsignatura = new ImageIcon(this.getClass().getResource("/imagenes/asignaturas (1).png"));
+    	moduloAsignatura.setLayout(new BoxLayout(moduloAsignatura, BoxLayout.Y_AXIS));
+
+    	JButton btnAsignatura = new JButton(iconAsignatura);
+    	btnAsignatura.setBorder(null);
+    	btnAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btnAsignatura.setBackground(azul2);
+    	btnAsignatura.addActionListener(e -> {
+    	    ModuloAsignaturaController mac = new ModuloAsignaturaController();
+    	    modulo.dispose();
+    	    mac.moduloAsignatura();
+    	});
+    	moduloAsignatura.add(btnAsignatura);
+
+    	JLabel lblAsignatura = new JLabel("<html><div style='text-align: center;'>Modulo de<br>asignaturas");
+    	lblAsignatura.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	lblAsignatura.setForeground(new Color(255, 255, 255));
+    	lblAsignatura.setBackground(azul2);
+    	lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblAsignatura.setMaximumSize(new Dimension(80, 70));
+    	moduloAsignatura.add(lblAsignatura);
+    	options.add(moduloAsignatura);
+    	
+    	JPanel contenido = new JPanel();
+    	contentPane.add(contenido, BorderLayout.CENTER);
+    	contenido.setBackground(Color.white);
+    	contenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
+    	contenido.setLayout(new BorderLayout(0, 10));
+
+    	JPanel panelSuperior = new JPanel(new BorderLayout());
+    	panelSuperior.setBackground(Color.white);
+
+    	JButton btnCancelar = new JButton("Cancelar");
+    	btnCancelar.setBackground(new Color(108, 117, 125));
+    	btnCancelar.setForeground(Color.white);
+    	btnCancelar.setPreferredSize(new Dimension(80, 30));
+    	btnCancelar.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+    	btnCancelar.addActionListener(e -> {
+    		ModuloGrupoController mgc = new ModuloGrupoController();
+
+    		mgc.crear();
+    	    modulo.dispose();
+    	});
+
+    	JLabel lblTitulo = new JLabel("Añadir un estudiante");
+    	lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
+    	lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+    	panelSuperior.add(btnCancelar, BorderLayout.WEST);
+    	panelSuperior.add(lblTitulo, BorderLayout.CENTER);
+
+    	contenido.add(panelSuperior, BorderLayout.NORTH);
+
+    	// Panel de búsqueda
+    	JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+    	panelBusqueda.setBackground(Color.white);
+
+    	JTextField txtBusqueda = new JTextField(20);
+    	txtBusqueda.setPreferredSize(new Dimension(200, 30));
+
+    	ImageIcon buscar = new ImageIcon(getClass().getResource("/imagenes/busqueda.png"));
+    	JButton btnBuscar = new JButton(buscar);
+    	btnBuscar.setBackground(new Color(52, 144, 220));
+    	btnBuscar.setForeground(Color.white);
+    	btnBuscar.setPreferredSize(new Dimension(40, 30));
+    	btnBuscar.setBorder(null);
+
+    	JButton btnActualizar = new JButton("🔄");
+    	btnActualizar.setBackground(new Color(52, 144, 220));
+    	btnActualizar.setForeground(Color.white);
+    	btnActualizar.setPreferredSize(new Dimension(40, 30));
+    	btnActualizar.setBorder(null);
+
+    	panelBusqueda.add(new JLabel("Buscar:"));
+    	panelBusqueda.add(txtBusqueda);
+    	panelBusqueda.add(btnBuscar);
+    	panelBusqueda.add(btnActualizar);
+
+    	contenido.add(panelBusqueda, BorderLayout.CENTER);
+
+    	JPanel panelTabla = new JPanel(new BorderLayout());
+    	panelTabla.setBackground(Color.white);
+
+    	/*String[] columnas = {"Identificador", "Nombre completo", "Detalles", "Añadir"};
+    	Object[][] datos = new Object[listaAsignatura.size()][4];
+
+    	// Carga el ícono (debe existir en esa ruta)
+    	ImageIcon iconoOjo = new ImageIcon("/imagenes/añadir.png");
+
+    	for (int i = 0; i < listaAsignatura.size(); i++) {
+    		Asignaturas asi = listaAsignatura.get(i);
+    	    datos[i][0] = asi.getNumeroControl();
+    	    datos[i][1] = asi.getNombres() + " " + asi.getApellidos();
+    	    datos[i][2] = "Datos completos";
+    	    datos[i][3] = iconoOjo;
+    	}
+
+    	// Crear tabla
+    	JTable tabla = new JTable(datos, columnas) {
+    	    @Override
+    	    public boolean isCellEditable(int row, int column) {
+    	        return false;
+    	    }
+
+    	    @Override
+    	    public Class<?> getColumnClass(int column) {
+    	        return column == 3 ? Icon.class : String.class;
+    	    }
+
+    	    @Override
+    	    public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+    	        Component comp = super.prepareRenderer(renderer, row, column);
+
+    	        if (row % 2 == 0) {
+    	            comp.setBackground(Color.white);
+    	        } else {
+    	            comp.setBackground(new Color(248, 249, 250));
+    	        }
+
+    	        if (column == 2) {
+    	            comp.setForeground(new Color(52, 144, 220));
+    	        } else {
+    	            comp.setForeground(Color.black);
+    	        }
+
+    	        return comp;
+    	    }
+    	};
+
+
+    	tabla.addMouseListener(new MouseAdapter() {
+    	    @Override
+    	    public void mouseClicked(MouseEvent e) {
+    	    	inicializarListaEstudiantes();
+    	        int fila = tabla.rowAtPoint(e.getPoint());
+    	        int columna = tabla.columnAtPoint(e.getPoint());
+    	        
+    	        if (columna == 2) { 
+    	            ModuloGrupoController mec = new ModuloGrupoController();
+                    if (fila >= 0) {
+                    	//Asignatura aSeleccionado = listaAsignatura.get(fila);
+	    	            modulo.dispose(); 
+	    	           // mec.datosGenerales(aSeleccionado);
+                    }
+    	        } else if (columna == 3) {
+    	        	Estudiante eSeleccionado = listaEstudiantes.get(fila);
+                    
+                        
+                    int respuesta = JOptionPane.showConfirmDialog(modulo,
+                        "¿Desea añadir al asignatura " + tabla.getValueAt(fila, 1) + " al grupo?",
+                        "Confirmar",
+                        JOptionPane.YES_NO_OPTION);
+                    
+                    if (respuesta == JOptionPane.YES_OPTION) {
+                    	//asignaturasAñadidos.add(aSeleccionado);
+                        
+                        JOptionPane.showMessageDialog(modulo, 
+                            "Asignatura añadida correctamente al grupo");
+                        
+                        modulo.dispose();
+                        crear();
+    	            }
+    	        }
+    	    }
+    	});
+
+    	JScrollPane scrollPane = new JScrollPane(tabla);
+    	scrollPane.setPreferredSize(new Dimension(700, 400));
+    	panelTabla.add(scrollPane, BorderLayout.CENTER);
+*/
+    	JPanel contenidoCentral = new JPanel(new BorderLayout(0, 10));
+    	contenidoCentral.setBackground(Color.white);
+    	contenidoCentral.add(panelBusqueda, BorderLayout.NORTH);
+    	contenidoCentral.add(panelTabla, BorderLayout.CENTER);
+
+    	contenido.add(contenidoCentral, BorderLayout.CENTER);
+
+	}
+    
+    
 	 // Renderizador simple para botones
     class BotonRenderer extends JButton implements TableCellRenderer {
 	    public BotonRenderer(String texto) {
@@ -1796,4 +3470,9 @@ public class ModuloGrupoView {
             return "";
         }
    	}
+    private void inicializarListaEstudiantes() {
+        if (estudiantesAñadidos == null) {
+            estudiantesAñadidos = new ArrayList<>();
+        }
+    }
 }

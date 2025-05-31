@@ -1,5 +1,10 @@
 package controlles;
 
+import java.util.ArrayList;
+
+import javax.swing.DefaultListModel;
+
+import model.Estudiante;
 import view.ModuloGrupoView;
 
 public class ModuloGrupoController {
@@ -18,14 +23,23 @@ public class ModuloGrupoController {
 		mgv.detalles();
 	}
 	public void addDocente() {
-		//mgv.addDocente();
+		mgv.addDocente();
 	}
 	public void AddEstudiante() {
 		mgv.addAlumno();
 	}
 	public void addAsignatura() {
-		mgv.detalles();
+		mgv.addAsignatura();
 	}
+	public void datosGenerales(Estudiante estudiante) {
+		mgv.datoEstudiante(estudiante);
+	}
+	public void datosGenerales(/*Docente docente*/) {
+		mgv.datosDocente(/*docente*/);
+	}
+		/*public void datosGenerales(Asignatura asignatura) {
+		mgv.datoAsignatura(asignatura);
+	}*/
 
 
 }

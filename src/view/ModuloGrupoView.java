@@ -79,6 +79,9 @@ public class ModuloGrupoView {
 	
 	//private Docente docenteGrupo;
 	
+	private Estudiante prueba;
+	private String prueba1;
+	
 	ImageIcon buscar = new ImageIcon("/imagenes/buscar.png");
 	ModuloDocenteModel mdm= new ModuloDocenteModel();
 	ModuloAsignaturaModel mam = new ModuloAsignaturaModel();
@@ -714,11 +717,24 @@ public class ModuloGrupoView {
         JTextField txtDocente = new JTextField();
         txtDocente.setPreferredSize(new Dimension(200, 25));
         txtDocente.setBorder(BorderFactory.createLineBorder(borde,4));
+        
+        if (prueba != null) {
+            System.out.println(prueba.getNombres());
+            txtDocente.setText(prueba.getNombres()+" "+prueba.getApellidos());
+        } else {
+            System.out.println("Error: 'prueba' es null.");
+        }
         txtDocente.setColumns(10);
         
         JTextField txtAsignatura = new JTextField();
         txtAsignatura.setBorder(BorderFactory.createLineBorder(borde,4));
         txtAsignatura.setPreferredSize(new Dimension(200, 25));
+        if (prueba1 != null) {
+            System.out.println(prueba1);
+            txtAsignatura.setText(prueba1);
+        } else {
+            System.out.println("Error: 'prueba1' es null.");
+        }
         txtAsignatura.setColumns(10);
         
         JTextField txtIdentificador = new JTextField();
@@ -939,7 +955,9 @@ public class ModuloGrupoView {
                 JOptionPane.YES_NO_OPTION);
             
             if(n == 0) {
+            	ModuloGrupoController mgc = new ModuloGrupoController();
                 modulo.dispose();
+                mgc.moduloGrupo();
             }
         });
         
@@ -1620,14 +1638,14 @@ public class ModuloGrupoView {
     	Object[][] datos = new Object[listaEstudiantes.size()][4];
 
     	// Carga el ícono (debe existir en esa ruta)
-    	ImageIcon iconoOjo = new ImageIcon("/imagenes/añadir.png");
+    	ImageIcon add = new ImageIcon("/imagenes/añadir.png");
 
     	for (int i = 0; i < listaEstudiantes.size(); i++) {
     	    Estudiante est = listaEstudiantes.get(i);
     	    datos[i][0] = est.getNumeroControl();
     	    datos[i][1] = est.getNombres() + " " + est.getApellidos();
     	    datos[i][2] = "Datos completos";
-    	    datos[i][3] = iconoOjo;
+    	    datos[i][3] = add;
     	}
 
     	// Crear tabla
@@ -2447,15 +2465,15 @@ public class ModuloGrupoView {
     	Object[][] datos = new Object[listaEstudiantes.size()][4];
 
     	// Carga el ícono (debe existir en esa ruta)
-    	ImageIcon iconoOjo = new ImageIcon("/imagenes/añadir.png");
+    	ImageIcon add = new ImageIcon("/imagenes/añadir.png");
 
-    	/*for (int i = 0; i < listaDocente.size(); i++) {
-    	    Docente doc = listaDocente.get(i);
-    	    datos[i][0] = doc.getNumeroControl();
-    	    datos[i][1] = doc.getNombres() + " " + doc.getApellidos();
+    	for (int i = 0; i < listaEstudiantes.size(); i++) {
+    	    Estudiante est = listaEstudiantes.get(i);
+    	    datos[i][0] = est.getNumeroControl();
+    	    datos[i][1] = est.getNombres() + " " + est.getApellidos();
     	    datos[i][2] = "Datos completos";
-    	    datos[i][3] = iconoOjo;
-    	}*/
+    	    datos[i][3] = add;
+    	}
 
     	// Crear tabla
     	JTable tabla = new JTable(datos, columnas) {
@@ -2493,6 +2511,7 @@ public class ModuloGrupoView {
     	tabla.addMouseListener(new MouseAdapter() {
     	    @Override
     	    public void mouseClicked(MouseEvent e) {
+    	    	inicializarListaEstudiantes();
     	        int fila = tabla.rowAtPoint(e.getPoint());
     	        int columna = tabla.columnAtPoint(e.getPoint());
     	        
@@ -2501,23 +2520,25 @@ public class ModuloGrupoView {
                     if (fila >= 0) {
                         Estudiante eSeleccionado = listaEstudiantes.get(fila);
 	    	            modulo.dispose(); 
-	    	            mec.datosGenerales(eSeleccionado);
+	    	            mec.datosGeneralesd(eSeleccionado);
                     }
     	        } else if (columna == 3) {
-    	            int respuesta = JOptionPane.showConfirmDialog(modulo,
-    	                "¿Desea añadir al docente " + tabla.getValueAt(fila, 1) + " al grupo?",
-    	                "Confirmar",
-    	                JOptionPane.YES_NO_OPTION);
-    	            
-    	            if (respuesta == JOptionPane.YES_OPTION) {
-    	            	//Docente dSeleccionado= listaDocente.get(fila);
-    	            	
-    	            	//docentesAñadidos.add(dSeleccionado);
-    	            	ModuloGrupoController mgc = new ModuloGrupoController();
-    	            	modulo.dispose();
-    	            	mgc.crear();
-    	                JOptionPane.showMessageDialog(modulo, 
-    	                    "Docente añadido correctamente al grupo");
+    	        	Estudiante eSeleccionado = listaEstudiantes.get(fila);
+                    
+                        
+                    int respuesta = JOptionPane.showConfirmDialog(modulo,
+                        "¿Desea añadir al docente " + tabla.getValueAt(fila, 1) + " al grupo?",
+                        "Confirmar",
+                        JOptionPane.YES_NO_OPTION);
+                    
+                    if (respuesta == JOptionPane.YES_OPTION) {
+                    	prueba=eSeleccionado;
+                        
+                        JOptionPane.showMessageDialog(modulo, 
+                            "Docente añadido correctamente al grupo");
+                        
+                        modulo.dispose();
+                        crear();
     	            }
     	        }
     	    }
@@ -2536,7 +2557,7 @@ public class ModuloGrupoView {
 
 	}
 
-    public void datosDocente(/*Docente docente*/) {
+    public void datosDocente(Estudiante estudiante/*Docente docente*/) {
     	Color borde = new Color(206, 207, 202);
     	Color azul2 = new Color(52, 134, 199);
     	Color azul1 = new Color(54, 146, 218);
@@ -3247,21 +3268,24 @@ public class ModuloGrupoView {
     	JPanel panelTabla = new JPanel(new BorderLayout());
     	panelTabla.setBackground(Color.white);
 
-    	/*String[] columnas = {"Identificador", "Nombre completo", "Detalles", "Añadir"};
-    	Object[][] datos = new Object[listaAsignatura.size()][4];
+    	String[] asignaturas = {"Español", "Programación", "Inglés", "Base de Datos"};
 
-    	// Carga el ícono (debe existir en esa ruta)
-    	ImageIcon iconoOjo = new ImageIcon("/imagenes/añadir.png");
 
-    	for (int i = 0; i < listaAsignatura.size(); i++) {
-    		Asignaturas asi = listaAsignatura.get(i);
-    	    datos[i][0] = asi.getNumeroControl();
-    	    datos[i][1] = asi.getNombres() + " " + asi.getApellidos();
-    	    datos[i][2] = "Datos completos";
-    	    datos[i][3] = iconoOjo;
+    	String[] columnas = {"Identificador", "Nombre", "Detalles", "Añadir"};
+    	Object[][] datos = new Object[asignaturas.length][4];
+
+
+    	ImageIcon iconoOjo = new ImageIcon(getClass().getResource("/imagenes/añadir.png"));
+
+    	// Llenar los datos
+    	for (int i = 0; i < asignaturas.length; i++) {
+    	    datos[i][0] = i + 1; 
+    	    datos[i][1] = asignaturas[i]; 
+    	    datos[i][2] = "Datos completos"; 
+    	    datos[i][3] = iconoOjo; 
     	}
 
-    	// Crear tabla
+    	// Crear la tabla
     	JTable tabla = new JTable(datos, columnas) {
     	    @Override
     	    public boolean isCellEditable(int row, int column) {
@@ -3293,53 +3317,39 @@ public class ModuloGrupoView {
     	    }
     	};
 
-
     	tabla.addMouseListener(new MouseAdapter() {
     	    @Override
     	    public void mouseClicked(MouseEvent e) {
-    	    	inicializarListaEstudiantes();
     	        int fila = tabla.rowAtPoint(e.getPoint());
     	        int columna = tabla.columnAtPoint(e.getPoint());
-    	        
-    	        if (columna == 2) { 
-    	            ModuloGrupoController mec = new ModuloGrupoController();
-                    if (fila >= 0) {
-                    	//Asignatura aSeleccionado = listaAsignatura.get(fila);
-	    	            modulo.dispose(); 
-	    	           // mec.datosGenerales(aSeleccionado);
-                    }
+
+    	        if (columna == 2) {
+    	            JOptionPane.showMessageDialog(modulo,
+    	                "Detalles de la asignatura: " + tabla.getValueAt(fila, 1));
     	        } else if (columna == 3) {
-    	        	Estudiante eSeleccionado = listaEstudiantes.get(fila);
-                    
-                        
-                    int respuesta = JOptionPane.showConfirmDialog(modulo,
-                        "¿Desea añadir al asignatura " + tabla.getValueAt(fila, 1) + " al grupo?",
-                        "Confirmar",
-                        JOptionPane.YES_NO_OPTION);
-                    
-                    if (respuesta == JOptionPane.YES_OPTION) {
-                    	//asignaturasAñadidos.add(aSeleccionado);
-                        
-                        JOptionPane.showMessageDialog(modulo, 
-                            "Asignatura añadida correctamente al grupo");
-                        
-                        modulo.dispose();
-                        crear();
+    	            int respuesta = JOptionPane.showConfirmDialog(modulo,
+    	                "¿Desea añadir la asignatura " + tabla.getValueAt(fila, 1) + " al grupo?",
+    	                "Confirmar",
+    	                JOptionPane.YES_NO_OPTION);
+
+    	            if (respuesta == JOptionPane.YES_OPTION) {
+    	            	prueba1=asignaturas[fila];
+    	                JOptionPane.showMessageDialog(modulo,
+    	                    "Asignatura añadida correctamente al grupo");
+    	               
+    	                modulo.dispose();
+    	                crear();
     	            }
     	        }
     	    }
     	});
 
+    	// Mostrar tabla
     	JScrollPane scrollPane = new JScrollPane(tabla);
     	scrollPane.setPreferredSize(new Dimension(700, 400));
     	panelTabla.add(scrollPane, BorderLayout.CENTER);
-*/
-    	JPanel contenidoCentral = new JPanel(new BorderLayout(0, 10));
-    	contenidoCentral.setBackground(Color.white);
-    	contenidoCentral.add(panelBusqueda, BorderLayout.NORTH);
-    	contenidoCentral.add(panelTabla, BorderLayout.CENTER);
-
-    	contenido.add(contenidoCentral, BorderLayout.CENTER);
+    	
+    	contenido.add(panelTabla, BorderLayout.CENTER);
 
 	}
     

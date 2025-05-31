@@ -34,8 +34,8 @@ public class ModuloGrupoController {
 	public void datosGenerales(Estudiante estudiante) {
 		mgv.datoEstudiante(estudiante);
 	}
-	public void datosGenerales(/*Docente docente*/) {
-		mgv.datosDocente(/*docente*/);
+	public void datosGeneralesd(Estudiante estudiante/*Docente docente*/) {
+		mgv.datosDocente(estudiante/*docente*/);
 	}
 		/*public void datosGenerales(Asignatura asignatura) {
 		mgv.datoAsignatura(asignatura);

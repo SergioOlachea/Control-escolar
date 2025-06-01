@@ -355,7 +355,7 @@ public class ModuloEstudianteView {
         for (int i = 0; i < listaEstudiantes.size(); i++) {
             Estudiante e = listaEstudiantes.get(i);
             
-            datos[i][0] = String.format("%03d", i + 1);
+            datos[i][0] = e.getNumeroControl();
             datos[i][1] = e.getNombres() + " " + e.getApellidos();
             datos[i][2] = e.getGrupo();
             datos[i][3] = "Detalles";
@@ -799,7 +799,6 @@ public class ModuloEstudianteView {
 	        btnCargar.addActionListener(e->{
 	        	
 	        	//codigo para cargar una imagen externa
-	        	
 	        	JFileChooser fileChooser = new JFileChooser();
 	        	fileChooser.setDialogTitle("Seleccionar imagen");
 	        	fileChooser.setFileFilter(new FileNameExtensionFilter("Imágenes", "jpg", "png", "jpeg"));
@@ -940,6 +939,7 @@ public class ModuloEstudianteView {
 		        String aniotext = (String) cbAnio.getSelectedItem();
 		        String generoSeleccionado = (String) cbGenero.getSelectedItem();
 		        System.out.println(generoSeleccionado);
+		        int gradoNum=0;
 		        
 		        int mes = -1;
 		        for (int i = 0; i < meses.length; i++) {
@@ -949,9 +949,6 @@ public class ModuloEstudianteView {
 		            }
 		        }
 
-		        
-		        int grado= Integer.parseInt(gradotext);
-		        
 		        byte[] fotoBytes = Utils.toByte(imagenSeleccionada);
 		
 		        boolean camposValidos = true;
@@ -1013,11 +1010,11 @@ public class ModuloEstudianteView {
 		        }
 
 		        if (gradotext.isEmpty() || !gradoNumerico.matcher(gradotext).matches()) {
-		        	 int gradoNum = Integer.parseInt(gradotext);
 		            txtGrado.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 		            errores.append("Grado (solo números)\n");
 		            camposValidos = false;
 		        } else {
+		        	gradoNum = Integer.parseInt(gradotext);
 		            txtGrado.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
@@ -1067,7 +1064,7 @@ public class ModuloEstudianteView {
 		             } catch (Exception e1) {
 		                 JOptionPane.showMessageDialog(null, "La fecha seleccionada no es válida.");
 		             }
-		             Estudiante nEstudiante= new Estudiante(nombres, apellidos, fecha, generoSeleccionado, grado, domicilio, correo, telefono, curp, imagenSeleccionada);
+		             Estudiante nEstudiante= new Estudiante(nombres, apellidos, fecha, generoSeleccionado, gradoNum, domicilio, correo, telefono, curp, imagenSeleccionada);
 		            
 		             try {
 						mem.add(nEstudiante);
@@ -1452,7 +1449,7 @@ public class ModuloEstudianteView {
         panelFoto.add(btnCargar);
 
        // Pregargado de los datos
-        txtId.setText(String.valueOf(estudiante.getId()));
+        txtId.setText(String.valueOf(estudiante.getNumeroControl()));
         txtNombres.setText(estudiante.getNombres());
         txtApellidos.setText(estudiante.getApellidos());
         txtTelefono.setText(estudiante.getTelefono());
@@ -2084,7 +2081,7 @@ public class ModuloEstudianteView {
         panelFoto.add(btnCargar);
 
         // Carga de datos
-        txtId.setText(String.valueOf(estudiante.getId()));
+        txtId.setText(String.valueOf(estudiante.getNumeroControl()));
         txtNombres.setText(estudiante.getNombres());
         txtApellidos.setText(estudiante.getApellidos());
         txtCorreo.setText(estudiante.getCorreo());

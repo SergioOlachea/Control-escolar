@@ -57,7 +57,11 @@ import view.ModuloDocenteView.PanelBotonesRenderer;
 
 public class ModuloAsignturaView {
 
-	
+	Color borde = new Color(206, 207, 202);
+	Color azul2 = new Color(52, 134, 199);
+	Color azul1 = new Color(54, 146, 218);
+	Color azulBorde= new Color(101, 166, 217);
+	Color azulcan= new Color(40, 103, 152);
 	public void ModuloAsignatura() {
 		Color borde = new Color(206, 207, 202);
 		Color azul2 = new Color(52, 134, 199);
@@ -1227,98 +1231,108 @@ public class ModuloAsignturaView {
 			moduloAsignatura.add(lblAsignatura);
 			options.add(moduloAsignatura);
 
-			JPanel contenido = new JPanel();
-	        contenido.setLayout(new BorderLayout());
-	        contenido.setBackground(Color.WHITE);
+			
+			// contenido
+			JPanel contenido = new JPanel(new BorderLayout());
+			contenido.setBackground(Color.WHITE);
+			contenido.setBorder(new EmptyBorder(20, 40, 20, 40));
 
-	        JPanel titulo = new JPanel();
-	        titulo.setBackground(Color.WHITE);
-	        JLabel lblDetalles = new JLabel("Detalles de asignaturas");
-	        lblDetalles.setFont(new Font("Arial", Font.BOLD, 20));
-	        titulo.add(lblDetalles);
-	        contenido.add(titulo, BorderLayout.NORTH);
+			JPanel panelTitulo = new JPanel();
+			panelTitulo.setBackground(Color.WHITE);
+			JLabel lblTitulo = new JLabel("Detalles de asignaturas", SwingConstants.CENTER);
+			lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
 
-	        JPanel panelFormulario = new JPanel();
-	        panelFormulario.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-	        panelFormulario.setLayout(new GridBagLayout());
-	        panelFormulario.setBackground(Color.WHITE);
-	        GridBagConstraints d = new GridBagConstraints();
+			JPanel panelFormulario = new JPanel(new GridBagLayout());
+			panelFormulario.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+			panelFormulario.setBackground(Color.WHITE);
+			GridBagConstraints d = new GridBagConstraints();
 
-	        d.insets = new Insets(10, 10, 5, 10);
-	        d.gridx = 0; d.gridy = 0;
-	        JLabel lblNombre = new JLabel("Nombre");
-	        lblNombre.setFont(new Font("Arial", Font.BOLD, 12));
-	        panelFormulario.add(lblNombre, d);
+			JLabel lblNombre = new JLabel("Nombre");
+			lblNombre.setFont(new Font("Arial", Font.BOLD, 14));
 
-	        d.gridx = 1;
-	        JLabel lblValorNombre = new JLabel(" ");
-	        panelFormulario.add(lblValorNombre, d);
+			JLabel lblValorNombre = new JLabel("Programación III");
 
-	        d.gridx = 2;
-	        JLabel lblIdentificador = new JLabel("Identificador");
-	        lblIdentificador.setFont(new Font("Arial", Font.BOLD, 12));
-	        panelFormulario.add(lblIdentificador, d);
+			JLabel lblIdentificador = new JLabel("Identificador");
+			lblIdentificador.setFont(new Font("Arial", Font.BOLD, 14));
 
-	        d.gridx = 3;
-	        JLabel lblValorID = new JLabel(" ");
-	        panelFormulario.add(lblValorID, d);
+			JLabel lblValorID = new JLabel("002");
 
-	        d.gridx = 4;
-	        JLabel lblGruposAsignados = new JLabel("Grupos asignados");
-	        lblGruposAsignados.setFont(new Font("Arial", Font.BOLD, 12));
-	        panelFormulario.add(lblGruposAsignados, d);
+			JLabel lblGruposAsignados = new JLabel("Grupos asignados");
+			lblGruposAsignados.setFont(new Font("Arial", Font.BOLD, 14));
 
-	        d.gridx = 0; d.gridy = 1;
-	        d.gridwidth = 5;
-	        d.insets = new Insets(20, 10, 5, 10);
-	        d.anchor = GridBagConstraints.CENTER;
-	        JLabel lblDescripcion = new JLabel("Descripción");
-	        lblDescripcion.setFont(new Font("Arial", Font.BOLD, 12));
-	        panelFormulario.add(lblDescripcion, d);
+			JLabel lblDescripcion = new JLabel("Descripción");
+			lblDescripcion.setFont(new Font("Arial", Font.BOLD, 14));
 
-	        d.gridy = 2;
-	        d.gridwidth = 3;
-	        d.fill = GridBagConstraints.BOTH;
-	        d.weightx = 1;
-	        d.weighty = 1;
-	        JTextArea areaDescripcion = new JTextArea();
-	        areaDescripcion.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-	        areaDescripcion.setEditable(false);
-	        areaDescripcion.setText(" ");
-	        panelFormulario.add(areaDescripcion, d);
+			JTextArea areaDescripcion = new JTextArea("Descripción de la asignatura");
+			areaDescripcion.setLineWrap(true);
+			areaDescripcion.setWrapStyleWord(true);
+			areaDescripcion.setEditable(false);
+			areaDescripcion.setFont(new Font("Arial", Font.PLAIN, 12));
+			areaDescripcion.setBorder(BorderFactory.createLineBorder(borde,4));
 
-	        d.gridx = 4;
-	        d.gridwidth = 1;
-	        d.weightx = 0.3;
-	        String[] grupos = {" ", " ", " "};
-	        JList<String> listaGrupos = new JList<>(grupos);
-	        listaGrupos.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-	        panelFormulario.add(new JScrollPane(listaGrupos), d);
+			String[] grupos = {"4A", "4B", "4C"};
+			JList<String> listaGrupos = new JList<>(grupos);
+			listaGrupos.setFont(new Font("Arial", Font.PLAIN, 12));
+			listaGrupos.setBorder(BorderFactory.createLineBorder(borde,4));
+			JScrollPane scrollGrupos = new JScrollPane(listaGrupos);
 
-	        contenido.add(panelFormulario, BorderLayout.CENTER);
+			JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 30, 20));
+			panelBotones.setBackground(Color.WHITE);
 
-	        JPanel botones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 30, 20));
-	        botones.setBackground(Color.WHITE);
-	        JButton btnRegresar = new JButton("Regresar");
-	        JButton btnDescargar = new JButton("Descargar PDF");
-	        btnRegresar.setBackground(new Color(52, 152, 219));
-	        btnRegresar.setForeground(Color.WHITE);
-	        btnRegresar.addActionListener(e->{
-	        	ModuloAsignaturaController mac = new ModuloAsignaturaController();
-	        	modulo.dispose();
-	        	mac.moduloAsignatura();
-	        });
-	        btnDescargar.setBackground(new Color(52, 152, 219));
-	        btnDescargar.setForeground(Color.WHITE);
-	        
-	        botones.add(btnRegresar);
-	        botones.add(btnDescargar);
-	        
-	        
+			JButton btnRegresar = new JButton("Regresar");
+			btnRegresar.setBackground(azulcan);
+			btnRegresar.setForeground(Color.WHITE);
 
-	        contenido.add(botones, BorderLayout.SOUTH);	        
-	        modulo.add(contenido);
-	    }
+			JButton btnDescargar = new JButton("Descargar PDF");
+			btnDescargar.setBackground(azul1);
+			btnDescargar.setForeground(Color.WHITE);
+
+			btnRegresar.addActionListener(e -> {
+			    ModuloAsignaturaController mac = new ModuloAsignaturaController();
+			    modulo.dispose();
+			    mac.moduloAsignatura();
+			});
+
+			panelTitulo.add(lblTitulo);
+
+			d.insets = new Insets(15, 15, 10, 15);
+			d.gridx = 0; d.gridy = 0; d.anchor = GridBagConstraints.WEST;
+			panelFormulario.add(lblNombre, d);
+
+			d.gridx = 1; d.anchor = GridBagConstraints.CENTER;
+			panelFormulario.add(lblValorNombre, d);
+
+			d.gridx = 2;
+			panelFormulario.add(lblIdentificador, d);
+
+			d.gridx = 3;
+			panelFormulario.add(lblValorID, d);
+
+			d.gridx = 4;
+			panelFormulario.add(lblGruposAsignados, d);
+
+			d.gridx = 0; d.gridy = 1; d.gridwidth = 5;
+			d.insets = new Insets(20, 15, 5, 15);
+			d.anchor = GridBagConstraints.CENTER;
+			panelFormulario.add(lblDescripcion, d);
+
+			d.gridy = 2; d.gridx = 0; d.gridwidth = 3;
+			d.fill = GridBagConstraints.BOTH;
+			d.weightx = 1; d.weighty = 1;
+			panelFormulario.add(areaDescripcion, d);
+
+			d.gridx = 4; d.gridwidth = 1; d.weightx = 0.3;
+			panelFormulario.add(scrollGrupos, d);
+
+			panelBotones.add(btnRegresar);
+			panelBotones.add(btnDescargar);
+
+			contenido.add(panelTitulo, BorderLayout.NORTH);
+			contenido.add(panelFormulario, BorderLayout.CENTER);
+			contenido.add(panelBotones, BorderLayout.SOUTH);
+
+			modulo.add(contenido);
+	 }
  
 	
 	 // Renderizador simple para botones

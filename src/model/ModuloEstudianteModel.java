@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -271,5 +272,72 @@ public class ModuloEstudianteModel {
 			e.printStackTrace();
 		}
 		System.out.println("Documento listo");
+	}
+	
+	public void descargarCredencial(String ruta, Estudiante estudiante) {
+		try (Document documento = new Document(new PdfDocument(new PdfWriter(ruta)))) {
+
+			PdfFont almarai = PdfFontFactory.createFont("Fonts/Almarai-Regular.ttf");
+			PdfFont almaraiBold = PdfFontFactory.createFont("Fonts/Almarai-Bold.ttf");
+
+			if(estudiante.getFoto()!=null) {
+				byte[] imageBytes = Utils.toByte(Utils.toBufferedImage(estudiante.getFoto()));
+				ImageData data = ImageDataFactory.create(imageBytes);
+				com.itextpdf.layout.element.Image img = new com.itextpdf.layout.element.Image(
+						data)
+						.setWidth(250)
+						.setHeight(250)
+						.setHorizontalAlignment(HorizontalAlignment.CENTER)
+						.setTextAlignment(TextAlignment.CENTER)
+						.setMarginTop(25f)
+						.setMarginBottom(25f);
+				documento.add(img);
+			} else {
+				documento.setTopMargin(40f);
+			}
+			Paragraph noControl = new Paragraph()
+					.setFont(almarai)
+					.setFontSize(28f)
+					.add("No. control: ")
+					.add(String.valueOf(estudiante.getNumeroControl()))
+					.setHorizontalAlignment(HorizontalAlignment.CENTER)
+					.setTextAlignment(TextAlignment.CENTER);
+
+
+			Paragraph alumno = new Paragraph()
+					.setFont(almaraiBold)
+					.setFontSize(40f)
+					.add("ALUMNO")
+					.setHorizontalAlignment(HorizontalAlignment.CENTER)
+					.setTextAlignment(TextAlignment.CENTER);
+
+			Paragraph nombre = new Paragraph()
+					.setFont(almarai)
+					.setFontSize(28f)
+					.add(estudiante.getNombres())
+					.add(" ")
+					.add(estudiante.getApellidos())
+					.setHorizontalAlignment(HorizontalAlignment.CENTER)
+					.setTextAlignment(TextAlignment.CENTER);
+
+			BufferedImage logoUabcs = ImageIO.read(this.getClass().getResource("/imagenes/uabcs (1).png"));
+			byte[] logoBytes = Utils.toByte(logoUabcs);
+			ImageData logoData = ImageDataFactory.create(logoBytes);
+			com.itextpdf.layout.element.Image imgUabcs = new com.itextpdf.layout.element.Image(logoData)
+					.setWidth(150)
+					.setHeight(150)
+					.setHorizontalAlignment(HorizontalAlignment.CENTER)
+					.setTextAlignment(TextAlignment.CENTER)
+					.setMarginTop(25f);
+
+			documento.add(noControl);
+			documento.add(alumno);
+			documento.add(nombre);
+			documento.add(imgUabcs);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("Credencial lista");
 	}
 }

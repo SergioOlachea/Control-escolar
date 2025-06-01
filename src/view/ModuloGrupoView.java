@@ -715,7 +715,7 @@ public class ModuloGrupoView {
         lblListaAlumnos.setFont(new Font("Arial", Font.PLAIN, 12));
         
         JTextField txtDocente = new JTextField();
-        txtDocente.setPreferredSize(new Dimension(200, 25));
+        txtDocente.setPreferredSize(new Dimension(200, 28));
         txtDocente.setBorder(BorderFactory.createLineBorder(borde,4));
         
         if (prueba != null) {
@@ -728,7 +728,7 @@ public class ModuloGrupoView {
         
         JTextField txtAsignatura = new JTextField();
         txtAsignatura.setBorder(BorderFactory.createLineBorder(borde,4));
-        txtAsignatura.setPreferredSize(new Dimension(200, 25));
+        txtAsignatura.setPreferredSize(new Dimension(200, 28));
         if (prueba1 != null) {
             System.out.println(prueba1);
             txtAsignatura.setText(prueba1);
@@ -741,25 +741,26 @@ public class ModuloGrupoView {
         txtIdentificador.setEditable(false);
         txtIdentificador.setBorder(BorderFactory.createLineBorder(borde,4));
         txtIdentificador.setText("01");
-        txtIdentificador.setPreferredSize(new Dimension(200, 25));
+        txtIdentificador.setPreferredSize(new Dimension(200, 28));
         txtIdentificador.setColumns(10);
         
         JTextField txtNombre = new JTextField();
         txtNombre.setText("6A");
         txtNombre.setBorder(BorderFactory.createLineBorder(borde,4));
-        txtNombre.setPreferredSize(new Dimension(200, 25));
+        txtNombre.setPreferredSize(new Dimension(200, 28));
         txtNombre.setColumns(10);
         
-        JButton btnBuscarDocente = new JButton("🔍");
-        btnBuscarDocente.setPreferredSize(new Dimension(30, 25));
+        ImageIcon add = new ImageIcon(getClass().getResource("/imagenes/añadir (1).png"));
+        JButton btnBuscarDocente = new JButton(add);
+        btnBuscarDocente.setPreferredSize(new Dimension(33, 28));
         btnBuscarDocente.setBackground(azul1);
-        btnBuscarDocente.setBorder(BorderFactory.createLineBorder(azulBorde,5));
+        btnBuscarDocente.setBorder(BorderFactory.createLineBorder(azulBorde,3));
         btnBuscarDocente.setFont(new Font("Arial", Font.PLAIN, 10));
         
-        JButton btnBuscarAsignatura = new JButton("🔍");
-        btnBuscarAsignatura.setPreferredSize(new Dimension(30, 25));
+        JButton btnBuscarAsignatura = new JButton(add);
+        btnBuscarAsignatura.setPreferredSize(new Dimension(33, 28));
         btnBuscarAsignatura.setBackground(azul1);
-        btnBuscarAsignatura.setBorder(BorderFactory.createLineBorder(azulBorde,5));
+        btnBuscarAsignatura.setBorder(BorderFactory.createLineBorder(azulBorde,3));
         btnBuscarAsignatura.setFont(new Font("Arial", Font.PLAIN, 10));
         
         inicializarListaEstudiantes();
@@ -795,7 +796,8 @@ public class ModuloGrupoView {
         listaAñadidos.setBorder(BorderFactory.createLineBorder(borde,4));
         JScrollPane scrollLista = new JScrollPane(listaAñadidos);
         
-        JButton btnAnadir = new JButton("⊕ Añadir");
+        JButton btnAnadir = new JButton(add);
+        btnAnadir.setText("Añadir");
         btnAnadir.setBackground(azul2);
         btnAnadir.setForeground(Color.WHITE);
         btnAnadir.setBackground(azul1);
@@ -803,7 +805,9 @@ public class ModuloGrupoView {
         btnAnadir.setPreferredSize(new Dimension(100, 30));
         btnAnadir.setMaximumSize(new Dimension(100, 40));
         
-        JButton btnEliminar = new JButton("⊖ Eliminar");
+        ImageIcon delete = new ImageIcon (getClass().getResource("/imagenes/delete (1).png"));
+        JButton btnEliminar = new JButton(delete);
+        btnEliminar.setText("Eliminar");
         btnEliminar.setBackground(azulC);
         btnEliminar.setBorder(BorderFactory.createLineBorder(azul2,5));
         btnEliminar.setForeground(Color.WHITE);
@@ -834,13 +838,13 @@ public class ModuloGrupoView {
         gbc.gridx = 0;
         gbc.gridy = 0; 
         gbc.anchor = GridBagConstraints.WEST; 
-        gbc.insets = new Insets(20, 50, 5, 5);
+        gbc.insets = new Insets(20, 20, 5, 5);
         Formulario.add(lblDocente, gbc);
         
         gbc.gridx = 1; 
         gbc.fill = GridBagConstraints.HORIZONTAL; 
         gbc.weightx = 1.0;
-        gbc.insets = new Insets(20, 5, 5, 5);
+        gbc.insets = new Insets(20, 0, 5, 5);
         Formulario.add(txtDocente, gbc);
         
         gbc.gridx = 2; 
@@ -851,7 +855,7 @@ public class ModuloGrupoView {
         
         gbc.gridx = 3; 
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(20, 20, 5, 5);
+        gbc.insets = new Insets(20, 0, 5, 5);
         Formulario.add(lblAsignaturas, gbc);
         
         gbc.gridx = 4; 
@@ -1161,15 +1165,300 @@ public class ModuloGrupoView {
     	lblAsignatura.setMaximumSize(new Dimension(80, 70));
     	moduloAsignatura.add(lblAsignatura);
     	options.add(moduloAsignatura);
-
-    	JPanel contenido = new JPanel();
-    	contentPane.add(contenido, BorderLayout.CENTER);
-    	contenido.setBackground(Color.white);
-    	contenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
-    	contenido.setLayout(new BoxLayout(contenido, BoxLayout.PAGE_AXIS));
     	
-    	JLabel temporal = new JLabel("MODIFICAR GRUPO");
-    	contenido.add(temporal);
+    	//Contenido
+    	JPanel contenido = new JPanel();
+        contentPane.add(contenido, BorderLayout.CENTER);
+        contenido.setBackground(Color.WHITE);
+        contenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 15));
+        contenido.setLayout(new BorderLayout(70,20));
+        
+        JLabel lblTitulo = new JLabel("Modificación de grupo");
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
+        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+        contenido.add(lblTitulo,BorderLayout.NORTH);
+        
+        JPanel Formulario = new JPanel();
+        Formulario.setBorder(BorderFactory.createLineBorder(Color.black,4));
+        Formulario.setBackground(Color.white);
+        contenido.add(Formulario, BorderLayout.CENTER);
+        
+        GridBagLayout gbl_Formulario = new GridBagLayout();
+        Formulario.setLayout(gbl_Formulario);
+        
+        JLabel lblDocente = new JLabel("Docente");
+        lblDocente.setFont(new Font("Arial", Font.PLAIN, 12));
+        
+        JLabel lblAsignaturas = new JLabel("Asignatura");
+        lblAsignaturas.setFont(new Font("Arial", Font.PLAIN, 12));
+        
+        JLabel lblIdentificador = new JLabel("Identificador");
+        lblIdentificador.setFont(new Font("Arial", Font.PLAIN, 12));
+        
+        JLabel lblNombre = new JLabel("Nombre");
+        lblNombre.setFont(new Font("Arial", Font.PLAIN, 12));
+        
+        JLabel lblListaAlumnos = new JLabel("Lista de alumnos");
+        lblListaAlumnos.setFont(new Font("Arial", Font.PLAIN, 12));
+        
+        JTextField txtDocente = new JTextField();
+        txtDocente.setPreferredSize(new Dimension(200, 28));
+        txtDocente.setBorder(BorderFactory.createLineBorder(borde,4));
+        
+        if (prueba != null) {
+            System.out.println(prueba.getNombres());
+            txtDocente.setText(prueba.getNombres()+" "+prueba.getApellidos());
+        } else {
+            System.out.println("Error: 'prueba' es null.");
+        }
+        txtDocente.setColumns(10);
+        
+        JTextField txtAsignatura = new JTextField();
+        txtAsignatura.setBorder(BorderFactory.createLineBorder(borde,4));
+        txtAsignatura.setPreferredSize(new Dimension(200, 28));
+        if (prueba1 != null) {
+            System.out.println(prueba1);
+            txtAsignatura.setText(prueba1);
+        } else {
+            System.out.println("Error: 'prueba1' es null.");
+        }
+        txtAsignatura.setColumns(10);
+        
+        JTextField txtIdentificador = new JTextField();
+        txtIdentificador.setEditable(false);
+        txtIdentificador.setBorder(BorderFactory.createLineBorder(borde,4));
+        txtIdentificador.setText("01");
+        txtIdentificador.setPreferredSize(new Dimension(200, 28));
+        txtIdentificador.setColumns(10);
+        
+        JTextField txtNombre = new JTextField();
+        txtNombre.setText("6A");
+        txtNombre.setBorder(BorderFactory.createLineBorder(borde,4));
+        txtNombre.setPreferredSize(new Dimension(200, 28));
+        txtNombre.setColumns(10);
+        
+        ImageIcon add = new ImageIcon(getClass().getResource("/imagenes/añadir (1).png"));
+        JButton btnBuscarDocente = new JButton(add);
+        btnBuscarDocente.setPreferredSize(new Dimension(33, 28));
+        btnBuscarDocente.setBackground(azul1);
+        btnBuscarDocente.setBorder(BorderFactory.createLineBorder(azulBorde,3));
+        btnBuscarDocente.setFont(new Font("Arial", Font.PLAIN, 10));
+        
+        JButton btnBuscarAsignatura = new JButton(add);
+        btnBuscarAsignatura.setPreferredSize(new Dimension(33, 28));
+        btnBuscarAsignatura.setBackground(azul1);
+        btnBuscarAsignatura.setBorder(BorderFactory.createLineBorder(azulBorde,3));
+        btnBuscarAsignatura.setFont(new Font("Arial", Font.PLAIN, 10));
+        
+        inicializarListaEstudiantes();
+        
+        DefaultListModel<Estudiante> modelo = new DefaultListModel<>();
+        
+        modelo.clear();
+        for(Estudiante e : estudiantesAñadidos) {
+        	modelo.addElement(e);
+        	System.out.println("estufiante"+e.getNombres());
+        
+        }
+        JList<Estudiante> listaAñadidos = new JList<>(modelo);
+        listaAñadidos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        listaAñadidos.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, 
+                    int index, boolean isSelected, boolean cellHasFocus) {
+                
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                
+                if (value instanceof Estudiante) {
+                    Estudiante estudiante = (Estudiante) value;
+                    setText(estudiante.getNombres());
+                }
+                
+                setHorizontalAlignment(SwingConstants.CENTER);
+                return this;
+            }
+        });
+
+        listaAñadidos.setBorder(BorderFactory.createLineBorder(borde,4));
+        JScrollPane scrollLista = new JScrollPane(listaAñadidos);
+        
+        JButton btnAnadir = new JButton(add);
+        btnAnadir.setText("Añadir");
+        btnAnadir.setBackground(azul2);
+        btnAnadir.setForeground(Color.WHITE);
+        btnAnadir.setBackground(azul1);
+        btnAnadir.setBorder(BorderFactory.createLineBorder(azulBorde,5));
+        btnAnadir.setPreferredSize(new Dimension(100, 30));
+        btnAnadir.setMaximumSize(new Dimension(100, 40));
+        
+        ImageIcon delete = new ImageIcon(getClass().getResource("/imagenes/delete (1).png"));
+        JButton btnEliminar = new JButton(delete);
+        btnEliminar.setText("Eliminar");
+        btnEliminar.setBackground(azulC);
+        btnEliminar.setBorder(BorderFactory.createLineBorder(azul2,5));
+        btnEliminar.setForeground(Color.WHITE);
+        btnEliminar.setMaximumSize(new Dimension(100, 40));
+        
+        JPanel panelBotones = new JPanel();
+        panelBotones.setBackground(Color.white);
+        panelBotones.setLayout(new BoxLayout(panelBotones, BoxLayout.Y_AXIS));
+        panelBotones.add(Box.createVerticalStrut(50));
+        panelBotones.add(btnAnadir);
+        panelBotones.add(Box.createVerticalStrut(50));
+        panelBotones.add(btnEliminar);
+        
+        JButton btnCancelar = new JButton("Cancelar");
+        btnCancelar.setBackground(azulC);
+        btnCancelar.setBorder(BorderFactory.createLineBorder(azul2,5));
+        btnCancelar.setForeground(Color.WHITE);
+        btnCancelar.setPreferredSize(new Dimension(100, 35));
+        
+        JButton btnCrear = new JButton("Crear");
+        btnCrear.setBackground(azul1);
+        btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde,5));
+        btnCrear.setForeground(Color.WHITE);
+        btnCrear.setPreferredSize(new Dimension(100, 35));
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        
+        gbc.gridx = 0;
+        gbc.gridy = 0; 
+        gbc.anchor = GridBagConstraints.WEST; 
+        gbc.insets = new Insets(20, 20, 5, 5);
+        Formulario.add(lblDocente, gbc);
+        
+        gbc.gridx = 1; 
+        gbc.fill = GridBagConstraints.HORIZONTAL; 
+        gbc.weightx = 1.0;
+        gbc.insets = new Insets(20, 0, 5, 5);
+        Formulario.add(txtDocente, gbc);
+        
+        gbc.gridx = 2; 
+        gbc.fill = GridBagConstraints.NONE; 
+        gbc.weightx = 0.0;
+        gbc.insets = new Insets(20, 5, 5, 20);
+        Formulario.add(btnBuscarDocente, gbc);
+        
+        gbc.gridx = 3; 
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(20, 0, 5, 5);
+        Formulario.add(lblAsignaturas, gbc);
+        
+        gbc.gridx = 4; 
+        gbc.fill = GridBagConstraints.HORIZONTAL; 
+        gbc.weightx = 1.0;
+        gbc.insets = new Insets(20, 0, 5, 5);
+        Formulario.add(txtAsignatura, gbc);
+        
+        gbc.gridx = 5; 
+        gbc.fill = GridBagConstraints.NONE; 
+        gbc.weightx = 0.0;
+        gbc.insets = new Insets(20, 0, 5, 20);
+        Formulario.add(btnBuscarAsignatura, gbc);
+        
+        gbc.gridx = 0; 
+        gbc.gridy = 1; 
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(20, 20, 5, 5);
+        Formulario.add(lblIdentificador, gbc);
+        
+        gbc.gridx = 1; 
+        gbc.fill = GridBagConstraints.HORIZONTAL; 
+        gbc.weightx = 1.0;
+        gbc.insets = new Insets(20, 0, 5, 5);
+        Formulario.add(txtIdentificador, gbc);
+        
+        gbc.gridx = 3; 
+        gbc.fill = GridBagConstraints.NONE; 
+        gbc.weightx = 0.0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(10, 20, 5, 5);
+        Formulario.add(lblNombre, gbc);
+        
+        gbc.gridx = 4; 
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        gbc.insets = new Insets(10, 0, 5, 5);
+        Formulario.add(txtNombre, gbc);
+        
+        gbc.gridx = 2; 
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.NONE; 
+        gbc.weightx = 0.0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(20, 20, 5, 5);
+        Formulario.add(lblListaAlumnos, gbc);
+        
+        gbc.gridx = 0; 
+        gbc.gridy = 3; 
+        gbc.gridwidth = 5; 
+        gbc.fill = GridBagConstraints.BOTH; 
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.insets = new Insets(0, 40, 20, 40);
+        Formulario.add(scrollLista, gbc);
+        
+        gbc.gridx = 6;
+        gbc.gridwidth = 1; 
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.weightx = 0.0;
+        gbc.insets = new Insets(0, 5, 20, 50);
+        Formulario.add(panelBotones, gbc);
+        
+        JPanel panelInferior = new JPanel();
+        panelInferior.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+        panelInferior.add(btnCancelar);
+        panelInferior.add(btnCrear);
+        contenido.add(panelInferior, BorderLayout.SOUTH);
+        
+        btnBuscarDocente.addActionListener(e->{
+        	ModuloGrupoController mgc = new ModuloGrupoController();
+        	mgc.addDocente();
+        	modulo.dispose();
+        });
+        
+        btnBuscarAsignatura.addActionListener(e -> {
+        	ModuloGrupoController mgc = new ModuloGrupoController();
+        	mgc.addAsignatura();
+        	modulo.dispose();
+        });
+        
+        btnAnadir.addActionListener(e -> {
+            ModuloGrupoController mgc = new ModuloGrupoController();
+            modulo.dispose();
+            mgc.AddEstudiante();
+        });
+        
+        btnEliminar.addActionListener(e -> {
+            if (listaAñadidos.getSelectedIndex() != -1) {
+                JOptionPane.showMessageDialog(modulo, "Función para eliminar alumno seleccionado");
+            } else {
+                JOptionPane.showMessageDialog(modulo, "Seleccione un alumno para eliminar");
+            }
+        });
+        
+        btnCancelar.addActionListener(e -> {
+            int n = JOptionPane.showConfirmDialog(
+                null,
+                "¿Está seguro que desea cancelar? Se perderán todos los cambios.",
+                "Cancelar creación",
+                JOptionPane.YES_NO_OPTION);
+            
+            if(n == 0) {
+            	ModuloGrupoController mgc = new ModuloGrupoController();
+                modulo.dispose();
+                mgc.moduloGrupo();
+            }
+        });
+        
+        btnCrear.addActionListener(e -> {
+           JOptionPane.showMessageDialog(modulo, "Función para crear grupo");
+        });
+        
+
+        contenido.revalidate();
+        contenido.repaint();
     }
 	
 	
@@ -1372,12 +1661,207 @@ public class ModuloGrupoView {
 
     	JPanel contenido = new JPanel();
     	contentPane.add(contenido, BorderLayout.CENTER);
-    	contenido.setBackground(Color.white);
-    	contenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
-    	contenido.setLayout(new BoxLayout(contenido, BoxLayout.PAGE_AXIS));
-    	
-    	JLabel temporal = new JLabel("DETALLES GRUPO");
-    	contenido.add(temporal);
+    	contenido.setBackground(Color.WHITE);
+    	contenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 15));
+    	contenido.setLayout(new BorderLayout(70, 20));
+
+    	JLabel lblTitulo = new JLabel("Modificación de grupo");
+    	lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
+    	lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+    	contenido.add(lblTitulo, BorderLayout.NORTH);
+
+    	JPanel Formulario = new JPanel();
+    	Formulario.setBorder(BorderFactory.createLineBorder(Color.black, 4));
+    	Formulario.setBackground(Color.white);
+    	contenido.add(Formulario, BorderLayout.CENTER);
+
+    	GridBagLayout gbl_Formulario = new GridBagLayout();
+    	Formulario.setLayout(gbl_Formulario);
+
+    	JLabel lblDocente = new JLabel("Docente");
+    	lblDocente.setFont(new Font("Arial", Font.PLAIN, 12));
+
+    	JLabel lblAsignaturas = new JLabel("Asignatura");
+    	lblAsignaturas.setFont(new Font("Arial", Font.PLAIN, 12));
+
+    	JLabel lblIdentificador = new JLabel("Identificador");
+    	lblIdentificador.setFont(new Font("Arial", Font.PLAIN, 12));
+
+    	JLabel lblNombre = new JLabel("Nombre");
+    	lblNombre.setFont(new Font("Arial", Font.PLAIN, 12));
+
+    	JLabel lblListaAlumnos = new JLabel("Lista de alumnos");
+    	lblListaAlumnos.setFont(new Font("Arial", Font.PLAIN, 12));
+
+    	JLabel lblValorDocente = new JLabel();
+    	lblValorDocente.setFont(new Font("Arial", Font.PLAIN, 12));
+    	lblValorDocente.setOpaque(true);
+    	lblValorDocente.setBackground(Color.WHITE);
+    	lblValorDocente.setBorder(BorderFactory.createLineBorder(borde, 4));
+    	lblValorDocente.setPreferredSize(new Dimension(200, 28));
+
+    	if (prueba != null) {
+    	    lblValorDocente.setText(prueba.getNombres() + " " + prueba.getApellidos());
+    	} else {
+    	    lblValorDocente.setText("No disponible");
+    	}
+
+    	JLabel lblValorAsignatura = new JLabel();
+    	lblValorAsignatura.setFont(new Font("Arial", Font.PLAIN, 12));
+    	lblValorAsignatura.setOpaque(true);
+    	lblValorAsignatura.setBackground(Color.WHITE);
+    	lblValorAsignatura.setBorder(BorderFactory.createLineBorder(borde, 4));
+    	lblValorAsignatura.setPreferredSize(new Dimension(200, 28));
+
+    	if (prueba1 != null) {
+    	    lblValorAsignatura.setText(prueba1);
+    	} else {
+    	    lblValorAsignatura.setText("No disponible");
+    	}
+
+    	JLabel lblValorIdentificador = new JLabel("01");
+    	lblValorIdentificador.setFont(new Font("Arial", Font.PLAIN, 12));
+    	lblValorIdentificador.setOpaque(true);
+    	lblValorIdentificador.setBackground(Color.WHITE);
+    	lblValorIdentificador.setBorder(BorderFactory.createLineBorder(borde, 4));
+    	lblValorIdentificador.setPreferredSize(new Dimension(200, 28));
+
+    	JLabel lblValorNombre = new JLabel("6A");
+    	lblValorNombre.setFont(new Font("Arial", Font.PLAIN, 12));
+    	lblValorNombre.setOpaque(true);
+    	lblValorNombre.setBackground(Color.WHITE);
+    	lblValorNombre.setBorder(BorderFactory.createLineBorder(borde, 4));
+    	lblValorNombre.setPreferredSize(new Dimension(200, 28));
+
+    	inicializarListaEstudiantes();
+
+    	DefaultListModel<Estudiante> modelo = new DefaultListModel<>();
+    	modelo.clear();
+    	for (Estudiante e : estudiantesAñadidos) {
+    	    modelo.addElement(e);
+    	}
+
+    	JList<Estudiante> listaAñadidos = new JList<>(modelo);
+    	listaAñadidos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    	listaAñadidos.setCellRenderer(new DefaultListCellRenderer() {
+    	    @Override
+    	    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    	        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    	        if (value instanceof Estudiante) {
+    	            Estudiante estudiante = (Estudiante) value;
+    	            setText(estudiante.getNombres());
+    	        }
+    	        setHorizontalAlignment(SwingConstants.CENTER);
+    	        return this;
+    	    }
+    	});
+
+    	listaAñadidos.setBorder(BorderFactory.createLineBorder(borde, 4));
+    	JScrollPane scrollLista = new JScrollPane(listaAñadidos);
+
+    	JButton btnCancelar = new JButton("Cancelar");
+    	btnCancelar.setBackground(azulC);
+    	btnCancelar.setBorder(BorderFactory.createLineBorder(azul2, 5));
+    	btnCancelar.setForeground(Color.WHITE);
+    	btnCancelar.setPreferredSize(new Dimension(100, 35));
+
+    	JButton btnCrear = new JButton("Descargar PDF");
+    	btnCrear.setBackground(azul1);
+    	btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde, 5));
+    	btnCrear.setForeground(Color.WHITE);
+    	btnCrear.setPreferredSize(new Dimension(130, 35));
+
+    	GridBagConstraints gbc = new GridBagConstraints();
+
+    	gbc.gridx = 0;
+    	gbc.gridy = 0;
+    	gbc.anchor = GridBagConstraints.WEST;
+    	gbc.insets = new Insets(20, 20, 5, 5);
+    	Formulario.add(lblDocente, gbc);
+
+    	gbc.gridx = 1;
+    	gbc.fill = GridBagConstraints.HORIZONTAL;
+    	gbc.weightx = 1.0;
+    	gbc.insets = new Insets(20, 0, 5, 5);
+    	Formulario.add(lblValorDocente, gbc);
+
+    	gbc.gridx = 3;
+    	gbc.anchor = GridBagConstraints.WEST;
+    	gbc.insets = new Insets(20, 0, 5, 5);
+    	Formulario.add(lblAsignaturas, gbc);
+
+    	gbc.gridx = 4;
+    	gbc.fill = GridBagConstraints.HORIZONTAL;
+    	gbc.weightx = 1.0;
+    	gbc.insets = new Insets(20, 0, 5, 5);
+    	Formulario.add(lblValorAsignatura, gbc);
+
+    	gbc.gridx = 0;
+    	gbc.gridy = 1;
+    	gbc.anchor = GridBagConstraints.WEST;
+    	gbc.insets = new Insets(20, 20, 5, 5);
+    	Formulario.add(lblIdentificador, gbc);
+
+    	gbc.gridx = 1;
+    	gbc.fill = GridBagConstraints.HORIZONTAL;
+    	gbc.weightx = 1.0;
+    	gbc.insets = new Insets(20, 0, 5, 5);
+    	Formulario.add(lblValorIdentificador, gbc);
+
+    	gbc.gridx = 3;
+    	gbc.anchor = GridBagConstraints.WEST;
+    	gbc.insets = new Insets(10, 20, 5, 5);
+    	Formulario.add(lblNombre, gbc);
+
+    	gbc.gridx = 4;
+    	gbc.fill = GridBagConstraints.HORIZONTAL;
+    	gbc.weightx = 1.0;
+    	gbc.insets = new Insets(10, 0, 5, 5);
+    	Formulario.add(lblValorNombre, gbc);
+
+    	gbc.gridx = 2;
+    	gbc.gridy = 2;
+    	gbc.fill = GridBagConstraints.NONE;
+    	gbc.weightx = 0.0;
+    	gbc.anchor = GridBagConstraints.WEST;
+    	gbc.insets = new Insets(20, 20, 5, 5);
+    	Formulario.add(lblListaAlumnos, gbc);
+
+    	gbc.gridx = 0;
+    	gbc.gridy = 3;
+    	gbc.gridwidth = 6;
+    	gbc.fill = GridBagConstraints.BOTH;
+    	gbc.weightx = 1.0;
+    	gbc.weighty = 1.0;
+    	gbc.insets = new Insets(0, 40, 20, 40);
+    	Formulario.add(scrollLista, gbc);
+
+    	JPanel panelInferior = new JPanel();
+    	panelInferior.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+    	panelInferior.add(btnCancelar);
+    	panelInferior.add(btnCrear);
+    	contenido.add(panelInferior, BorderLayout.SOUTH);
+
+    	btnCancelar.addActionListener(e -> {
+    	    int n = JOptionPane.showConfirmDialog(
+    	        null,
+    	        "¿Está seguro que desea cancelar? Se perderán todos los cambios.",
+    	        "Cancelar creación",
+    	        JOptionPane.YES_NO_OPTION);
+    	    if (n == 0) {
+    	        ModuloGrupoController mgc = new ModuloGrupoController();
+    	        modulo.dispose();
+    	        mgc.moduloGrupo();
+    	    }
+    	});
+
+    	btnCrear.addActionListener(e -> {
+    	    JOptionPane.showMessageDialog(modulo, "Función para generar PDF del grupo");
+    	});
+
+    	contenido.revalidate();
+    	contenido.repaint();
+
     }
 
     //metodos para agregar y mostrar estudiantes asignaturas y docentes

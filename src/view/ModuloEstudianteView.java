@@ -440,8 +440,6 @@ public class ModuloEstudianteView {
     	        JOptionPane.showMessageDialog(null, "No se encontró ningún resultado para: " + texto);
     	        tabla.setRowSorter(null); // Quitar filtro
     	    }
-        	
-
         });
 
         option.add(btnBuscar);
@@ -2573,14 +2571,16 @@ public class ModuloEstudianteView {
 	    public Object getCellEditorValue() {
 	        ModuloEstudianteController mec = new ModuloEstudianteController();
 	        if (texto.equals("Generar")) {
-	        	int filaSeleccionada = tabla.getSelectedRow();
+	        	int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+
                 if (filaSeleccionada >= 0) {
                     Estudiante eSeleccionado = listaEstudiantes.get(filaSeleccionada);
 	            modulo.dispose();
 	            mec.credencial(eSeleccionado);
                 }
 	        } else if (texto.equals("Datos completos")) {
-	        	int filaSeleccionada = tabla.getSelectedRow();
+	        	int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+
                 if (filaSeleccionada >= 0) {
                     Estudiante eSeleccionado = listaEstudiantes.get(filaSeleccionada);
 	            modulo.dispose(); 
@@ -2659,7 +2659,8 @@ public class ModuloEstudianteView {
             });
 
             borrar.addActionListener(e -> {
-            	int filaSeleccionada = tabla.getSelectedRow();
+            	int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+
             	 if (filaSeleccionada >= 0) {
             		 
             		 int n = JOptionPane.showConfirmDialog(

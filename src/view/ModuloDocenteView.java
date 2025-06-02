@@ -687,6 +687,7 @@ public class ModuloDocenteView {
 			contenido.setLayout(new BorderLayout(0, 0));
 			
 			JPanel panelContenido = new JPanel();
+			panelContenido.setBackground(Color.white);
 			panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
 			panelContenido.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 			contentPane.add(panelContenido, BorderLayout.CENTER);
@@ -698,6 +699,7 @@ public class ModuloDocenteView {
 	        panelContenido.add(Box.createVerticalStrut(20));
 
 	        JPanel Formulario = new JPanel(new GridBagLayout());
+	        Formulario.setBackground(Color.white);
 	        Formulario.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 	        GridBagConstraints organizador = new GridBagConstraints();
 	        organizador.insets = new Insets(8, 10, 8, 10);
@@ -740,6 +742,7 @@ public class ModuloDocenteView {
 	        cbAnio.setBorder(BorderFactory.createLineBorder(borde,5));
 	        
 	        JPanel panelFecha = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+	        panelFecha.setBackground(Color.white);
 	        panelFecha.add(cbDia);
 	        panelFecha.add(cbMes);
 	        panelFecha.add(cbAnio);
@@ -770,6 +773,7 @@ public class ModuloDocenteView {
 	        txtCurp.setBorder(BorderFactory.createLineBorder(borde,5));
 
 	        JPanel panelFoto = new JPanel();
+	        panelFoto.setBackground(Color.white);
 	        panelFoto.setLayout(new BoxLayout(panelFoto, BoxLayout.Y_AXIS));
 	        panelFoto.setBorder(BorderFactory.createTitledBorder("Foto"));
 
@@ -896,6 +900,7 @@ public class ModuloDocenteView {
 	        panelContenido.add(Box.createVerticalStrut(20));
 
 	        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+	        panelBotones.setBackground(Color.white);
 	        JButton btnCancelar = new JButton("Cancelar");
 	        JButton btnCrear = new JButton("Crear");
 	        btnCancelar.setBackground(azulC);
@@ -1307,6 +1312,7 @@ public class ModuloDocenteView {
 			contenido.setLayout(new BorderLayout(0, 0));
 			
 			JPanel panelContenido = new JPanel();
+			panelContenido.setBackground(Color.white);
 			panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
 			panelContenido.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 			contentPane.add(panelContenido, BorderLayout.CENTER);
@@ -1318,6 +1324,7 @@ public class ModuloDocenteView {
 	        panelContenido.add(Box.createVerticalStrut(20));
 
 	        JPanel Formulario = new JPanel(new GridBagLayout());
+	        Formulario.setBackground(Color.white);
 	        Formulario.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 	        GridBagConstraints organizador = new GridBagConstraints();
 	        organizador.insets = new Insets(8, 10, 8, 10);
@@ -1360,6 +1367,7 @@ public class ModuloDocenteView {
 	        cbAnio.setBorder(BorderFactory.createLineBorder(borde,5));
 	        
 	        JPanel panelFecha = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+	        panelFecha.setBackground(Color.white);
 	        panelFecha.add(cbDia);
 	        panelFecha.add(cbMes);
 	        panelFecha.add(cbAnio);
@@ -1390,6 +1398,7 @@ public class ModuloDocenteView {
 	        txtCurp.setBorder(BorderFactory.createLineBorder(borde,5));
 
 	        JPanel panelFoto = new JPanel();
+	        panelFoto.setBackground(Color.white);
 	        panelFoto.setLayout(new BoxLayout(panelFoto, BoxLayout.Y_AXIS));
 	        panelFoto.setBorder(BorderFactory.createTitledBorder("Foto"));
 
@@ -1547,6 +1556,7 @@ public class ModuloDocenteView {
 	        panelContenido.add(Box.createVerticalStrut(20));
 
 	        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+	        panelBotones.setBackground(Color.white);
 	        JButton btnCancelar = new JButton("Cancelar");
 	        JButton btnModificar = new JButton("Modificar");
 	        btnCancelar.setBackground(azulC);
@@ -1559,8 +1569,8 @@ public class ModuloDocenteView {
 	        btnModificar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	        btnCancelar.addActionListener(e->{
 	        	modulo.dispose();
-	        	ModuloEstudianteController mec= new ModuloEstudianteController();
-	        	mec.ModuloEstudiante();
+	        	ModuloDocenteController mdc= new ModuloDocenteController();
+	        	mdc.moduloDocente();
 	        });
 	        btnModificar.addActionListener(e->{
 		        String nombres = txtNombres.getText().trim();
@@ -2163,6 +2173,7 @@ public class ModuloDocenteView {
 	        panelContenido.add(Box.createVerticalStrut(20));
 
 	        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+	        panelBotones.setBackground(Color.white);
 	        JButton btnCancelar = new JButton("Regresar");
 	        JButton btnCrear = new JButton("Descargar PDF");
 	        btnCancelar.setBackground(azulC);

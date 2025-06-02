@@ -673,9 +673,9 @@ public class ModuloAsignturaView {
 		panel.setBackground(Color.white);
 		contenido.add(panel, BorderLayout.NORTH);
 		
-		JLabel lblNewLabel = new JLabel("Creación de asignaturas");
-		lblNewLabel.setFont(new Font("Almarai-Bold", Font.BOLD, 30));
-		panel.add(lblNewLabel);
+		JLabel lblTitulo = new JLabel("Creación de asignaturas");
+		lblTitulo.setFont(new Font("Almarai-Bold", Font.BOLD, 30));
+		panel.add(lblTitulo);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0), 3));
@@ -683,27 +683,27 @@ public class ModuloAsignturaView {
 		contenido.add(panel_1, BorderLayout.CENTER);
 		panel_1.setLayout(null);
 		
-		JLabel nameTag = new JLabel("Nombre");
-		nameTag.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
-		nameTag.setBounds(88, 37, 65, 29);
-		panel_1.add(nameTag);
+		JLabel lblNombre = new JLabel("Nombre");
+		lblNombre.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
+		lblNombre.setBounds(88, 37, 65, 29);
+		panel_1.add(lblNombre);
 		
-		JTextField nameInput = new JTextField();
-		nameInput.setBounds(148, 39, 205, 29);
-		nameInput.setBorder(BorderFactory.createLineBorder(borde,5));
-		nameInput.setColumns(10);
-		panel_1.add(nameInput);
+		JTextField txtNombre = new JTextField();
+		txtNombre.setBounds(148, 39, 205, 29);
+		txtNombre.setBorder(BorderFactory.createLineBorder(borde,5));
+		txtNombre.setColumns(10);
+		panel_1.add(txtNombre);
 		
-		JLabel identifierTag = new JLabel("Identificador");
-		identifierTag.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
-		identifierTag.setBounds(442, 37, 95, 29);
-		panel_1.add(identifierTag);
+		JLabel lblIdentificador = new JLabel("Identificador");
+		lblIdentificador.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
+		lblIdentificador.setBounds(442, 37, 95, 29);
+		panel_1.add(lblIdentificador);
 		
-		JTextField identifierInput = new JTextField();
-		identifierInput.setColumns(10);
-		identifierInput.setBorder(BorderFactory.createLineBorder(borde,5));
-		identifierInput.setBounds(534, 39, 205, 29);
-		panel_1.add(identifierInput);
+		JTextField txtIdentificador = new JTextField();
+		txtIdentificador.setColumns(10);
+		txtIdentificador.setBorder(BorderFactory.createLineBorder(borde,5));
+		txtIdentificador.setBounds(534, 39, 205, 29);
+		panel_1.add(txtIdentificador);
 		
 		
 		JLabel descriptionTag = new JLabel("Descripción");
@@ -738,6 +738,41 @@ public class ModuloAsignturaView {
         btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde,5));
         btnCrear.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         panelBotones.add(btnCrear);
+        btnCrear.addActionListener(e->{
+        	String nombre = txtNombre.getText().trim();
+        	String descripcion = descriptionInput.getText().trim();
+        	
+        	 Pattern soloLetras = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$");
+        	 
+        	 StringBuilder errores = new StringBuilder("Por favor corrige los siguientes campos:\n");
+        	 boolean camposValidos=true;
+        	 if (nombre.isEmpty() || !soloLetras.matcher(nombre).matches()) {
+		            txtNombre.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+		            errores.append("Nombres (solo letras)\n");
+		            camposValidos = false;
+		        } else {
+		            txtNombre.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+		        }
+
+		        if (descripcion.isEmpty() || !soloLetras.matcher(descripcion).matches()) {
+		        	descriptionInput.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+		            errores.append("Descripcion (solo letras)\n");
+		            camposValidos = false;
+		        } else {
+		        	descriptionInput.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+		        }
+		        if (camposValidos) {
+		        	
+		        	JOptionPane.showMessageDialog(null, "Asignatura creada correctamente.");
+		            ModuloAsignaturaController mec= new ModuloAsignaturaController();
+		            crear.dispose();
+		            mec.moduloAsignatura();
+		        } else {
+		            JOptionPane.showMessageDialog(null, errores.toString(), "Campos inválidos", JOptionPane.WARNING_MESSAGE);
+		        }
+		        
+        	
+        });
         
 		contenido.add(panelBotones, BorderLayout.SOUTH);
 

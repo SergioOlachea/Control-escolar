@@ -932,9 +932,6 @@ public class ModuloDocenteView {
 		                break;
 		            }
 		        }
-
-		        
-		        int grado= Integer.parseInt(gradotext);
 		        
 		        byte[] fotoBytes = Utils.toByte(imagenSeleccionada);
 		

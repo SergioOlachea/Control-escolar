@@ -957,6 +957,14 @@ public class ModuloEstudianteView {
 		        boolean camposValidos = true;
 		        StringBuilder errores = new StringBuilder("Por favor corrige los siguientes campos:\n");
 		        
+		        if (fotoBytes != null && fotoBytes.length > 65535) {
+		            JOptionPane.showMessageDialog(null, 
+		                "La imagen seleccionada supera el tamaño máximo permitido (64 KB / 65,535 bytes)", 
+		                "Imagen demasiado grande", 
+		                JOptionPane.WARNING_MESSAGE);
+		            camposValidos = false;
+		        }
+		        
 		        Pattern soloLetras = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$");
 		        Pattern soloNumeros = Pattern.compile("^\\d{7,15}$");
 		        Pattern soloDireccion = Pattern.compile("^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\\-#]+$");
@@ -964,17 +972,17 @@ public class ModuloEstudianteView {
 		        Pattern curpValida = Pattern.compile("^[A-Z0-9]{18}$");
 		        Pattern gradoNumerico = Pattern.compile("^\\d+$");
 
-		        if (nombres.isEmpty() || !soloLetras.matcher(nombres).matches()) {
+		        if (nombres.isEmpty() || !soloLetras.matcher(nombres).matches() || nombres.length() > 100) {
 		            txtNombres.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Nombres (solo letras)\n");
+		            errores.append("Nombres (solo letras, máximo 100 caracteres)\n");
 		            camposValidos = false;
 		        } else {
 		            txtNombres.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (apellidos.isEmpty() || !soloLetras.matcher(apellidos).matches()) {
+		        if (apellidos.isEmpty() || !soloLetras.matcher(apellidos).matches() || apellidos.length() > 100) {
 		            txtApellidos.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Apellidos (solo letras)\n");
+		            errores.append("Apellidos (solo letras, máximo 100 caracteres)\n");
 		            camposValidos = false;
 		        } else {
 		            txtApellidos.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
@@ -996,17 +1004,17 @@ public class ModuloEstudianteView {
 		            txtCurp.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (correo.isEmpty() || !correoValido.matcher(correo).matches()) {
+		        if (correo.isEmpty() || !correoValido.matcher(correo).matches() || correo.length() > 256) {
 		            txtCorreo.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Correo (formato inválido)\n");
+		            errores.append("Correo (formato inválido, máximo 256 caracteres)\n");
 		            camposValidos = false;
 		        } else {
 		            txtCorreo.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (domicilio.isEmpty() || !soloDireccion.matcher(domicilio).matches()) {
+		        if (domicilio.isEmpty() || !soloDireccion.matcher(domicilio).matches() || domicilio.length() > 256) {
 		            txtDomicilio.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Domicilio (letras y números solamente)\n");
+		            errores.append("Domicilio (letras y números solamente, máximo 256 caracteres)\n");
 		            camposValidos = false;
 		        } else {
 		            txtDomicilio.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
@@ -1618,6 +1626,14 @@ public class ModuloEstudianteView {
 	        boolean camposValidos = true;
 	        StringBuilder errores = new StringBuilder("Por favor corrige los siguientes campos:\n");
 	        
+	        if (fotoBytes != null && fotoBytes.length > 65535) {
+	            JOptionPane.showMessageDialog(null, 
+	                "La imagen seleccionada supera el tamaño máximo permitido (64 KB / 65,535 bytes)", 
+	                "Imagen demasiado grande", 
+	                JOptionPane.WARNING_MESSAGE);
+	            camposValidos = false;
+	        }
+	        
 	        Pattern soloLetras = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$");
 	        Pattern soloNumeros = Pattern.compile("^\\d{7,15}$");
 	        Pattern soloDireccion = Pattern.compile("^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\\-#]+$");
@@ -1625,17 +1641,17 @@ public class ModuloEstudianteView {
 	        Pattern curpValida = Pattern.compile("^[A-Z0-9]{18}$");
 	        Pattern gradoNumerico = Pattern.compile("^\\d+$");
 
-	        if (nombres.isEmpty() || !soloLetras.matcher(nombres).matches()) {
+	        if (nombres.isEmpty() || !soloLetras.matcher(nombres).matches() || nombres.length() > 100) {
 	            txtNombres.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-	            errores.append("Nombres (solo letras)\n");
+	            errores.append("Nombres (solo letras, máximo 100 caracteres)\n");
 	            camposValidos = false;
 	        } else {
 	            txtNombres.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 	        }
 
-	        if (apellidos.isEmpty() || !soloLetras.matcher(apellidos).matches()) {
+	        if (apellidos.isEmpty() || !soloLetras.matcher(apellidos).matches() || apellidos.length() > 100) {
 	            txtApellidos.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-	            errores.append("Apellidos (solo letras)\n");
+	            errores.append("Apellidos (solo letras, máximo 100 caracteres)\n");
 	            camposValidos = false;
 	        } else {
 	            txtApellidos.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
@@ -1657,17 +1673,17 @@ public class ModuloEstudianteView {
 	            txtCurp.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 	        }
 
-	        if (correo.isEmpty() || !correoValido.matcher(correo).matches()) {
+	        if (correo.isEmpty() || !correoValido.matcher(correo).matches() || correo.length() > 256) {
 	            txtCorreo.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-	            errores.append("Correo (formato inválido)\n");
+	            errores.append("Correo (formato inválido, máximo 256 caracteres)\n");
 	            camposValidos = false;
 	        } else {
 	            txtCorreo.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 	        }
 
-	        if (domicilio.isEmpty() || !soloDireccion.matcher(domicilio).matches()) {
+	        if (domicilio.isEmpty() || !soloDireccion.matcher(domicilio).matches() || domicilio.length() > 256) {
 	            txtDomicilio.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-	            errores.append("Domicilio (letras y números solamente)\n");
+	            errores.append("Domicilio (letras y números solamente, máximo 256 caracteres)\n");
 	            camposValidos = false;
 	        } else {
 	            txtDomicilio.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));

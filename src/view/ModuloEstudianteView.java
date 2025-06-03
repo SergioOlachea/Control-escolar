@@ -349,7 +349,7 @@ public class ModuloEstudianteView {
         option.add(Box.createRigidArea(new Dimension(20,0)));
         
         // Tabla
-        String[] columnas = {"Identificador", "Nombre completo", "Grupo", "Detalles del alumno", "Credencial", "Opciones"};
+        String[] columnas = {"Num. control", "Nombre completo", "Grupo", "Detalles del alumno", "Credencial", "Opciones"};
         Object[][] datos = new Object[listaEstudiantes.size()][columnas.length];
        
         for (int i = 0; i < listaEstudiantes.size(); i++) {
@@ -383,7 +383,7 @@ public class ModuloEstudianteView {
         DefaultTableCellRenderer centrado = new DefaultTableCellRenderer();
         centrado.setHorizontalAlignment(SwingConstants.CENTER);
 
-        tabla.getColumn("Identificador").setCellRenderer(centrado);
+        tabla.getColumn("Num. control").setCellRenderer(centrado);
         tabla.getColumn("Nombre completo").setCellRenderer(centrado);
         tabla.getColumn("Grupo").setCellRenderer(centrado);
         
@@ -1613,7 +1613,7 @@ public class ModuloEstudianteView {
 	        int mes = -1;
 	        for (int i = 0; i < meses.length; i++) {
 	            if (meses[i].equalsIgnoreCase(mestext)) {
-	                mes = i + 1; 
+	                mes = i; 
 	                break;
 	            }
 	        }
@@ -2113,7 +2113,7 @@ public class ModuloEstudianteView {
         txtFecha.setText(String.valueOf(estudiante.getFechaNacimiento()));
         txtGenero.setText(estudiante.getGenero());
         txtTelefono.setText(estudiante.getTelefono());
-        txtGrado.setText(estudiante.getGrupo());
+        txtGrado.setText(String.valueOf(estudiante.getGrado()));
         txtDomicilio.setText(estudiante.getDomicilio());
        
         if (estudiante.getFoto() != null) {
@@ -2518,7 +2518,7 @@ public class ModuloEstudianteView {
 
 		credencial.add(Box.createRigidArea(new Dimension(0, 15)));
 
-		JLabel id = new JLabel("Identificador: "+estudiante.getId());
+		JLabel id = new JLabel("Num. Control: "+estudiante.getNumeroControl());
 		id.setFont(new Font("Arial", Font.PLAIN, 14));
 		id.setAlignmentX(Component.CENTER_ALIGNMENT);
 		credencial.add(id);

@@ -2682,7 +2682,7 @@ public class ModuloEstudianteView {
             borrar.setFocusable(false);
             
             editar.addActionListener(e -> {
-            	int filaSeleccionada = tabla.getSelectedRow();
+            	int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
                 if (filaSeleccionada >= 0) {
                     Estudiante eSeleccionado = listaEstudiantes.get(filaSeleccionada);
                     ModuloEstudianteController mec = new ModuloEstudianteController();

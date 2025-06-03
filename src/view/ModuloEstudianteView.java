@@ -2527,12 +2527,14 @@ public class ModuloEstudianteView {
 
 		contenido.add(Box.createRigidArea(new Dimension(0, 25)));
 
+		JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		panelBotones.setBackground(Color.white);
+				
 		JButton btnRegresar = new JButton("Regresar");
-		btnRegresar.setBackground(azul2);
+		btnRegresar.setBackground(new Color(40,103,152));
 		btnRegresar.setForeground(Color.WHITE);
 		btnRegresar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnRegresar.setFont(new Font("Almarai-Light", Font.BOLD, 16));
-		btnRegresar.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnRegresar.setFocusPainted(false);
 		btnRegresar.setPreferredSize(new Dimension(120, 40));
 		btnRegresar.addActionListener(e -> {
@@ -2540,11 +2542,13 @@ public class ModuloEstudianteView {
         	modulo.dispose();
         	mec.ModuloEstudiante();
 		});
-		contenido.add(btnRegresar);
+		panelBotones.add(btnRegresar);
 		
         JButton btnCrear = new JButton("Descargar");
         btnCrear.setBackground(azul1);
         btnCrear.setForeground(Color.white);
+        btnCrear.setPreferredSize(new Dimension(120, 40));
+        btnCrear.setFont(new Font("Almarai-Light", Font.BOLD, 16));
         btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde,5));
         btnCrear.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnCrear.addActionListener(e->{
@@ -2570,8 +2574,9 @@ public class ModuloEstudianteView {
         	}
         	
         });
-		contenido.add(btnCrear);
+        panelBotones.add(btnCrear);
 
+		contenido.add(panelBotones);
 
 
 	}

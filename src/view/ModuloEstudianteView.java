@@ -426,7 +426,7 @@ public class ModuloEstudianteView {
     	    int columna = seleccion - 1;
     	    
     	    if (columna == 0 && !texto.matches("\\d+")) {
-    	        JOptionPane.showMessageDialog(null, "El identificador debe ser numérico.");
+    	        JOptionPane.showMessageDialog(null, "El numero de control debe ser numérico.");
     	        return;
     	    }
 

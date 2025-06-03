@@ -168,6 +168,7 @@ public class ModuloAsignturaView {
 		lblAlumnos.setBackground(azul2);
 		lblAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAlumnos.setMaximumSize(new Dimension(80, 70));
+    	lblAlumnos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloAlumnos.add(lblAlumnos);
 		options.add(moduloAlumnos);
 		
@@ -200,6 +201,7 @@ public class ModuloAsignturaView {
 		lblMaestros.setBackground(azul2);
 		lblMaestros.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMaestros.setMaximumSize(new Dimension(80, 70));
+		lblMaestros.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloMaestros.add(lblMaestros);
 		options.add(moduloMaestros);
 		
@@ -230,6 +232,7 @@ public class ModuloAsignturaView {
 		lblGrupos.setBackground(azul2);
 		lblGrupos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGrupos.setMaximumSize(new Dimension(80, 70));
+		lblGrupos.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloGrupo.add(lblGrupos);
 		options.add(moduloGrupo);
 		
@@ -261,6 +264,7 @@ public class ModuloAsignturaView {
 		lblAsignatura.setBackground(azul2);
 		lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAsignatura.setMaximumSize(new Dimension(80, 70));
+		lblAsignatura.setFont(new Font("Almarai-Bold", Font.PLAIN, 15));
 		moduloAsignatura.add(lblAsignatura);
 		options.add(moduloAsignatura);
 		
@@ -1275,7 +1279,7 @@ public class ModuloAsignturaView {
 			JPanel panelTitulo = new JPanel();
 			panelTitulo.setBackground(Color.WHITE);
 			JLabel lblTitulo = new JLabel("Detalles de asignaturas", SwingConstants.CENTER);
-			lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
+			lblTitulo.setFont(new Font("Almarai-Bold", Font.BOLD, 24));
 
 			JPanel panelFormulario = new JPanel(new GridBagLayout());
 			panelFormulario.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
@@ -1283,31 +1287,31 @@ public class ModuloAsignturaView {
 			GridBagConstraints d = new GridBagConstraints();
 
 			JLabel lblNombre = new JLabel("Nombre");
-			lblNombre.setFont(new Font("Arial", Font.BOLD, 14));
+			lblNombre.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
 
 			JLabel lblValorNombre = new JLabel("Programación III");
 
 			JLabel lblIdentificador = new JLabel("Identificador");
-			lblIdentificador.setFont(new Font("Arial", Font.BOLD, 14));
+			lblIdentificador.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
 
 			JLabel lblValorID = new JLabel("002");
 
 			JLabel lblGruposAsignados = new JLabel("Grupos asignados");
-			lblGruposAsignados.setFont(new Font("Arial", Font.BOLD, 14));
+			lblGruposAsignados.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
 
 			JLabel lblDescripcion = new JLabel("Descripción");
-			lblDescripcion.setFont(new Font("Arial", Font.BOLD, 14));
+			lblDescripcion.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
 
 			JTextArea areaDescripcion = new JTextArea("Descripción de la asignatura");
 			areaDescripcion.setLineWrap(true);
 			areaDescripcion.setWrapStyleWord(true);
 			areaDescripcion.setEditable(false);
-			areaDescripcion.setFont(new Font("Arial", Font.PLAIN, 12));
+			areaDescripcion.setFont(new Font("Almarai-Bold", Font.PLAIN, 12));
 			areaDescripcion.setBorder(BorderFactory.createLineBorder(borde,4));
 
 			String[] grupos = {"4A", "4B", "4C"};
 			JList<String> listaGrupos = new JList<>(grupos);
-			listaGrupos.setFont(new Font("Arial", Font.PLAIN, 12));
+			listaGrupos.setFont(new Font("Almarai-Bold", Font.PLAIN, 12));
 			listaGrupos.setBorder(BorderFactory.createLineBorder(borde,4));
 			JScrollPane scrollGrupos = new JScrollPane(listaGrupos);
 

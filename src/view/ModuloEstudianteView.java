@@ -328,7 +328,7 @@ public class ModuloEstudianteView {
 		
 		option.add(Box.createRigidArea(new Dimension(180,0)));
 		
-		String[] opciones = {"Filtrar","Identificador", "Nombre", "Grupo" };
+		String[] opciones = {"Filtrar","Numero de control", "Nombre", "Grupo" };
 		JComboBox<String> filtroCombo = new JComboBox<>(opciones);
 		filtroCombo.setAlignmentY(Component.TOP_ALIGNMENT);
 		filtroCombo.setMaximumSize(new Dimension(150, 30));
@@ -728,8 +728,9 @@ public class ModuloEstudianteView {
 	        JTextField txtApellidos = new JTextField(15);
 	        txtApellidos.setBorder(BorderFactory.createLineBorder(borde,5));
 
-	        JLabel lblId = new JLabel("Identificador");
-	        JTextField txtId = new JTextField("011");
+	        JLabel lblId = new JLabel("Numero de control");
+	        JTextField txtId = new JTextField("Se generara automaticamente");
+	        txtId.setForeground(Color.gray);
 	        txtId.setBorder(BorderFactory.createLineBorder(borde,5));
 	        txtId.setEditable(false);
 
@@ -1363,8 +1364,8 @@ public class ModuloEstudianteView {
         JTextField txtApellidos = new JTextField(15);
         txtApellidos.setBorder(BorderFactory.createLineBorder(borde,5));
 
-        JLabel lblId = new JLabel("Identificador");
-        JTextField txtId = new JTextField("011");
+        JLabel lblId = new JLabel("Numero de control");
+        JTextField txtId = new JTextField();
         txtId.setBorder(BorderFactory.createLineBorder(borde,5));
         txtId.setEditable(false);
 
@@ -2038,7 +2039,7 @@ public class ModuloEstudianteView {
         txtApellidos.setBorder(null);
         txtApellidos.setEditable(false);
         
-        JLabel lblId = new JLabel("Identificador");
+        JLabel lblId = new JLabel("Numero de control");
         JTextField txtId = new JTextField();
         txtId.setEditable(false);
         txtId.setBackground(Color.WHITE);

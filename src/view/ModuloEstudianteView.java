@@ -2541,6 +2541,39 @@ public class ModuloEstudianteView {
         	mec.ModuloEstudiante();
 		});
 		contenido.add(btnRegresar);
+		
+        JButton btnCrear = new JButton("Descargar");
+        btnCrear.setBackground(azul1);
+        btnCrear.setForeground(Color.white);
+        btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde,5));
+        btnCrear.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnCrear.addActionListener(e->{
+        	JFileChooser fileChooser = new JFileChooser();
+        	fileChooser.setDialogTitle("Guardar PDF");
+
+        	
+        	FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
+        	fileChooser.setFileFilter(filter);
+
+        	int userSelection = fileChooser.showSaveDialog(null);
+
+        	if (userSelection == JFileChooser.APPROVE_OPTION) {
+        	    File fileToSave = fileChooser.getSelectedFile();
+
+        	    String ruta = fileToSave.getAbsolutePath();
+        	    if (!ruta.toLowerCase().endsWith(".pdf")) {
+        	        ruta += ".pdf";
+        	    }
+
+        	    System.out.println(ruta);
+        	    mem.descargarCredencial(ruta, estudiante);
+        	}
+        	
+        });
+		contenido.add(btnCrear);
+
+
+
 	}
 	
 	 // Renderizador simple para botones

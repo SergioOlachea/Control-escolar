@@ -1070,7 +1070,7 @@ public class ModuloEstudianteView {
 		             try {
 		            	 Calendar calendar = Calendar.getInstance();
 		            	    calendar.setLenient(false); 
-		            	    calendar.set(anio, mes - 1, dia);  
+		            	    calendar.set(anio, mes - 2, dia);  
 		            	    fecha = calendar.getTime(); 
 		            	    System.out.println(fecha);
 		             } catch (Exception e1) {

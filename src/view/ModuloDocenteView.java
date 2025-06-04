@@ -56,6 +56,7 @@ import controlles.ModuloAsignaturaController;
 import controlles.ModuloDocenteController;
 import controlles.ModuloEstudianteController;
 import controlles.ModuloGrupoController;
+import model.Docente;
 import model.Estudiante;
 import model.ModuloDocenteModel;
 import model.ModuloEstudianteModel;
@@ -64,7 +65,7 @@ import model.exception.UniqueKeyViolationException;
 
 public class ModuloDocenteView {
 	ModuloDocenteModel mdm = new ModuloDocenteModel();
-	//ArrayList<Docente> listaDocente = mdm.getDocentes();
+	ArrayList<Docente> listaDocentes = mdm.getDocentes();
 	BufferedImage imagenSeleccionada = null;
 	Date fecha = null;
 
@@ -344,12 +345,15 @@ public class ModuloDocenteView {
         
         // Tabla
         String[] columnas = {"Identificador", "Nombre completo", "Detalles del docente", "Credencial", "Opciones"};
-        Object[][] datos = new Object[10][columnas.length];
+        Object[][] datos = new Object[listaDocentes.size()][columnas.length];
        
-        for (int i = 0; i < 10; i++) {
-            datos[i][0] = String.format("%03d", i + 1);
-            datos[i][1] = "Marco Antonio Núñez Muñoz";
-            datos[i][2] = "Detalles"; 
+        
+        for (int i = 0; i < listaDocentes.size(); i++) {
+            Docente d = listaDocentes.get(i);
+            
+            datos[i][0] = d.getNumeroControl();
+            datos[i][1] = d.getNombres() + " " + d.getApellidos();
+            datos[i][2] = "Detalles";
             datos[i][3] = "Credencial"; 
             datos[i][4] = "Opciones"; 
         }
@@ -924,7 +928,7 @@ public class ModuloDocenteView {
 		        String nombres = txtNombres.getText().trim();
 		        String apellidos = txtApellidos.getText().trim();
 		        String telefono = txtTelefono.getText().trim();
-		        String gradotext = txtGrado.getText().trim();
+		        String gradoEstudio = txtGrado.getText().trim();
 		        String domicilio = txtDomicilio.getText().trim();
 		        String correo = txtCorreo.getText().trim();
 		        String curp = txtCurp.getText().trim();
@@ -1002,10 +1006,9 @@ public class ModuloDocenteView {
 		            txtDomicilio.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (gradotext.isEmpty() || !gradoNumerico.matcher(gradotext).matches()) {
-		        	 int gradoNum = Integer.parseInt(gradotext);
+		        if (gradoEstudio.isEmpty() || !soloLetras.matcher(gradoEstudio).matches()) {
 		            txtGrado.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Grado (solo números)\n");
+		            errores.append("Grado (solo Letras)\n");
 		            camposValidos = false;
 		        } else {
 		            txtGrado.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
@@ -1051,24 +1054,24 @@ public class ModuloDocenteView {
 		             try {
 		            	 Calendar calendar = Calendar.getInstance();
 		            	    calendar.setLenient(false); 
-		            	    calendar.set(anio, mes - 1, dia);  
+		            	    calendar.set(anio, mes - 2, dia);  
 		            	    fecha = calendar.getTime(); 
 		            	    System.out.println(fecha);
 		             } catch (Exception e1) {
 		                 JOptionPane.showMessageDialog(null, "La fecha seleccionada no es válida.");
 		             }
-		             //Docente nDocente= new Estudiante(nombres, apellidos, fecha, generoSeleccionado, gradoEstudio, domicilio, correo, telefono, curp, imagenSeleccionada);
+		             Docente nDocente= new Docente(nombres, apellidos, fecha, generoSeleccionado, gradoEstudio, domicilio, correo, telefono, curp, imagenSeleccionada);
 		            
-		            // try {
-						//mdm.add(nDocente);
-					//} catch (UniqueKeyViolationException e1) {
-						//e1.printStackTrace();
+		             try {
+						mdm.add(nDocente);
+					} catch (UniqueKeyViolationException e1) {
+						e1.printStackTrace();
 					
-					//}
-		            JOptionPane.showMessageDialog(null, "Alumno creado correctamente.");
-		            ModuloEstudianteController mec= new ModuloEstudianteController();
+					}
+		            JOptionPane.showMessageDialog(null, "Docente creado correctamente.");
+		            ModuloDocenteController mec= new ModuloDocenteController();
 		            crear.dispose();
-		            mec.ModuloEstudiante();
+		            mec.moduloDocente();
 		            
 		        } else {
 		            JOptionPane.showMessageDialog(null, errores.toString(), "Campos inválidos", JOptionPane.WARNING_MESSAGE);
@@ -1104,7 +1107,7 @@ public class ModuloDocenteView {
 
 	}
 	
-	 public void modificar() {
+	 public void modificar(Docente docente) {
 	    	Color borde = new Color(206, 207, 202);
 	    	Color azul2 = new Color(52, 134, 199);
 	    	Color azul1 = new Color(54, 146, 218);
@@ -1385,7 +1388,7 @@ public class ModuloDocenteView {
 	        JTextField txtTelefono = new JTextField(15);
 	        txtTelefono.setBorder(BorderFactory.createLineBorder(borde,5));
 
-	        JLabel lblGrado = new JLabel("Gradode estudios");
+	        JLabel lblGrado = new JLabel("Grado de estudios");
 	        JTextField txtGrado = new JTextField(15);
 	        txtGrado.setBorder(BorderFactory.createLineBorder(borde,5));
 
@@ -1444,11 +1447,11 @@ public class ModuloDocenteView {
 	        panelFoto.add(btnCargar);
 
 	       // Pregargado de los datos
-	       /* txtId.setText(String.valueOf(docente.getId()));
+	        txtId.setText(String.valueOf(docente.getId()));
 	        txtNombres.setText(docente.getNombres());
 	        txtApellidos.setText(docente.getApellidos());
 	        txtTelefono.setText(docente.getTelefono());
-	        txtGrado.setText(String.valueOf(docente.getGrado()));
+	        txtGrado.setText(String.valueOf(docente.getGradoEstudios()));
 	        txtDomicilio.setText(docente.getDomicilio());
 	        txtCorreo.setText(docente.getCorreo());
 	        txtCurp.setText(docente.getCurp());
@@ -1473,7 +1476,7 @@ public class ModuloDocenteView {
 	            ImageIcon icon = new ImageIcon(docente.getFoto()); 
 	            Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 	            lblFoto.setIcon(new ImageIcon(scaledImage));
-	        }    */    
+	        }   
 	        int fila = 0;
 
 	        organizador.gridx = 0; 
@@ -1765,7 +1768,7 @@ public class ModuloDocenteView {
 			}
 	    }
 	    
-	 public void datos(/*Docente docente*/) {
+	 public void datos(Docente docente) {
 	    	Color borde = new Color(206, 207, 202);
 	    	Color azul2 = new Color(52, 134, 199);
 	    	Color azul1 = new Color(54, 146, 218);
@@ -2075,22 +2078,22 @@ public class ModuloDocenteView {
 	        panelFoto.add(btnCargar);
 
 	        // Carga de datos
-	        /*txtId.setText(String.valueOf(docente.getId()));
+	        txtId.setText(String.valueOf(docente.getId()));
 	        txtNombres.setText(docente.getNombres());
 	        txtApellidos.setText(docente.getApellidos());
 	        txtCorreo.setText(docente.getCorreo());
 	        txtCurp.setText(docente.getCurp());
 	        txtFecha.setText(String.valueOf(docente.getFechaNacimiento()));
-	        txtGenero.setText(estudiante.getGenero());
+	        txtGenero.setText(docente.getGenero());
 	        txtTelefono.setText(docente.getTelefono());
-	        txtGrado.setText(docente.getGrupo());
+	        txtGrado.setText(docente.getGradoEstudios());
 	        txtDomicilio.setText(docente.getDomicilio());
 	       
 	        if (docente.getFoto() != null) {
 	            ImageIcon icon = new ImageIcon(docente.getFoto()); 
 	            Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 	            lblFoto.setIcon(new ImageIcon(scaledImage));
-	        }  */
+	        }  
 	        int fila = 0;
 
 	        organizador.gridx = 0; 
@@ -2194,6 +2197,27 @@ public class ModuloDocenteView {
 	        	mdc.moduloDocente();
 	        });
 	        btnCrear.addActionListener(e->{
+	        	JFileChooser fileChooser = new JFileChooser();
+	        	fileChooser.setDialogTitle("Guardar PDF");
+
+	        	
+	        	FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
+	        	fileChooser.setFileFilter(filter);
+
+	        	int userSelection = fileChooser.showSaveDialog(null);
+
+	        	if (userSelection == JFileChooser.APPROVE_OPTION) {
+	        	    File fileToSave = fileChooser.getSelectedFile();
+
+	        	    String ruta = fileToSave.getAbsolutePath();
+	        	    if (!ruta.toLowerCase().endsWith(".pdf")) {
+	        	        ruta += ".pdf";
+	        	    }
+
+	        	    System.out.println(ruta);
+	        	    mdm.descargarInformacion(ruta, docente);
+	        	}
+	        	
 	        	
 	        });
 	        panelBotones.add(btnCancelar);
@@ -2225,7 +2249,7 @@ public class ModuloDocenteView {
 			}
 	    }
  
-	 public void credencial() {
+	 public void credencial(Docente docente) {
 	    Color borde = new Color(206, 207, 202);
 		Color azul2 = new Color(52, 134, 199);
 		Color azul1 = new Color(54, 146, 218);
@@ -2453,17 +2477,17 @@ public class ModuloDocenteView {
 		 
 		JLabel lblFoto = new JLabel();
 		lblFoto.setAlignmentX(Component.CENTER_ALIGNMENT);
-		/*if (docente.getFoto() != null) {
-            ImageIcon icon = new ImageIcon();//docente.getFoto()); 
+		if (docente.getFoto() != null) {
+            ImageIcon icon = new ImageIcon(docente.getFoto()); 
             Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
             lblFoto.setIcon(new ImageIcon(scaledImage));
-        }*/ 
+        } 
 		credencial.add(Box.createRigidArea(new Dimension(0, 15)));
 		credencial.add(lblFoto);
 
 		credencial.add(Box.createRigidArea(new Dimension(0, 15)));
 
-		JLabel id = new JLabel("Identificador: ");//+docente.getId());
+		JLabel id = new JLabel("Identificador: "+docente.getId());
 		id.setFont(new Font("Arial", Font.PLAIN, 14));
 		id.setAlignmentX(Component.CENTER_ALIGNMENT);
 		credencial.add(id);
@@ -2473,7 +2497,7 @@ public class ModuloDocenteView {
 		tipo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		credencial.add(tipo);
 
-		JLabel nombre = new JLabel();//docente.getNombres()+" "+docente.getApellidos());
+		JLabel nombre = new JLabel(docente.getNombres()+" "+docente.getApellidos());
 		nombre.setFont(new Font("Arial", Font.PLAIN, 14));
 		nombre.setAlignmentX(Component.CENTER_ALIGNMENT);
 		credencial.add(nombre);
@@ -2488,12 +2512,15 @@ public class ModuloDocenteView {
 
 		contenido.add(Box.createRigidArea(new Dimension(0, 25)));
 
+
+		JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		panelBotones.setBackground(Color.white);
+				
 		JButton btnRegresar = new JButton("Regresar");
-		btnRegresar.setBackground(azul2);
+		btnRegresar.setBackground(new Color(40,103,152));
 		btnRegresar.setForeground(Color.WHITE);
 		btnRegresar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnRegresar.setFont(new Font("Almarai-Light", Font.BOLD, 16));
-		btnRegresar.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnRegresar.setFocusPainted(false);
 		btnRegresar.setPreferredSize(new Dimension(120, 40));
 		btnRegresar.addActionListener(e -> {
@@ -2501,9 +2528,44 @@ public class ModuloDocenteView {
         	modulo.dispose();
         	mdc.moduloDocente();
 		});
-		contenido.add(btnRegresar);
+		panelBotones.add(btnRegresar);
+		
+        JButton btnCrear = new JButton("Descargar");
+        btnCrear.setBackground(azul1);
+        btnCrear.setForeground(Color.white);
+        btnCrear.setPreferredSize(new Dimension(120, 40));
+        btnCrear.setFont(new Font("Almarai-Light", Font.BOLD, 16));
+        btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde,5));
+        btnCrear.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnCrear.addActionListener(e->{
+        	JFileChooser fileChooser = new JFileChooser();
+        	fileChooser.setDialogTitle("Guardar PDF");
+
+        	
+        	FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
+        	fileChooser.setFileFilter(filter);
+
+        	int userSelection = fileChooser.showSaveDialog(null);
+
+        	if (userSelection == JFileChooser.APPROVE_OPTION) {
+        	    File fileToSave = fileChooser.getSelectedFile();
+
+        	    String ruta = fileToSave.getAbsolutePath();
+        	    if (!ruta.toLowerCase().endsWith(".pdf")) {
+        	        ruta += ".pdf";
+        	    }
+
+        	    System.out.println(ruta);
+        	    mdm.descargarCredencial(ruta, docente);
+        	}
+        	
+        });
+        panelBotones.add(btnCrear);
+
+		contenido.add(panelBotones);
+
+
 	}
-	
 	
 	 // Renderizador simple para botones
 	 public class BotonEditor extends DefaultCellEditor {
@@ -2532,12 +2594,25 @@ public class ModuloDocenteView {
 
 		    public Object getCellEditorValue() {
 		    	ModuloDocenteController mdc = new ModuloDocenteController();
+	        	int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+
 		        if (texto.equals("Generar")) {
-		            modulo.dispose();
-		            mdc.credencial();
+	                if (filaSeleccionada >= 0) {
+	                    Docente dSeleccionado = listaDocentes.get(filaSeleccionada);
+			            modulo.dispose();
+			            mdc.credencial(dSeleccionado);
+	                }else {
+	                	JOptionPane.showMessageDialog(null, "Ninguna fila seleccionada" );
+	                }
 		        } else if (texto.equals("Datos completos")) {
-		            modulo.dispose(); 
-		            mdc.datos();
+	                if (filaSeleccionada >= 0) {
+	                    Docente dSeleccionado = listaDocentes.get(filaSeleccionada);
+	                    modulo.dispose(); 
+			            mdc.datos(dSeleccionado);
+	                }else {
+	                
+	                }
+		           
 		        }
 		        return texto;
 		    }
@@ -2600,8 +2675,12 @@ public class ModuloDocenteView {
 	            
 	            editar.addActionListener(e -> {
 	                ModuloDocenteController mdc = new ModuloDocenteController();
-	                modulo.dispose();
-	                mdc.modificar();
+	                int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+	                if (filaSeleccionada >= 0) {
+	                    Docente dSeleccionado = listaDocentes.get(filaSeleccionada);
+		                modulo.dispose();
+		                mdc.modificar(dSeleccionado);
+	                }
 	                
 	            });
 

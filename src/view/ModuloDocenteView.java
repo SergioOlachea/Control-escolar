@@ -2685,10 +2685,31 @@ public class ModuloDocenteView {
 	            });
 
 	            borrar.addActionListener(e -> {
-	                ((DefaultTableModel) tabla.getModel()).removeRow(row);
-	                JOptionPane.showMessageDialog(null, "Fila eliminada " + (row + 1));
-	                fireEditingStopped();
-	                System.out.println(borrar.getSize());
+	            	int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+
+	            	 if (filaSeleccionada >= 0) {
+	            		 
+	            		 int n = JOptionPane.showConfirmDialog(
+	         		            null,
+	         		            "Estas seguro que quieres eliminar este registro?",
+	         		            "Eliminar registro",
+	         		            JOptionPane.YES_NO_OPTION);
+
+	         		        if(n==0){
+	         		        	
+				                ((DefaultTableModel) tabla.getModel()).removeRow(row);
+				                ModuloDocenteModel mdm= new ModuloDocenteModel();
+	         	                Docente dSeleccionado = listaDocentes.get(filaSeleccionada);
+	         	                mdm.delete(dSeleccionado.getId());
+	         	                
+	         	                JOptionPane.showMessageDialog(null, "Registro eliminado ");
+	         	                fireEditingStopped();
+	         	                System.out.println(borrar.getSize());
+	         		        }
+	         		        else if(n==1) {
+	         		            
+	         		        }
+	            	 }
 	            });
 
 	            panel.add(editar);

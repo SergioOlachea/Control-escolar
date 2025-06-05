@@ -3,8 +3,10 @@ package model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 
 public class ModuloAsignaturaModel {
 
@@ -44,5 +46,23 @@ public class ModuloAsignaturaModel {
 		}
 		
 		return new ArrayList<Asignatura>(asignaturas.values());
+	}
+	
+	public boolean add(Asignatura asignatura) {
+		String query = "INSERT INTO courses (name, description)"
+				+ "		VALUES (?, ?)";
+		
+		try (
+				Connection conn = ConexionBD.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(query);
+			){
+			stmt.setString(1, asignatura.getNombre());
+			stmt.setString(2, asignatura.getDescripcion());
+			
+			int rs = stmt.executeUpdate();
+			return rs > 0;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }

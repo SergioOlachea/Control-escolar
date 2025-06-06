@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Grupo {
 	private int id;
@@ -60,6 +62,23 @@ public class Grupo {
 
 	public void setEstudiantes(ArrayList<Estudiante> estudiantes) {
 		this.estudiantes = estudiantes;
+	}
+
+	@Override
+	public String toString() {
+		String asignaturaNombre = Optional.ofNullable(asignatura)
+				.map(Asignatura::getNombre)
+				.orElse("No asignado");
+		String docenteNombre = Optional.ofNullable(docente)
+				.map(d -> d.getNombres() + " " + d.getApellidos())
+				.orElse("No asignado");
+		String listaNombreEstudiantes = estudiantes.isEmpty() 
+				? "Sin estudiantes asignados"
+				: estudiantes.stream()
+				.map(e -> e.getNombres() + " " + e.getApellidos())
+				.collect(Collectors.joining(", "));
+		return "Grupo [id=" + id + ", nombre=" + nombre + ", asignatura=" + asignaturaNombre + ", docente=" + docenteNombre
+				+ ", estudiantes=" + listaNombreEstudiantes + "]";
 	}
 	
 	

@@ -17,6 +17,10 @@ public class Docente {
 	private String curp;
 	private Image foto;
 	
+	public Docente() {
+		
+	}
+	
 	public Docente(int id, long numeroControl, String nombres, String apellidos, Date fechaNacimiento,
 		String genero, String gradoEstudios, String domicilio, String correo, String telefono, String curp, Image foto) {
 		super();
@@ -84,6 +88,54 @@ public class Docente {
 	}
 	public Image getFoto() {
 		return foto;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setNumeroControl(long numeroControl) {
+		this.numeroControl = numeroControl;
+	}
+
+	public void setNombres(String nombres) {
+		this.nombres = nombres;
+	}
+
+	public void setApellidos(String apellidos) {
+		this.apellidos = apellidos;
+	}
+
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public void setGradoEstudios(String gradoEstudios) {
+		this.gradoEstudios = gradoEstudios;
+	}
+
+	public void setDomicilio(String domicilio) {
+		this.domicilio = domicilio;
+	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public void setCurp(String curp) {
+		this.curp = curp;
+	}
+
+	public void setFoto(Image foto) {
+		this.foto = foto;
 	}
 
 	@Override

@@ -20,6 +20,10 @@ public class Estudiante {
 	private Image foto;
 	private String grupos;
 	
+	public Estudiante() {
+		
+	}
+	
 	public Estudiante(int id, long numeroControl, String nombres, String apellidos, Date fechaNacimiento,
 		String genero, int grado, String domicilio, String correo, String telefono, String curp, Image foto, String grupos) {
 		super();
@@ -95,6 +99,58 @@ public class Estudiante {
 	
 	public String getGrupo() {
 		return grupos;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setNumeroControl(long numeroControl) {
+		this.numeroControl = numeroControl;
+	}
+
+	public void setNombres(String nombres) {
+		this.nombres = nombres;
+	}
+
+	public void setApellidos(String apellidos) {
+		this.apellidos = apellidos;
+	}
+
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public void setGrado(int grado) {
+		this.grado = grado;
+	}
+
+	public void setDomicilio(String domicilio) {
+		this.domicilio = domicilio;
+	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public void setCurp(String curp) {
+		this.curp = curp;
+	}
+
+	public void setFoto(Image foto) {
+		this.foto = foto;
+	}
+
+	public void setGrupos(String grupos) {
+		this.grupos = grupos;
 	}
 
 	@Override

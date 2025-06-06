@@ -3,7 +3,6 @@ package model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -80,6 +79,22 @@ public class ModuloAsignaturaModel {
 			stmt.setString(1, asignatura.getNombre());
 			stmt.setString(2, asignatura.getDescripcion());
 			stmt.setInt(3, id);
+			int rs = stmt.executeUpdate();
+			return rs > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean delete(int id) {
+		String query = "DELETE FROM courses WHERE id = ?";
+		
+		try (
+				Connection conn = ConexionBD.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(query);
+			){
+			stmt.setInt(1, id);
 			int rs = stmt.executeUpdate();
 			return rs > 0;
 		} catch (Exception e) {

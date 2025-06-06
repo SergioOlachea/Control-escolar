@@ -202,4 +202,20 @@ public class ModuloGrupoModel {
 			return false;
 		}
 	}
+	
+	public boolean delete(int id) {
+		String query = "DELETE FROM groups_entity WHERE id = ?";
+		
+		try (
+				Connection conn = ConexionBD.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(query);
+			){
+			stmt.setInt(1, id);
+			int rs = stmt.executeUpdate();
+			return rs > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

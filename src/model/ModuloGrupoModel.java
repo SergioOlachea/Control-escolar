@@ -152,4 +152,54 @@ public class ModuloGrupoModel {
 			return false;
 		}
 	}
+	
+	public boolean update(int id, Grupo grupo) {
+		String query = 
+				"UPDATE groups_entity SET" +
+				"		name = ?, " +
+				"		course_id = ?, " +
+				"		teacher_id = ?" +		
+				" WHERE id = ?";
+		String assignmentQuery = 
+				"INSERT INTO group_assignment (student_id, group_id) " +
+				"VALUES (?, ?) " +
+				"	 ON DUPLICATE KEY UPDATE student_id=student_id";
+		try (
+				Connection con = ConexionBD.getConnection();
+				PreparedStatement stmt = con.prepareStatement(query, 
+						Statement.RETURN_GENERATED_KEYS);
+				PreparedStatement assignmentStmt = con.prepareStatement(assignmentQuery);
+			){
+
+			stmt.setString(1, grupo.getNombre());
+
+			if (grupo.getAsignatura() != null) {
+				stmt.setInt(2, grupo.getAsignatura().getId());
+			} else {
+				stmt.setNull(2, Types.INTEGER);
+			}
+
+			if (grupo.getDocente() != null) {
+				stmt.setInt(3, grupo.getDocente().getId());
+			} else {
+				stmt.setNull(3, Types.INTEGER);
+			}
+			
+			stmt.setInt(4, id);
+	        int rs = stmt.executeUpdate();
+	        
+	        if(grupo.getEstudiantes()!=null) {	                		
+	        	for (Estudiante estudiante : grupo.getEstudiantes()) {
+	        		assignmentStmt.setLong(1, estudiante.getId());
+	        		assignmentStmt.setInt(2, id);
+	        		assignmentStmt.addBatch();
+	        	}
+	        	assignmentStmt.executeBatch();
+	        }
+	        return rs > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

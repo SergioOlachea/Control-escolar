@@ -43,6 +43,7 @@ public class ModuloAsignaturaModel {
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		return new ArrayList<Asignatura>(asignaturas.values());
@@ -62,7 +63,29 @@ public class ModuloAsignaturaModel {
 			int rs = stmt.executeUpdate();
 			return rs > 0;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
+	
+	public boolean update(int id, Asignatura asignatura) {
+		String query = "UPDATE courses "
+				+ "		   SET name=?, "
+				+ "			   description=? "
+				+ "		WHERE  id=?";
+		try (
+				Connection conn = ConexionBD.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(query);
+			){
+			stmt.setString(1, asignatura.getNombre());
+			stmt.setString(2, asignatura.getDescripcion());
+			stmt.setInt(3, id);
+			int rs = stmt.executeUpdate();
+			return rs > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 }

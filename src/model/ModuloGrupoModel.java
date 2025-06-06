@@ -119,6 +119,91 @@ public class ModuloGrupoModel {
 		
 	}
 	
+	public Grupo getGrupoById(int id) {
+		String query = 
+			    "SELECT " +
+			    "  g.name AS group_name, " +
+			    "  c.name AS course_name, " +
+			    "  t.control_number AS teacher_control_number, " +
+			    "  t.first_name AS teacher_first_name, " +
+			    "  t.last_name AS teacher_last_name, " +
+			    "  t.email AS teacher_email, " +
+			    "  s.control_number AS student_control_number, " +
+			    "  s.first_name AS student_first_name, " +
+			    "  s.last_name AS student_last_name, " +
+			    "  s.email AS student_email " +
+			    "FROM groups_entity g " +
+			    "  LEFT JOIN courses c ON g.course_id = c.id " +
+			    "  LEFT JOIN teachers t ON g.teacher_id = t.id " +
+			    "  LEFT JOIN group_assignment ga ON ga.group_id = g.id " +
+			    "  LEFT JOIN students s ON ga.student_id = s.id " +
+			    "WHERE g.id = ?";
+		
+		Grupo grupo = null;
+		try (
+				Connection con = ConexionBD.getConnection();
+				PreparedStatement stmt = con.prepareStatement(query);
+			){
+			stmt.setInt(1, id);
+			
+			try(ResultSet rs = stmt.executeQuery()) {
+				while(rs.next()) {
+					if(grupo==null) {						
+						String nombreGrupo = rs.getString("group_name");
+				
+						grupo = new Grupo();
+						
+						grupo.setId(id);
+						grupo.setNombre(nombreGrupo);
+						
+						String nombreAsignatura = rs.getString("course_name");
+						if(!rs.wasNull()) {
+							Asignatura asignatura = new Asignatura();
+							asignatura.setNombre(nombreAsignatura);
+							grupo.setAsignatura(asignatura);
+							
+						}
+						
+						long noControlDocente = rs.getLong("teacher_control_number");
+						if(!rs.wasNull()) {						
+							String nombreDocente = rs.getString("teacher_first_name");
+							String apellidoDocente = rs.getString("teacher_last_name");
+							String emailDocente = rs.getString("teacher_email");
+							
+							Docente docente = new Docente();
+							docente.setNumeroControl(noControlDocente);
+							docente.setNombres(nombreDocente);
+							docente.setApellidos(apellidoDocente);
+							docente.setCorreo(emailDocente);
+							grupo.setDocente(docente);
+						}
+						
+						grupo.setEstudiantes(new ArrayList<Estudiante>());
+					}
+					
+					long noControlEstudiante = rs.getLong("student_control_number");
+					if(!rs.wasNull()) {
+						String nombreEstudiante = rs.getString("student_first_name");
+						String apellidoEstudiante = rs.getString("student_last_name");
+						String emailEstudiante = rs.getString("student_email");
+						
+						Estudiante estudiante = new Estudiante();
+						estudiante.setNumeroControl(noControlEstudiante);
+						estudiante.setNombres(nombreEstudiante);
+						estudiante.setApellidos(apellidoEstudiante);
+						estudiante.setCorreo(emailEstudiante);
+						grupo.getEstudiantes().add(estudiante);
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return grupo;
+	}
+	
 	//Solo es necesario el id de asignatura, docente y estudiantes
 	public boolean add(Grupo grupo) {
 		String query = 

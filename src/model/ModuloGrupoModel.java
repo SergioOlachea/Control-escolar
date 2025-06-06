@@ -3,6 +3,8 @@ package model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -95,5 +97,59 @@ public class ModuloGrupoModel {
 		
 		return new ArrayList<Grupo>(grupos.values());
 		
+	}
+	
+	//Solo es necesario el id de asignatura, docente y estudiantes
+	public boolean add(Grupo grupo) {
+		String query = 
+				"INSERT INTO groups_entity (name, course_id, teacher_id) " +
+				"VALUES (?, ?, ?)";
+		String assignmentQuery = 
+				"INSERT INTO group_assignment (student_id, group_id) " +
+				"VALUES (?, ?)";
+		try (
+				Connection con = ConexionBD.getConnection();
+				PreparedStatement stmt = con.prepareStatement(query, 
+						Statement.RETURN_GENERATED_KEYS);
+				PreparedStatement assignmentStmt = con.prepareStatement(assignmentQuery);
+			){
+
+			stmt.setString(1, grupo.getNombre());
+
+			if (grupo.getAsignatura() != null) {
+				stmt.setInt(2, grupo.getAsignatura().getId());
+			} else {
+				stmt.setNull(2, Types.INTEGER);
+			}
+
+			if (grupo.getDocente() != null) {
+				stmt.setInt(3, grupo.getDocente().getId());
+			} else {
+				stmt.setNull(3, Types.INTEGER);
+			}
+			
+	        int rs = stmt.executeUpdate();
+
+	        if (rs > 0) {
+	            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+	                if (generatedKeys.next()) {
+	                	int groupId = generatedKeys.getInt(1);
+	                	if(grupo.getEstudiantes()!=null) {	                		
+	                		for (Estudiante estudiante : grupo.getEstudiantes()) {
+	                			assignmentStmt.setLong(1, estudiante.getId());
+	                			assignmentStmt.setInt(2, groupId);
+	                			assignmentStmt.addBatch();
+	                		}
+	                		assignmentStmt.executeBatch();
+	                	}
+	                }
+	            }
+	            return true;
+	        }
+	        return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }

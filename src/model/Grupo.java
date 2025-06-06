@@ -72,11 +72,12 @@ public class Grupo {
 		String docenteNombre = Optional.ofNullable(docente)
 				.map(d -> d.getNombres() + " " + d.getApellidos())
 				.orElse("No asignado");
-		String listaNombreEstudiantes = estudiantes.isEmpty() 
-				? "Sin estudiantes asignados"
-				: estudiantes.stream()
-				.map(e -> e.getNombres() + " " + e.getApellidos())
-				.collect(Collectors.joining(", "));
+	    String listaNombreEstudiantes = Optional.ofNullable(estudiantes)
+	            .filter(es -> !es.isEmpty())
+	            .map(es -> es.stream()
+	                    .map(e -> e.getNombres() + " " + e.getApellidos())
+	                    .collect(Collectors.joining(", ")))
+	            .orElse("Sin estudiantes asignados");
 		return "Grupo [id=" + id + ", nombre=" + nombre + ", asignatura=" + asignaturaNombre + ", docente=" + docenteNombre
 				+ ", estudiantes=" + listaNombreEstudiantes + "]";
 	}

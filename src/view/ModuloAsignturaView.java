@@ -14,6 +14,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -26,6 +27,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -41,6 +43,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -52,11 +55,19 @@ import controlles.ModuloAsignaturaController;
 import controlles.ModuloDocenteController;
 import controlles.ModuloEstudianteController;
 import controlles.ModuloGrupoController;
+import model.Asignatura;
+import model.Estudiante;
+import model.Grupo;
+import model.ModuloAsignaturaModel;
+import model.ModuloEstudianteModel;
 import view.ModuloDocenteView.PanelBotonesEditor;
 import view.ModuloDocenteView.PanelBotonesRenderer;
 
 public class ModuloAsignturaView {
-
+	
+	ModuloAsignaturaModel mam = new ModuloAsignaturaModel();
+	ArrayList<Asignatura> listaAsignaturas = mam.getAsignaturas();
+	
 	Color borde = new Color(206, 207, 202);
 	Color azul2 = new Color(52, 134, 199);
 	Color azul1 = new Color(54, 146, 218);
@@ -332,12 +343,13 @@ public class ModuloAsignturaView {
         
         // Tabla
         String[] columnas = {"Identificador", "Nombre", "Grupos asignados", "Detalles de la asignatura", "Opciones"};
-        Object[][] datos = new Object[10][columnas.length];
+        Object[][] datos = new Object[listaAsignaturas.size()][columnas.length];
 
-        for (int i = 0; i < 10; i++) {
-            datos[i][0] = String.format("%03d", i + 1);
-            datos[i][1] = "Programación III";
-            datos[i][2] = "4A 4B 4C";
+        for (int i = 0; i < listaAsignaturas.size(); i++) {
+            Asignatura a = listaAsignaturas.get(i);
+            datos[i][0] = a.getId();
+            datos[i][1] = a.getNombre();
+            datos[i][2] = a.getGrupos();
             datos[i][3] = "Datos completos";
             datos[i][4] = "Opciones";
         }
@@ -667,81 +679,105 @@ public class ModuloAsignturaView {
 		
 		// Panel de contenido
 		JPanel contenido = new JPanel();
-		contentPane.add(contenido, BorderLayout.CENTER);
 		contenido.setBackground(Color.white);
-		contenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
-		System.out.println(contenido.getHeight());
+		contenido.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
 		contenido.setLayout(new BorderLayout(0, 0));
-		
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.white);
-		contenido.add(panel, BorderLayout.NORTH);
-		
-		JLabel lblTitulo = new JLabel("Creación de asignaturas");
-		lblTitulo.setFont(new Font("Almarai-Bold", Font.BOLD, 30));
-		panel.add(lblTitulo);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new LineBorder(new Color(0, 0, 0), 3));
-		panel_1.setBackground(Color.white);
-		contenido.add(panel_1, BorderLayout.CENTER);
-		panel_1.setLayout(null);
-		
-		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
-		lblNombre.setBounds(88, 37, 65, 29);
-		panel_1.add(lblNombre);
-		
+		contentPane.add(contenido, BorderLayout.CENTER);
+
+		JPanel panelTitulo = new JPanel();
+		panelTitulo.setBackground(Color.white);
+
+		JLabel lblNewLabel = new JLabel("Modificación de asignaturas");
+		lblNewLabel.setFont(new Font("Almarai-Bold", Font.BOLD, 30));
+
+		JPanel panelFormulario = new JPanel(new GridBagLayout());
+		panelFormulario.setBorder(BorderFactory.createCompoundBorder(
+			    new LineBorder(Color.BLACK, 3),                         
+			    BorderFactory.createEmptyBorder(0, 20, 0, 20)         
+			));
+		panelFormulario.setBackground(Color.white);
+
+		JLabel nameTag = new JLabel("Nombre");
+		nameTag.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
+
 		JTextField txtNombre = new JTextField();
-		txtNombre.setBounds(148, 39, 205, 29);
-		txtNombre.setBorder(BorderFactory.createLineBorder(borde,5));
+		txtNombre.setBorder(BorderFactory.createLineBorder(borde, 5));
 		txtNombre.setColumns(10);
-		panel_1.add(txtNombre);
-		
-		JLabel lblIdentificador = new JLabel("Identificador");
-		lblIdentificador.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
-		lblIdentificador.setBounds(442, 37, 95, 29);
-		panel_1.add(lblIdentificador);
-		
-		JTextField txtIdentificador = new JTextField();
-		txtIdentificador.setColumns(10);
-		txtIdentificador.setBorder(BorderFactory.createLineBorder(borde,5));
-		txtIdentificador.setBounds(534, 39, 205, 29);
-		panel_1.add(txtIdentificador);
-		
-		
+
+		JLabel identifierTag = new JLabel("Identificador");
+		identifierTag.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
+
+		JTextField txtId = new JTextField();
+		txtId.setBorder(BorderFactory.createLineBorder(borde, 5));
+		txtId.setEditable(false);
+		txtId.setColumns(10);
+
 		JLabel descriptionTag = new JLabel("Descripción");
 		descriptionTag.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
-		descriptionTag.setBounds(364, 98, 84, 29);
-		panel_1.add(descriptionTag);
-		
+
 		JTextPane descriptionInput = new JTextPane();
-		descriptionInput.setBorder(BorderFactory.createLineBorder(borde,5));
-		descriptionInput.setBounds(88, 135, 651, 260);
-		panel_1.add(descriptionInput);
-		
+		descriptionInput.setBorder(BorderFactory.createLineBorder(borde, 5));
+		JScrollPane scrollDescripcion = new JScrollPane(descriptionInput);
+
 		JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		panelBotones.setBackground(Color.white);
-		
-        JButton btnRegresar = new JButton("Cancelar");
-        btnRegresar.setBackground(azulC);
-        btnRegresar.setForeground(Color.white);
-        btnRegresar.setBorder(BorderFactory.createLineBorder(azul2,5));
-        btnRegresar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btnRegresar.addActionListener(e -> {
+
+		JButton btnRegresar = new JButton("Cancelar");
+		btnRegresar.setBackground(azulC);
+		btnRegresar.setForeground(Color.white);
+		btnRegresar.setBorder(BorderFactory.createLineBorder(azul2, 5));
+		btnRegresar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnRegresar.addActionListener(e -> {
 			ModuloAsignaturaController mac = new ModuloAsignaturaController();
-        	crear.dispose();
-        	mac.moduloAsignatura();
+			crear.dispose();
+			mac.moduloAsignatura();
 		});
-        panelBotones.add(btnRegresar);
-        
-        
-        JButton btnCrear = new JButton("Crear");
-        btnCrear.setBackground(azul1);
-        btnCrear.setForeground(Color.white);
-        btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde,5));
-        btnCrear.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        panelBotones.add(btnCrear);
+
+		JButton btnCrear = new JButton("Crear");
+		btnCrear.setBackground(azul1);
+		btnCrear.setForeground(Color.white);
+		btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde, 5));
+		btnCrear.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+		panelBotones.add(btnRegresar);
+		panelBotones.add(btnCrear);
+
+		contenido.add(panelTitulo, BorderLayout.NORTH);
+		panelTitulo.add(lblNewLabel);
+
+		contenido.add(panelFormulario, BorderLayout.CENTER);
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(10, 10, 10, 10);
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		panelFormulario.add(nameTag, gbc);
+
+		gbc.gridx = 1;
+		gbc.weightx = 1.0;
+		panelFormulario.add(txtNombre, gbc);
+
+		gbc.gridx = 2;
+		gbc.weightx = 0;
+		panelFormulario.add(identifierTag, gbc);
+
+		gbc.gridx = 3;
+		gbc.weightx = 1.0;
+		panelFormulario.add(txtId, gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.gridwidth = 4;
+		gbc.weightx = 1.0;
+		panelFormulario.add(descriptionTag, gbc);
+
+		gbc.gridy = 2;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.weighty = 1.0;
+		panelFormulario.add(scrollDescripcion, gbc);
+       
         btnCrear.addActionListener(e->{
         	String nombre = txtNombre.getText().trim();
         	String descripcion = descriptionInput.getText().trim();
@@ -766,7 +802,9 @@ public class ModuloAsignturaView {
 		        	descriptionInput.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 		        if (camposValidos) {
+		        	Asignatura nAsignatura = new Asignatura(nombre,descripcion);
 		        	
+		        	mam.add(nAsignatura);
 		        	JOptionPane.showMessageDialog(null, "Asignatura creada correctamente.");
 		            ModuloAsignaturaController mec= new ModuloAsignaturaController();
 		            crear.dispose();
@@ -774,15 +812,13 @@ public class ModuloAsignturaView {
 		        } else {
 		            JOptionPane.showMessageDialog(null, errores.toString(), "Campos inválidos", JOptionPane.WARNING_MESSAGE);
 		        }
-		        
-        	
         });
         
 		contenido.add(panelBotones, BorderLayout.SOUTH);
 
 	}
 	
-	 public void modificar() {
+	 public void modificar(Asignatura asignatura) {
 			Color azulC = new Color(40, 103, 152);
 	    	Color borde = new Color(206, 207, 202);
 	    	Color azul2 = new Color(52, 134, 199);
@@ -988,86 +1024,153 @@ public class ModuloAsignturaView {
 			
 			// panel contenido
 			JPanel contenido = new JPanel();
-			contentPane.add(contenido, BorderLayout.CENTER);
 			contenido.setBackground(Color.white);
-			contenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
-			System.out.println(contenido.getHeight());
+			contenido.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
 			contenido.setLayout(new BorderLayout(0, 0));
-			
-			JPanel panel = new JPanel();
-			panel.setBackground(Color.white);
-			contenido.add(panel, BorderLayout.NORTH);
-			
+			contentPane.add(contenido, BorderLayout.CENTER);
+
+			JPanel panelTitulo = new JPanel();
+			panelTitulo.setBackground(Color.white);
+
 			JLabel lblNewLabel = new JLabel("Modificación de asignaturas");
 			lblNewLabel.setFont(new Font("Almarai-Bold", Font.BOLD, 30));
-			panel.add(lblNewLabel);
-			
-			JPanel panel_1 = new JPanel();
-			panel_1.setBorder(new LineBorder(new Color(0, 0, 0), 3));
-			panel_1.setBackground(Color.white);
-			contenido.add(panel_1, BorderLayout.CENTER);
-			panel_1.setLayout(null);
-			
-			JLabel nameTag = new JLabel("Nombre");
-			nameTag.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
-			nameTag.setBounds(88, 37, 65, 29);
-			panel_1.add(nameTag);
-			
-			JTextField nameInput = new JTextField();
-			nameInput.setBounds(148, 39, 205, 29);
-			nameInput.setBorder(BorderFactory.createLineBorder(borde,5));
-			nameInput.setColumns(10);
-			panel_1.add(nameInput);
-			
-			JLabel identifierTag = new JLabel("Identificador");
-			identifierTag.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
-			identifierTag.setBounds(442, 37, 95, 29);
-			panel_1.add(identifierTag);
-			
-			JTextField identifierInput = new JTextField();
-			identifierInput.setColumns(10);
-			identifierInput.setBorder(BorderFactory.createLineBorder(borde,5));
-			identifierInput.setBounds(534, 39, 205, 29);
-			panel_1.add(identifierInput);
-			
-			
-			JLabel descriptionTag = new JLabel("Descripción");
-			descriptionTag.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
-			descriptionTag.setBounds(364, 98, 84, 29);
-			panel_1.add(descriptionTag);
-			
-			JTextPane descriptionInput = new JTextPane();
-			descriptionInput.setBorder(BorderFactory.createLineBorder(borde,5));
-			descriptionInput.setBounds(88, 135, 651, 260);
-			panel_1.add(descriptionInput);
-			
+
+			JPanel panelFormulario = new JPanel(new GridBagLayout());
+			panelFormulario.setBorder(BorderFactory.createCompoundBorder(
+				    new LineBorder(Color.BLACK, 3),                         
+				    BorderFactory.createEmptyBorder(0, 20, 0, 20)         
+				));
+			panelFormulario.setBackground(Color.white);
+
+			JLabel lblNombre = new JLabel("Nombre");
+			lblNombre.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
+
+			JTextField txtNombre = new JTextField();
+			txtNombre.setBorder(BorderFactory.createLineBorder(borde, 5));
+			txtNombre.setColumns(10);
+
+			JLabel lblId = new JLabel("Identificador");
+			lblId.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
+
+			JTextField txtId = new JTextField();
+			txtId.setBorder(BorderFactory.createLineBorder(borde, 5));
+			txtId.setEditable(false);
+			txtId.setColumns(10);
+
+			JLabel lblDescripcion = new JLabel("Descripción");
+			lblDescripcion.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
+
+			JTextPane txtDescripcion = new JTextPane();
+			txtDescripcion.setBorder(BorderFactory.createLineBorder(borde, 5));
+			JScrollPane scrollDescripcion = new JScrollPane(txtDescripcion);
+
 			JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 			panelBotones.setBackground(Color.white);
-			
-	        JButton btnRegresar = new JButton("Cancelar");
-	        btnRegresar.setBackground(azulC);
-	        btnRegresar.setForeground(Color.white);
-	        btnRegresar.setBorder(BorderFactory.createLineBorder(azul2,5));
-	        btnRegresar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	        btnRegresar.addActionListener(e -> {
+
+			JButton btnRegresar = new JButton("Cancelar");
+			btnRegresar.setBackground(azulC);
+			btnRegresar.setForeground(Color.white);
+			btnRegresar.setBorder(BorderFactory.createLineBorder(azul2, 5));
+			btnRegresar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			btnRegresar.addActionListener(e -> {
 				ModuloAsignaturaController mac = new ModuloAsignaturaController();
 				modulo.dispose();
-	        	mac.moduloAsignatura();
+				mac.moduloAsignatura();
 			});
-	        panelBotones.add(btnRegresar);
-	        
-	        
-	        JButton btnCrear = new JButton("Crear");
-	        btnCrear.setBackground(azul1);
-	        btnCrear.setForeground(Color.white);
-	        btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde,5));
-	        btnCrear.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	        panelBotones.add(btnCrear);
+
+			JButton btnCrear = new JButton("Crear");
+			btnCrear.setBackground(azul1);
+			btnCrear.setForeground(Color.white);
+			btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde, 5));
+			btnCrear.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+			panelBotones.add(btnRegresar);
+			panelBotones.add(btnCrear);
+
+			contenido.add(panelTitulo, BorderLayout.NORTH);
+			panelTitulo.add(lblNewLabel);
+
+			
+			// Precargado de datos
+			txtNombre.setText(asignatura.getNombre());
+			txtId.setText(String.valueOf(asignatura.getId()));
+			txtDescripcion.setText(asignatura.getDescripcion());
+			
+			
+			contenido.add(panelFormulario, BorderLayout.CENTER);
+			GridBagConstraints gbc = new GridBagConstraints();
+			gbc.insets = new Insets(10, 10, 10, 10);
+			gbc.anchor = GridBagConstraints.WEST;
+			gbc.fill = GridBagConstraints.HORIZONTAL;
+
+			gbc.gridx = 0;
+			gbc.gridy = 0;
+			panelFormulario.add(lblNombre, gbc);
+
+			gbc.gridx = 1;
+			gbc.weightx = 1.0;
+			panelFormulario.add(txtNombre, gbc);
+
+			gbc.gridx = 2;
+			gbc.weightx = 0;
+			panelFormulario.add(lblId, gbc);
+
+			gbc.gridx = 3;
+			gbc.weightx = 1.0;
+			panelFormulario.add(txtId, gbc);
+
+			gbc.gridx = 0;
+			gbc.gridy = 1;
+			gbc.gridwidth = 4;
+			gbc.weightx = 1.0;
+			panelFormulario.add(lblDescripcion, gbc);
+
+			gbc.gridy = 2;
+			gbc.fill = GridBagConstraints.BOTH;
+			gbc.weighty = 1.0;
+			panelFormulario.add(scrollDescripcion, gbc);
+
+			btnCrear.addActionListener(e->{
+	        	String nombre = txtNombre.getText().trim();
+	        	String descripcion = txtDescripcion.getText().trim();
+	        	
+	        	 Pattern soloLetras = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$");
+	        	 
+	        	 StringBuilder errores = new StringBuilder("Por favor corrige los siguientes campos:\n");
+	        	 boolean camposValidos=true;
+	        	 if (nombre.isEmpty() || !soloLetras.matcher(nombre).matches()) {
+			            txtNombre.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+			            errores.append("Nombres (solo letras)\n");
+			            camposValidos = false;
+			        } else {
+			            txtNombre.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+			        }
+
+			        if (descripcion.isEmpty() || !soloLetras.matcher(descripcion).matches()) {
+			        	txtDescripcion.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+			            errores.append("Descripcion (solo letras)\n");
+			            camposValidos = false;
+			        } else {
+			        	txtDescripcion.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+			        }
+			        if (camposValidos) {
+			        	Asignatura asignaturaMod = new Asignatura(nombre,descripcion);
+			        	
+			        	mam.update(asignatura.getId(),asignaturaMod);
+			        	JOptionPane.showMessageDialog(null, "Asignatura Modificada correctamente.");
+			            ModuloAsignaturaController mec= new ModuloAsignaturaController();
+			            modulo.dispose();
+			            mec.moduloAsignatura();
+			        } else {
+			            JOptionPane.showMessageDialog(null, errores.toString(), "Campos inválidos", JOptionPane.WARNING_MESSAGE);
+			        }
+	        });
 	        
 			contenido.add(panelBotones, BorderLayout.SOUTH);
+
 	    }
 	    
-	 public void datos() {
+	 public void datos(Asignatura asignatura) {
 	    	Color borde = new Color(206, 207, 202);
 	    	Color azul2 = new Color(52, 134, 199);
 	    	Color azul1 = new Color(54, 146, 218);
@@ -1289,12 +1392,12 @@ public class ModuloAsignturaView {
 			JLabel lblNombre = new JLabel("Nombre");
 			lblNombre.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
 
-			JLabel lblValorNombre = new JLabel("Programación III");
+			JLabel lblValorNombre = new JLabel(asignatura.getNombre());
 
 			JLabel lblIdentificador = new JLabel("Identificador");
 			lblIdentificador.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
 
-			JLabel lblValorID = new JLabel("002");
+			JLabel lblValorID = new JLabel(String.valueOf(asignatura.getId()));
 
 			JLabel lblGruposAsignados = new JLabel("Grupos asignados");
 			lblGruposAsignados.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
@@ -1302,17 +1405,21 @@ public class ModuloAsignturaView {
 			JLabel lblDescripcion = new JLabel("Descripción");
 			lblDescripcion.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
 
-			JTextArea areaDescripcion = new JTextArea("Descripción de la asignatura");
+			JTextArea areaDescripcion = new JTextArea(asignatura.getDescripcion());
 			areaDescripcion.setLineWrap(true);
 			areaDescripcion.setWrapStyleWord(true);
 			areaDescripcion.setEditable(false);
 			areaDescripcion.setFont(new Font("Almarai-Bold", Font.PLAIN, 12));
 			areaDescripcion.setBorder(BorderFactory.createLineBorder(borde,4));
 
-			String[] grupos = {"4A", "4B", "4C"};
-			JList<String> listaGrupos = new JList<>(grupos);
+			ArrayList<Grupo> grupos = asignatura.getGrupos();
+			List<String> nombresGrupos = new ArrayList<>();
+			for (Grupo g : grupos) {
+			    nombresGrupos.add(g.getNombre());
+			}
+			JList<String> listaGrupos = new JList<>(nombresGrupos.toArray(new String[0]));
 			listaGrupos.setFont(new Font("Almarai-Bold", Font.PLAIN, 12));
-			listaGrupos.setBorder(BorderFactory.createLineBorder(borde,4));
+			listaGrupos.setBorder(BorderFactory.createLineBorder(borde, 4));
 			JScrollPane scrollGrupos = new JScrollPane(listaGrupos);
 
 			JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 30, 20));
@@ -1331,6 +1438,27 @@ public class ModuloAsignturaView {
 			    modulo.dispose();
 			    mac.moduloAsignatura();
 			});
+			/*btnDescargar.addActionListener(e->{
+				JFileChooser fileChooser = new JFileChooser();
+	        	fileChooser.setDialogTitle("Guardar PDF");
+
+	        	
+	        	FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
+	        	fileChooser.setFileFilter(filter);
+
+	        	int userSelection = fileChooser.showSaveDialog(null);
+
+	        	if (userSelection == JFileChooser.APPROVE_OPTION) {
+	        	    File fileToSave = fileChooser.getSelectedFile();
+
+	        	    String ruta = fileToSave.getAbsolutePath();
+	        	    if (!ruta.toLowerCase().endsWith(".pdf")) {
+	        	        ruta += ".pdf";
+	        	    }
+
+	        	    System.out.println(ruta);
+	        	    mam.descargarInformacion(ruta, asignatura);
+			});*/
 
 			panelTitulo.add(lblTitulo);
 
@@ -1406,10 +1534,14 @@ public class ModuloAsignturaView {
 		        boton.setContentAreaFilled(false);
 
 		        boton.addActionListener(e -> {
-		            ModuloAsignaturaController mac= new ModuloAsignaturaController();
-		            modulo.dispose();
-		            mac.datos();
-		            fireEditingStopped();
+		        	int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+	                if (filaSeleccionada >= 0) {
+	                	Asignatura aSeleccionada = listaAsignaturas.get(filaSeleccionada);
+			            ModuloAsignaturaController mac= new ModuloAsignaturaController();
+			            modulo.dispose();
+			            mac.datos(aSeleccionada);
+			            fireEditingStopped();
+	                }
 		        });
 		    }
 
@@ -1479,10 +1611,13 @@ public class ModuloAsignturaView {
 	            borrar.setFocusable(false);
 	            
 	            editar.addActionListener(e -> {
-	                ModuloAsignaturaController mac = new ModuloAsignaturaController();
-	                modulo.dispose();
-	                mac.modificar();
-	                
+	            	int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+	                if (filaSeleccionada >= 0) {
+	                    Asignatura aSeleccionada = listaAsignaturas.get(filaSeleccionada);
+		                ModuloAsignaturaController mac = new ModuloAsignaturaController();
+		                modulo.dispose();
+		                mac.modificar(aSeleccionada);
+	                }
 	            });
 
 	            borrar.addActionListener(e -> {

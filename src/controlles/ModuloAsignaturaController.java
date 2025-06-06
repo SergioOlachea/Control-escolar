@@ -1,5 +1,6 @@
 package controlles;
 
+import model.Asignatura;
 import view.ModuloAsignturaView;
 
 public class ModuloAsignaturaController {
@@ -14,11 +15,11 @@ public class ModuloAsignaturaController {
 	public void crear() {
 		mav.crear();
 	}
-	public void modificar() {
-		mav.modificar();
+	public void modificar(Asignatura asignatura) {
+		mav.modificar(asignatura);
 	}
-	public void datos() {
-		mav.datos();
+	public void datos(Asignatura asignatura) {
+		mav.datos(asignatura);
 	}
 
 }

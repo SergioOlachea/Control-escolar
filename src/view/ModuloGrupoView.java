@@ -977,6 +977,7 @@ public class ModuloGrupoView {
     	});
 
     	btnCrear.addActionListener(e -> {
+    		
     	    String nombreAsignaturaSeleccionada = (String) comboAsignatura.getSelectedItem();
     	    Asignatura asignaturaGrupo = null;
     	    for (Asignatura a : listaAsignaturas) {
@@ -1425,12 +1426,13 @@ public class ModuloGrupoView {
     	gbcAlumno.gridy = 1;
     	panelAlumno.add(btnAnadir, gbcAlumno);
 
-    	gbc.gridx = 0; gbc.gridy = 4;
+    	gbc.gridx = 0; 
+    	gbc.gridy = 4;
     	gbc.gridwidth = 2;
     	gbc.fill = GridBagConstraints.BOTH;
     	gbc.weightx = 2.0;
     	gbc.weighty = 2.0;
-    	gbc.insets = new Insets(0, 20, 20, 10);
+    	gbc.insets = new Insets(0, 20, 20, 0);
     	Formulario.add(panelLista, gbc);
     	
     	gbc.gridx = 2;
@@ -1869,8 +1871,26 @@ public class ModuloGrupoView {
     	});
 
     	btnCrear.addActionListener(e -> {
-    	    JOptionPane.showMessageDialog(modulo, "Función para generar PDF del grupo");
-    	});
+    		JFileChooser fileChooser = new JFileChooser();
+        	fileChooser.setDialogTitle("Guardar PDF");
+
+        	
+        	FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
+        	fileChooser.setFileFilter(filter);
+
+        	int userSelection = fileChooser.showSaveDialog(null);
+
+        	if (userSelection == JFileChooser.APPROVE_OPTION) {
+        	    File fileToSave = fileChooser.getSelectedFile();
+
+        	    String ruta = fileToSave.getAbsolutePath();
+        	    if (!ruta.toLowerCase().endsWith(".pdf")) {
+        	        ruta += ".pdf";
+        	    }
+        	    ModuloGrupoModel mgm = new ModuloGrupoModel();
+        	    System.out.println(ruta);
+        	    mgm.descargarPdf(ruta, grupo);
+        	}    	});
 
     	contenido.revalidate();
     	contenido.repaint();
@@ -2787,7 +2807,26 @@ public class ModuloGrupoView {
         	mdc.moduloDocente();
         });
         btnCrear.addActionListener(e->{
+        	JFileChooser fileChooser = new JFileChooser();
+        	fileChooser.setDialogTitle("Guardar PDF");
+
         	
+        	FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
+        	fileChooser.setFileFilter(filter);
+
+        	int userSelection = fileChooser.showSaveDialog(null);
+
+        	if (userSelection == JFileChooser.APPROVE_OPTION) {
+        	    File fileToSave = fileChooser.getSelectedFile();
+
+        	    String ruta = fileToSave.getAbsolutePath();
+        	    if (!ruta.toLowerCase().endsWith(".pdf")) {
+        	        ruta += ".pdf";
+        	    }
+        	    ModuloDocenteModel mdm = new ModuloDocenteModel();
+        	    System.out.println(ruta);
+        	    mdm.descargarInformacion(ruta, docente);
+        	}
         });
         panelBotones.add(btnCancelar);
         panelBotones.add(btnCrear);
@@ -3269,10 +3308,22 @@ public class ModuloGrupoView {
 	            });
 	
 	            borrar.addActionListener(e -> {
-	                ((DefaultTableModel) tabla.getModel()).removeRow(row);
-	                JOptionPane.showMessageDialog(null, "Fila eliminada " + (row + 1));
-	                fireEditingStopped();
-	                System.out.println(borrar.getSize());
+	            	
+	            	int n = JOptionPane.showConfirmDialog(
+	    		            null,
+	    		            "Estas seguro que quieres eliminar este registro?",
+	    		            "Eliminar",
+	    		            JOptionPane.YES_NO_OPTION);
+
+	    		        if(n==0){
+	    		        	ModuloGrupoModel mgm = new ModuloGrupoModel();
+	    		        	mgm.delete(gSeleccionado.getId());
+							((DefaultTableModel) tabla.getModel()).removeRow(row);
+							JOptionPane.showMessageDialog(null, "Fila eliminada " + (row + 1));
+							fireEditingStopped();
+							System.out.println(borrar.getSize());
+	    		        }
+	               
 	            });
             }
 

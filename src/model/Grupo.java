@@ -15,9 +15,16 @@ public class Grupo {
 		
 	}
 	
-	public Grupo(int id, String nombre,Asignatura asignatura, Docente docente, ArrayList<Estudiante> estudiantes) {
+	public Grupo(int di,String nombre,Asignatura asignatura, Docente docente, ArrayList<Estudiante> estudiantes) {
 		super();
 		this.id = id;
+		this.nombre = nombre;
+		this.asignatura = asignatura;
+		this.docente = docente;
+		this.estudiantes = estudiantes;
+	}
+	public Grupo(String nombre,Asignatura asignatura, Docente docente, ArrayList<Estudiante> estudiantes) {
+		super();
 		this.nombre = nombre;
 		this.asignatura = asignatura;
 		this.docente = docente;

@@ -287,7 +287,7 @@ public class ModuloAsignturaView {
 		contenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
 		contenido.setLayout(new BoxLayout(contenido, BoxLayout.PAGE_AXIS));
 		
-		JLabel lblRegistroAlumnos = new JLabel("Registro de alumnos");
+		JLabel lblRegistroAlumnos = new JLabel("Registro de asignaturas");
 		lblRegistroAlumnos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRegistroAlumnos.setFont(new Font("Almarai-Bold",Font.PLAIN, 25));
 		lblRegistroAlumnos.setMaximumSize(new Dimension(Integer.MAX_VALUE,40));

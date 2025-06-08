@@ -347,12 +347,16 @@ public class ModuloAsignturaView {
 
         for (int i = 0; i < listaAsignaturas.size(); i++) {
             Asignatura a = listaAsignaturas.get(i);
-            datos[i][0] = a.getId();
-            datos[i][1] = a.getNombre();
-            datos[i][2] = a.getGrupos();
-            datos[i][3] = "Datos completos";
-            datos[i][4] = "Opciones";
-        }
+            for(Grupo g : a.getGrupos()) {
+            	String nombreGrupo = g.getNombre();
+            	 datos[i][0] = a.getId();
+	            datos[i][1] = a.getNombre();
+	            datos[i][2] = nombreGrupo;
+	            datos[i][3] = "Datos completos";
+	            datos[i][4] = "Opciones";
+
+            }
+       }
 
         DefaultTableModel model = new DefaultTableModel(datos, columnas) {
             @Override
@@ -783,6 +787,7 @@ public class ModuloAsignturaView {
         	String descripcion = descriptionInput.getText().trim();
         	
         	 Pattern soloLetras = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$");
+        	 Pattern descripciondatos = Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚñÑ .,;:¡!¿?\"'()\\-/%/]+$");
         	 
         	 StringBuilder errores = new StringBuilder("Por favor corrige los siguientes campos:\n");
         	 boolean camposValidos=true;
@@ -794,7 +799,7 @@ public class ModuloAsignturaView {
 		            txtNombre.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (descripcion.isEmpty() || !soloLetras.matcher(descripcion).matches()) {
+		        if (descripcion.isEmpty() || !descripciondatos.matcher(descripcion).matches()) {
 		        	descriptionInput.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 		            errores.append("Descripcion (solo letras)\n");
 		            camposValidos = false;

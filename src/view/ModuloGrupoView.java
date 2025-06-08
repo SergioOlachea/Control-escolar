@@ -91,7 +91,6 @@ public class ModuloGrupoView {
 	
 	ArrayList<Estudiante> lista = new ArrayList();
 	
-	alumnosAñadidos aA= new alumnosAñadidos();
 	private Asignatura asignaturaGrupo;
 	private Docente docenteGrupo;
 	
@@ -435,34 +434,31 @@ public class ModuloGrupoView {
         btnBuscar.setAlignmentY(Component.TOP_ALIGNMENT);
         btnBuscar.setMaximumSize(new Dimension(50,30));
         btnBuscar.addActionListener(e -> {
-    
-    	    String texto = txtFiltro.getText().trim();
-    	    int seleccion = filtroCombo.getSelectedIndex();
+            String texto = txtFiltro.getText().trim();
+            int seleccion = filtroCombo.getSelectedIndex();
 
-    	    if (seleccion == 0) {
-    	        JOptionPane.showMessageDialog(null, "Seleccione un campo para filtrar.");
-    	        return;
-    	    }
+            if (seleccion == 0) {
+                JOptionPane.showMessageDialog(null, "Seleccione un campo para filtrar.");
+                return;
+            }
 
-    	    int columna = seleccion - 1;
-    	    
-    	    if (columna == 0 && !texto.matches("\\d+")) {
-    	        JOptionPane.showMessageDialog(null, "El identificador debe ser numérico.");
-    	        return;
-    	    }
+            int columna = seleccion - 1;
 
-    	    DefaultTableModel model1 = (DefaultTableModel) tabla.getModel();
-    	    TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
-    	    tabla.setRowSorter(sorter);
+            if (columna == 0 && !texto.matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "El número de control debe ser numérico.");
+                return;
+            }
 
-    	    sorter.setRowFilter(RowFilter.regexFilter("(?i)^" + Pattern.quote(texto) + "$", columna));
+            DefaultTableModel model1 = (DefaultTableModel) tabla.getModel();
+            TableRowSorter<TableModel> sorter = new TableRowSorter<>(model1);
+            tabla.setRowSorter(sorter);
 
-    	    if (tabla.getRowCount() == 0) {
-    	        JOptionPane.showMessageDialog(null, "No se encontró ningún resultado para: " + texto);
-    	        tabla.setRowSorter(null); // Quitar filtro
-    	    }
-        	
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(texto), columna));
 
+            if (tabla.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "No se encontró ningún resultado para: " + texto);
+                tabla.setRowSorter(null); // Quitar filtro
+            }
         });
 
         option.add(btnBuscar);
@@ -794,20 +790,6 @@ public class ModuloGrupoView {
     	listaAñadidos.setBorder(BorderFactory.createLineBorder(borde, 2));
     	JScrollPane scrollLista = new JScrollPane(listaAñadidos);
     	scrollLista.setPreferredSize(new Dimension(500, 200));
-
-    	try {
-    	    if (aA != null) {
-    	        if (aA.listas() != null) {
-    	            lista = aA.listas();
-    	            for (Estudiante e : lista) {
-    	                modeloLista.addElement(e.getNombres());
-    	                listaEstudiantesSeleccionados.add(e);
-    	            }
-    	        }
-    	    }
-    	} catch (Exception ex) {
-    	    ex.printStackTrace();
-    	}
 
     	String[] alumnosDisponibles = {"Juan Pérez", "María García", "Carlos López", "Ana Martínez", "Luis Rodríguez"};
     	for (String alumno : alumnosDisponibles) {

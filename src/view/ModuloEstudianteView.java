@@ -414,33 +414,33 @@ public class ModuloEstudianteView {
         btnBuscar.setAlignmentY(Component.TOP_ALIGNMENT);
         btnBuscar.setMaximumSize(new Dimension(50,30));
         btnBuscar.addActionListener(e -> {
-    
-    	    String texto = txtFiltro.getText().trim();
-    	    int seleccion = filtroCombo.getSelectedIndex();
+            String texto = txtFiltro.getText().trim();
+            int seleccion = filtroCombo.getSelectedIndex();
 
-    	    if (seleccion == 0) {
-    	        JOptionPane.showMessageDialog(null, "Seleccione un campo para filtrar.");
-    	        return;
-    	    }
+            if (seleccion == 0) {
+                JOptionPane.showMessageDialog(null, "Seleccione un campo para filtrar.");
+                return;
+            }
 
-    	    int columna = seleccion - 1;
-    	    
-    	    if (columna == 0 && !texto.matches("\\d+")) {
-    	        JOptionPane.showMessageDialog(null, "El numero de control debe ser numérico.");
-    	        return;
-    	    }
+            int columna = seleccion - 1;
 
-    	    DefaultTableModel model1 = (DefaultTableModel) tabla.getModel();
-    	    TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
-    	    tabla.setRowSorter(sorter);
+            if (columna == 0 && !texto.matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "El número de control debe ser numérico.");
+                return;
+            }
 
-    	    sorter.setRowFilter(RowFilter.regexFilter("(?i)^" + Pattern.quote(texto) + "$", columna));
+            DefaultTableModel model1 = (DefaultTableModel) tabla.getModel();
+            TableRowSorter<TableModel> sorter = new TableRowSorter<>(model1);
+            tabla.setRowSorter(sorter);
 
-    	    if (tabla.getRowCount() == 0) {
-    	        JOptionPane.showMessageDialog(null, "No se encontró ningún resultado para: " + texto);
-    	        tabla.setRowSorter(null); // Quitar filtro
-    	    }
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(texto), columna));
+
+            if (tabla.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "No se encontró ningún resultado para: " + texto);
+                tabla.setRowSorter(null); // Quitar filtro
+            }
         });
+
 
         option.add(btnBuscar);
         

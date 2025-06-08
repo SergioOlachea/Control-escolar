@@ -810,7 +810,7 @@ public class ModuloGrupoView {
     	btnEliminar.setPreferredSize(new Dimension(35, 35));
 
     	JButton btnCancelar = new JButton("Cancelar");
-    	btnCancelar.setBackground(azul1);
+    	btnCancelar.setBackground(azulC);
     	btnCancelar.setForeground(Color.WHITE);
     	btnCancelar.setBorder(BorderFactory.createLineBorder(azulBorde, 2));
     	btnCancelar.setPreferredSize(new Dimension(100, 35));
@@ -1239,8 +1239,8 @@ public class ModuloGrupoView {
     	contenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 15));
     	contenido.setLayout(new BorderLayout(0, 20));
 
-    	JLabel lblTitulo = new JLabel("Creación de grupo");
-    	lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
+    	JLabel lblTitulo = new JLabel("Modificación de grupo");
+    	lblTitulo.setFont(new Font("Almarai-Bold", Font.BOLD, 24));
     	lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
     	contenido.add(lblTitulo, BorderLayout.NORTH);
 
@@ -1252,15 +1252,15 @@ public class ModuloGrupoView {
     	GridBagConstraints gbc = new GridBagConstraints();
 
     	JLabel lblDocente = new JLabel("Docente");
-    	lblDocente.setFont(new Font("Arial", Font.BOLD, 14));
+    	lblDocente.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
     	JLabel lblAsignaturas = new JLabel("Asignatura");
-    	lblAsignaturas.setFont(new Font("Arial", Font.BOLD, 14));
+    	lblAsignaturas.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
     	JLabel lblIdentificador = new JLabel("Identificador");
-    	lblIdentificador.setFont(new Font("Arial", Font.BOLD, 14));
+    	lblIdentificador.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
     	JLabel lblNombre = new JLabel("Nombre");
-    	lblNombre.setFont(new Font("Arial", Font.BOLD, 14));
+    	lblNombre.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
     	JLabel lblListaAlumnos = new JLabel("Lista de alumnos");
-    	lblListaAlumnos.setFont(new Font("Arial", Font.BOLD, 14));
+    	lblListaAlumnos.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
 
     	JTextField txtIdentificador = new JTextField();
     	txtIdentificador.setEditable(false);
@@ -1320,12 +1320,17 @@ public class ModuloGrupoView {
     	btnEliminar.setPreferredSize(new Dimension(25, 25));
 
     	JButton btnCancelar = new JButton("Cancelar");
-    	btnCancelar.setBackground(azul1);
+    	btnCancelar.setBackground(azulC);
     	btnCancelar.setForeground(Color.WHITE);
     	btnCancelar.setBorder(BorderFactory.createLineBorder(azulBorde, 2));
     	btnCancelar.setPreferredSize(new Dimension(100, 35));
+    	btnCancelar.addActionListener(e->{
+        	modulo.dispose();
+        	ModuloGrupoController mgc= new ModuloGrupoController();
+        	mgc.moduloGrupo();
+        });
 
-    	JButton btnCrear = new JButton("Crear");
+    	JButton btnCrear = new JButton("Modificar");
     	btnCrear.setBackground(azul1);
     	btnCrear.setForeground(Color.WHITE);
     	btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde, 2));

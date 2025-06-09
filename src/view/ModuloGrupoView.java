@@ -3404,35 +3404,43 @@ public class ModuloGrupoView {
             editar.setFocusable(false);
             borrar.setFocusable(false);
             
-            int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
-            if (filaSeleccionada >= 0) {
-            	Grupo gSeleccionado = listaGrupos.get(filaSeleccionada);
-            	
-	            editar.addActionListener(e -> {
-	                ModuloGrupoController mgc = new ModuloGrupoController();
+            editar.addActionListener(e -> {
+            	int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+                if (filaSeleccionada >= 0) {
+                	Grupo gSeleccionado = listaGrupos.get(filaSeleccionada);
+                    ModuloGrupoController mgc = new ModuloGrupoController();
 	                modulo.dispose();
-	                mgc.modificar(gSeleccionado);
-	            });
-	
-	            borrar.addActionListener(e -> {
-	            	
-	            	int n = JOptionPane.showConfirmDialog(
-	    		            null,
-	    		            "Estas seguro que quieres eliminar este registro?",
-	    		            "Eliminar",
-	    		            JOptionPane.YES_NO_OPTION);
+	                mgc.modificar(gSeleccionado); 
+                }
+            });
 
-	    		        if(n==0){
-	    		        	ModuloGrupoModel mgm = new ModuloGrupoModel();
-	    		        	mgm.delete(gSeleccionado.getId());
-							((DefaultTableModel) tabla.getModel()).removeRow(row);
-							JOptionPane.showMessageDialog(null, "Fila eliminada " + (row + 1));
-							fireEditingStopped();
-							System.out.println(borrar.getSize());
-	    		        }
-	               
-	            });
-            }
+            borrar.addActionListener(e -> {
+            	int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+
+            	 if (filaSeleccionada >= 0) {
+            		 
+            		 int n = JOptionPane.showConfirmDialog(
+         		            null,
+         		            "Estas seguro que quieres eliminar este registro?",
+         		            "Eliminar registro",
+         		            JOptionPane.YES_NO_OPTION);
+
+         		        if(n==0){
+         		        	((DefaultTableModel) tabla.getModel()).removeRow(row);
+         		        	ModuloGrupoModel mgm = new ModuloGrupoModel();
+         		        	Grupo gSeleccionado = listaGrupos.get(filaSeleccionada);
+         		        	mgm.delete(gSeleccionado.getId());
+         	                
+         	                JOptionPane.showMessageDialog(null, "Fila eliminada " + (row + 1));
+         	                fireEditingStopped();
+         	                System.out.println(borrar.getSize());
+         		        }
+         		        else if(n==1) {
+         		            
+         		        }
+	                
+            	 }
+            });
 
             panel.add(editar);
             panel.add(borrar);

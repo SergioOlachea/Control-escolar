@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -940,16 +941,23 @@ public class ModuloGrupoView {
     	});
 
     	btnCancelar.addActionListener(e -> {
-    	    int n = JOptionPane.showConfirmDialog(
-    	        null,
-    	        "¿Está seguro que desea cancelar? Se perderán todos los cambios.",
-    	        "Cancelar creación",
-    	        JOptionPane.YES_NO_OPTION);
+    		int indiceSeleccionado = listaAñadidos.getSelectedIndex();
+    	    if (indiceSeleccionado != -1) {
+    	        String alumnoEliminado = modeloLista.getElementAt(indiceSeleccionado);
+    	        modeloLista.removeElementAt(indiceSeleccionado);
 
-    	    if(n == 0) {
-    	        ModuloGrupoController mgc = new ModuloGrupoController();
-    	        modulo.dispose();
-    	        mgc.moduloGrupo();
+    	        Iterator<Estudiante> iterator = listaEstudiantesSeleccionados.iterator();
+    	        while (iterator.hasNext()) {
+    	            Estudiante est = iterator.next();
+    	            String nombreCompleto = est.getNombres() + " " + est.getApellidos();
+    	            if (nombreCompleto.equals(alumnoEliminado)) {
+    	                iterator.remove(); 
+    	                System.out.println("Estudiante eliminado del ArrayList: " + nombreCompleto);
+    	                break; 
+    	            }
+    	        }
+    	    } else {
+    	        JOptionPane.showMessageDialog(modulo, "Seleccione un alumno para eliminar");
     	    }
     	});
 
@@ -1485,11 +1493,21 @@ public class ModuloGrupoView {
     	});
 
     	btnEliminar.addActionListener(e -> {
-    	    int indiceSeleccionado = listaAñadidos.getSelectedIndex();
+    		int indiceSeleccionado = listaAñadidos.getSelectedIndex();
     	    if (indiceSeleccionado != -1) {
     	        String alumnoEliminado = modeloLista.getElementAt(indiceSeleccionado);
     	        modeloLista.removeElementAt(indiceSeleccionado);
-    	        System.out.println("Alumno eliminado: " + alumnoEliminado);
+
+    	        Iterator<Estudiante> iterator = listaEstudiantesSeleccionados.iterator();
+    	        while (iterator.hasNext()) {
+    	            Estudiante est = iterator.next();
+    	            String nombreCompleto = est.getNombres() + " " + est.getApellidos();
+    	            if (nombreCompleto.equals(alumnoEliminado)) {
+    	                iterator.remove(); 
+    	                System.out.println("Estudiante eliminado del ArrayList: " + nombreCompleto);
+    	                break; 
+    	            }
+    	        }
     	    } else {
     	        JOptionPane.showMessageDialog(modulo, "Seleccione un alumno para eliminar");
     	    }
@@ -1711,7 +1729,7 @@ public class ModuloGrupoView {
     	});
     	moduloMaestros.add(btnMaestros);
 
-    	JLabel lblMaestros = new JLabel("<html><div style='text-align: center;'>Modulo de<br>maestros");
+    	JLabel lblMaestros = new JLabel("<html><div style='text-align: center;'>Modulo de<br>docente");
     	lblMaestros.setAlignmentX(Component.CENTER_ALIGNMENT);
     	lblMaestros.setForeground(new Color(255, 255, 255));
     	lblMaestros.setBackground(azul2);

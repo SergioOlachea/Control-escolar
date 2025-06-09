@@ -1341,11 +1341,6 @@ public class ModuloGrupoView {
     	btnCancelar.setForeground(Color.WHITE);
     	btnCancelar.setBorder(BorderFactory.createLineBorder(azulBorde, 2));
     	btnCancelar.setPreferredSize(new Dimension(100, 35));
-    	btnCancelar.addActionListener(e->{
-        	modulo.dispose();
-        	ModuloGrupoController mgc= new ModuloGrupoController();
-        	mgc.moduloGrupo();
-        });
 
     	JButton btnCrear = new JButton("Modificar");
     	btnCrear.setBackground(azul1);

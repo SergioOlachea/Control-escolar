@@ -379,7 +379,7 @@ public class ModuloGrupoView {
         	if (docente != null) {
         	    nombreDocente = docente.getNombres()+" "+docente.getApellidos();
         	} else {
-        		System.out.println("no hay");
+        		System.out.println(g.getId()+"no hay");
         	}
         	
             datos[i][0] = g.getId(); 
@@ -445,7 +445,7 @@ public class ModuloGrupoView {
             int columna = seleccion - 1;
 
             if (columna == 0 && !texto.matches("\\d+")) {
-                JOptionPane.showMessageDialog(null, "El número de control debe ser numérico.");
+                JOptionPane.showMessageDialog(null, "El identificador debe ser numérico.");
                 return;
             }
 
@@ -747,16 +747,11 @@ public class ModuloGrupoView {
 
     	JTextField txtIdentificador = new JTextField();
     	txtIdentificador.setEditable(false);
-    	txtIdentificador.setText("001");
+    	txtIdentificador.setText("se genera automaticamente");
     	txtIdentificador.setPreferredSize(new Dimension(200, 30));
     	txtIdentificador.setBorder(BorderFactory.createLineBorder(borde, 2));
 
-    	JLabel lblAutoGenerado = new JLabel("(Auto-generado)");
-    	lblAutoGenerado.setFont(new Font("Arial", Font.ITALIC, 10));
-    	lblAutoGenerado.setForeground(Color.GRAY);
-
     	JTextField txtNombre = new JTextField();
-    	txtNombre.setText("6A");
     	txtNombre.setPreferredSize(new Dimension(200, 30));
     	txtNombre.setBorder(BorderFactory.createLineBorder(borde, 2));
 
@@ -781,6 +776,10 @@ public class ModuloGrupoView {
     	for (Docente d : listaDocentes) {
     	    comboDocente.addItem(d.getNombres());
     	}
+    	for (Estudiante e: listaEstudiantes) {
+    		String nombreCompleto = e.getNombres() + " " + e.getApellidos();
+    	    comboAlumno.addItem(nombreCompleto);
+    	}
 
     	DefaultListModel<String> modeloLista = new DefaultListModel<>();
     	ArrayList<Estudiante> listaEstudiantesSeleccionados = new ArrayList<>();
@@ -790,11 +789,6 @@ public class ModuloGrupoView {
     	listaAñadidos.setBorder(BorderFactory.createLineBorder(borde, 2));
     	JScrollPane scrollLista = new JScrollPane(listaAñadidos);
     	scrollLista.setPreferredSize(new Dimension(500, 200));
-
-    	String[] alumnosDisponibles = {"Juan Pérez", "María García", "Carlos López", "Ana Martínez", "Luis Rodríguez"};
-    	for (String alumno : alumnosDisponibles) {
-    	    comboAlumno.addItem(alumno);
-    	}
 
     	ImageIcon iconAnadir = new ImageIcon(getClass().getResource("/imagenes/añadir (1).png"));
     	JButton btnAnadir = new JButton("Añadir", iconAnadir);
@@ -868,13 +862,6 @@ public class ModuloGrupoView {
     	gbc.insets = new Insets(10, 0, 5, 20);
     	Formulario.add(txtNombre, gbc);
 
-    	gbc.gridx = 1; gbc.gridy = 2;
-    	gbc.fill = GridBagConstraints.NONE;
-    	gbc.weightx = 0.0;
-    	gbc.anchor = GridBagConstraints.WEST;
-    	gbc.insets = new Insets(0, 0, 10, 0);
-    	Formulario.add(lblAutoGenerado, gbc);
-
     	gbc.gridx = 0; gbc.gridy = 3;
     	gbc.gridwidth = 4;
     	gbc.anchor = GridBagConstraints.WEST;
@@ -924,13 +911,21 @@ public class ModuloGrupoView {
     	contenido.add(panelInferior, BorderLayout.SOUTH);
 
     	btnAnadir.addActionListener(e -> {
-    	    String alumnoSeleccionado = (String) comboAlumno.getSelectedItem();
-    	    if (alumnoSeleccionado != null && !modeloLista.contains(alumnoSeleccionado)) {
-    	        modeloLista.addElement(alumnoSeleccionado);
-    	        System.out.println("Alumno agregado: " + alumnoSeleccionado);
-    	    } else if (modeloLista.contains(alumnoSeleccionado)) {
-    	        JOptionPane.showMessageDialog(modulo, "El alumno ya está en la lista");
-    	    }
+    		 String nombreSeleccionado = (String) comboAlumno.getSelectedItem();
+    		    if (nombreSeleccionado != null && !modeloLista.contains(nombreSeleccionado)) {
+    		        modeloLista.addElement(nombreSeleccionado);
+
+    		        for (Estudiante est : listaEstudiantes) {
+    		            String nombreCompleto = est.getNombres() + " " + est.getApellidos();
+    		            if (nombreCompleto.equals(nombreSeleccionado)) {
+    		                listaEstudiantesSeleccionados.add(est);
+    		                System.out.println("Estudiante agregado: " + nombreCompleto);
+    		                break;
+    		            }
+    		        }
+    		    } else if (modeloLista.contains(nombreSeleccionado)) {
+    		        JOptionPane.showMessageDialog(modulo, "El alumno ya está en la lista");
+    		    }
     	});
 
     	btnEliminar.addActionListener(e -> {
@@ -1021,6 +1016,7 @@ public class ModuloGrupoView {
     	        nuevoGrupo.setDocente(docenteGrupo);
     	        nuevoGrupo.setAsignatura(asignaturaGrupo);
     	        nuevoGrupo.setEstudiantes(listaEstudiantesSeleccionados);
+    	        mgm.add(nuevoGrupo);
     	        JOptionPane.showMessageDialog(modulo, "Grupo creado exitosamente");
     	        modulo.dispose();
     	        ModuloGrupoController mgc = new ModuloGrupoController();
@@ -1248,28 +1244,34 @@ public class ModuloGrupoView {
     	Formulario.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
     	Formulario.setBackground(Color.WHITE);
     	contenido.add(Formulario, BorderLayout.CENTER);
+
     	Formulario.setLayout(new GridBagLayout());
     	GridBagConstraints gbc = new GridBagConstraints();
 
     	JLabel lblDocente = new JLabel("Docente");
     	lblDocente.setFont(new Font("Arial", Font.BOLD, 14));
+
     	JLabel lblAsignaturas = new JLabel("Asignatura");
     	lblAsignaturas.setFont(new Font("Arial", Font.BOLD, 14));
+
     	JLabel lblIdentificador = new JLabel("Identificador");
     	lblIdentificador.setFont(new Font("Arial", Font.BOLD, 14));
+
     	JLabel lblNombre = new JLabel("Nombre");
     	lblNombre.setFont(new Font("Arial", Font.BOLD, 14));
+
     	JLabel lblListaAlumnos = new JLabel("Lista de alumnos");
     	lblListaAlumnos.setFont(new Font("Arial", Font.BOLD, 14));
 
+    	JLabel lblAlumno = new JLabel("Alumno");
+    	lblAlumno.setFont(new Font("Arial", Font.BOLD, 14));
+
     	JTextField txtIdentificador = new JTextField();
     	txtIdentificador.setEditable(false);
-    	txtIdentificador.setText("(Auto-generado)");
     	txtIdentificador.setPreferredSize(new Dimension(200, 30));
     	txtIdentificador.setBorder(BorderFactory.createLineBorder(borde, 2));
 
     	JTextField txtNombre = new JTextField();
-    	txtNombre.setText("6A");
     	txtNombre.setPreferredSize(new Dimension(200, 30));
     	txtNombre.setBorder(BorderFactory.createLineBorder(borde, 2));
 
@@ -1294,8 +1296,9 @@ public class ModuloGrupoView {
     	for (Docente d : listaDocentes) {
     	    comboDocente.addItem(d.getNombres());
     	}
-    	for(Estudiante e : listaEstudiantes) {
-    		comboAlumno.addItem(e.getNombres());
+    	for (Estudiante e: listaEstudiantes) {
+    		String nombreCompleto = e.getNombres() + " " + e.getApellidos();
+    	    comboAlumno.addItem(nombreCompleto);
     	}
 
     	DefaultListModel<String> modeloLista = new DefaultListModel<>();
@@ -1303,6 +1306,7 @@ public class ModuloGrupoView {
 
     	JList<String> listaAñadidos = new JList<>(modeloLista);
     	listaAñadidos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    	listaAñadidos.setBorder(BorderFactory.createLineBorder(borde, 2));
     	JScrollPane scrollLista = new JScrollPane(listaAñadidos);
     	scrollLista.setPreferredSize(new Dimension(500, 200));
 
@@ -1317,10 +1321,10 @@ public class ModuloGrupoView {
     	JButton btnEliminar = new JButton(iconEliminar);
     	btnEliminar.setBackground(azul1);
     	btnEliminar.setBorder(BorderFactory.createLineBorder(azulBorde, 2));
-    	btnEliminar.setPreferredSize(new Dimension(25, 25));
+    	btnEliminar.setPreferredSize(new Dimension(35, 35));
 
     	JButton btnCancelar = new JButton("Cancelar");
-    	btnCancelar.setBackground(azul1);
+    	btnCancelar.setBackground(azulcan);
     	btnCancelar.setForeground(Color.WHITE);
     	btnCancelar.setBorder(BorderFactory.createLineBorder(azulBorde, 2));
     	btnCancelar.setPreferredSize(new Dimension(100, 35));
@@ -1331,24 +1335,49 @@ public class ModuloGrupoView {
     	btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde, 2));
     	btnCrear.setPreferredSize(new Dimension(100, 35));
 
-    	gbc.gridx = 0; 
-    	gbc.gridy = 0;
+    	//Precargado de datos
+        for (int i = 0; i < comboAsignatura.getItemCount(); i++) {
+            if (comboAsignatura.getItemAt(i).equals(grupo.getAsignatura().getNombre())) {
+                comboAsignatura.setSelectedIndex(i);
+                break;
+            }
+        }
+
+        for (int i = 0; i < comboDocente.getItemCount(); i++) {
+            if (comboDocente.getItemAt(i).equals(grupo.getDocente().getNombres())) {
+                comboDocente.setSelectedIndex(i);
+                break;
+            }
+        }
+
+        txtNombre.setText(grupo.getNombre());
+        txtIdentificador.setText(String.valueOf(grupo.getId()));
+        modeloLista.clear();
+        listaEstudiantesSeleccionados.clear();
+
+        for (Estudiante est : grupo.getEstudiantes()) {
+            String nombreCompleto = est.getNombres() + " " + est.getApellidos();
+            modeloLista.addElement(nombreCompleto);
+            listaEstudiantesSeleccionados.add(est);
+        }
+
+    	gbc.gridx = 0; gbc.gridy = 0;
     	gbc.anchor = GridBagConstraints.WEST;
     	gbc.insets = new Insets(20, 20, 10, 10);
     	Formulario.add(lblDocente, gbc);
-    	
+
     	gbc.gridx = 1;
     	gbc.fill = GridBagConstraints.HORIZONTAL;
     	gbc.weightx = 1.0;
     	gbc.insets = new Insets(20, 0, 10, 50);
     	Formulario.add(comboDocente, gbc);
-    	
+
     	gbc.gridx = 2;
     	gbc.fill = GridBagConstraints.NONE;
     	gbc.weightx = 0.0;
     	gbc.insets = new Insets(20, 50, 10, 10);
     	Formulario.add(lblAsignaturas, gbc);
-    	
+
     	gbc.gridx = 3;
     	gbc.fill = GridBagConstraints.HORIZONTAL;
     	gbc.weightx = 1.0;
@@ -1360,69 +1389,63 @@ public class ModuloGrupoView {
     	gbc.weightx = 0.0;
     	gbc.insets = new Insets(10, 20, 5, 10);
     	Formulario.add(lblIdentificador, gbc);
-    	
+
     	gbc.gridx = 1;
     	gbc.fill = GridBagConstraints.HORIZONTAL;
     	gbc.weightx = 1.0;
     	gbc.insets = new Insets(10, 0, 5, 50);
     	Formulario.add(txtIdentificador, gbc);
-    	
+
     	gbc.gridx = 2;
     	gbc.fill = GridBagConstraints.NONE;
     	gbc.weightx = 0.0;
     	gbc.insets = new Insets(10, 50, 5, 10);
     	Formulario.add(lblNombre, gbc);
-    	
+
     	gbc.gridx = 3;
     	gbc.fill = GridBagConstraints.HORIZONTAL;
     	gbc.weightx = 1.0;
     	gbc.insets = new Insets(10, 0, 5, 20);
     	Formulario.add(txtNombre, gbc);
-    	
+
     	gbc.gridx = 0; gbc.gridy = 3;
     	gbc.gridwidth = 4;
     	gbc.anchor = GridBagConstraints.WEST;
     	gbc.insets = new Insets(20, 20, 10, 10);
     	Formulario.add(lblListaAlumnos, gbc);
 
-    	JPanel panelLista = new JPanel(new BorderLayout());
-    	panelLista.setBackground(Color.WHITE);
-    	panelLista.setPreferredSize(new Dimension(500, 200));
-    	panelLista.setBorder(BorderFactory.createLineBorder(borde, 2));
-    	panelLista.add(scrollLista, BorderLayout.CENTER);
-    	JPanel panelEliminar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-    	panelEliminar.setBackground(Color.WHITE);
-    	panelEliminar.add(btnEliminar);
-    	panelLista.add(panelEliminar, BorderLayout.SOUTH);
+    	gbc.gridx = 0; gbc.gridy = 4;
+    	gbc.gridwidth = 2;
+    	gbc.fill = GridBagConstraints.BOTH;
+    	gbc.weightx = 1.0;
+    	gbc.weighty = 1.0;
+    	gbc.insets = new Insets(0, 20, 20, 20);
+    	Formulario.add(scrollLista, gbc);
 
     	JPanel panelAlumno = new JPanel();
     	panelAlumno.setBackground(Color.WHITE);
     	panelAlumno.setLayout(new GridBagLayout());
-    	
     	GridBagConstraints gbcAlumno = new GridBagConstraints();
-    	
-    	gbcAlumno.gridx = 0;
-    	gbcAlumno.gridy = 0;
+
+    	gbcAlumno.gridx = 0; gbcAlumno.gridy = 0;
     	gbcAlumno.insets = new Insets(0, 0, 10, 0);
-    	panelAlumno.add(comboAlumno, gbcAlumno);
+    	panelAlumno.add(lblAlumno, gbcAlumno);
+
     	gbcAlumno.gridy = 1;
+    	panelAlumno.add(comboAlumno, gbcAlumno);
+
+    	gbcAlumno.gridy = 2;
     	panelAlumno.add(btnAnadir, gbcAlumno);
 
-    	gbc.gridx = 0; 
-    	gbc.gridy = 4;
-    	gbc.gridwidth = 2;
-    	gbc.fill = GridBagConstraints.BOTH;
-    	gbc.weightx = 2.0;
-    	gbc.weighty = 2.0;
-    	gbc.insets = new Insets(0, 20, 20, 0);
-    	Formulario.add(panelLista, gbc);
-    	
-    	gbc.gridx = 2;
+    	gbcAlumno.gridy = 3;
+    	panelAlumno.add(btnEliminar, gbcAlumno);
+
+    	gbc.gridx = 2; gbc.gridy = 4;
     	gbc.gridwidth = 2;
     	gbc.fill = GridBagConstraints.NONE;
     	gbc.weightx = 0.0;
     	gbc.weighty = 0.0;
-    	gbc.anchor = GridBagConstraints.NORTHWEST;
+    	gbc.anchor = GridBagConstraints.NORTH;
     	gbc.insets = new Insets(0, 20, 20, 20);
     	Formulario.add(panelAlumno, gbc);
 
@@ -1434,27 +1457,119 @@ public class ModuloGrupoView {
     	contenido.add(panelInferior, BorderLayout.SOUTH);
 
     	btnAnadir.addActionListener(e -> {
-    	    String alumnoSeleccionado = (String) comboAlumno.getSelectedItem();
-    	    if (alumnoSeleccionado != null && !modeloLista.contains(alumnoSeleccionado)) {
-    	        modeloLista.addElement(alumnoSeleccionado);
-    	    } else if (modeloLista.contains(alumnoSeleccionado)) {
-    	        JOptionPane.showMessageDialog(modulo, "El alumno ya está en la lista");
-    	    }
+    		 String nombreSeleccionado = (String) comboAlumno.getSelectedItem();
+    		    if (nombreSeleccionado != null && !modeloLista.contains(nombreSeleccionado)) {
+    		        modeloLista.addElement(nombreSeleccionado);
+
+    		        for (Estudiante est : listaEstudiantes) {
+    		            String nombreCompleto = est.getNombres() + " " + est.getApellidos();
+    		            if (nombreCompleto.equals(nombreSeleccionado)) {
+    		                listaEstudiantesSeleccionados.add(est);
+    		                System.out.println("Estudiante agregado: " + nombreCompleto);
+    		                break;
+    		            }
+    		        }
+    		    } else if (modeloLista.contains(nombreSeleccionado)) {
+    		        JOptionPane.showMessageDialog(modulo, "El alumno ya está en la lista");
+    		    }
     	});
 
     	btnEliminar.addActionListener(e -> {
     	    int indiceSeleccionado = listaAñadidos.getSelectedIndex();
     	    if (indiceSeleccionado != -1) {
+    	        String alumnoEliminado = modeloLista.getElementAt(indiceSeleccionado);
     	        modeloLista.removeElementAt(indiceSeleccionado);
+    	        System.out.println("Alumno eliminado: " + alumnoEliminado);
     	    } else {
     	        JOptionPane.showMessageDialog(modulo, "Seleccione un alumno para eliminar");
     	    }
     	});
 
+    	btnCancelar.addActionListener(e -> {
+	        ModuloGrupoController mgc = new ModuloGrupoController();
+	        modulo.dispose();
+	        mgc.moduloGrupo();
+    	});
 
-        contenido.revalidate();
-        contenido.repaint();
-    }
+    	btnCrear.addActionListener(e -> {
+    		
+    	    String nombreAsignaturaSeleccionada = (String) comboAsignatura.getSelectedItem();
+    	    Asignatura asignaturaGrupo = null;
+    	    for (Asignatura a : listaAsignaturas) {
+    	        if (a.getNombre().equals(nombreAsignaturaSeleccionada)) {
+    	            asignaturaGrupo = a;
+    	            break;
+    	        }
+    	    }
+
+    	    String nombreDocenteSeleccionado = (String) comboDocente.getSelectedItem();
+    	    Docente docenteGrupo = null;
+    	    for (Docente d : listaDocentes) {
+    	        if (d.getNombres().equals(nombreDocenteSeleccionado)) {
+    	            docenteGrupo = d;
+    	            break;
+    	        }
+    	    }
+
+    	    String nombre = txtNombre.getText().trim();
+    	    boolean camposValidos = true;
+    	    StringBuilder errores = new StringBuilder("Por favor corrige los siguientes campos:\n");
+    	    Pattern soloMayusculasYNumeros = Pattern.compile("^[A-ZÁÉÍÓÚÑ0-9 ]+$");
+
+    	    if (nombre.isEmpty() || !soloMayusculasYNumeros.matcher(nombre).matches() || nombre.length() > 2) {
+    	        txtNombre.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+    	        errores.append("Nombres (solo letras mayúsculas y números, máximo 2 caracteres)\n");
+    	        camposValidos = false;
+    	    } else {
+    	        txtNombre.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+    	    }
+
+    	    if (modeloLista.size() > 0) {
+    	        listaAñadidos.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+    	    } else {
+    	        listaAñadidos.setBorder(BorderFactory.createLineBorder(Color.RED, 4));
+    	        camposValidos = false;
+    	        errores.append("Lista de alumnos no puede estar vacía\n");
+    	    }
+
+    	    if (docenteGrupo != null) {
+    	        comboDocente.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+    	    } else {
+    	        comboDocente.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+    	        camposValidos = false;
+    	        errores.append("Debe seleccionar un docente\n");
+    	    }
+
+    	    if (asignaturaGrupo != null) {
+    	        comboAsignatura.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+    	    } else {
+    	        comboAsignatura.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+    	        camposValidos = false;
+    	        errores.append("Debe seleccionar una asignatura\n");
+    	    }
+
+    	    if (camposValidos) {
+    	        Grupo nuevoGrupo = new Grupo();
+    	        nuevoGrupo.setNombre(nombre);
+    	        nuevoGrupo.setDocente(docenteGrupo);
+    	        nuevoGrupo.setAsignatura(asignaturaGrupo);
+    	        nuevoGrupo.setEstudiantes(listaEstudiantesSeleccionados);
+    	        mgm.add(nuevoGrupo);
+    	        JOptionPane.showMessageDialog(modulo, "Grupo creado exitosamente");
+    	        modulo.dispose();
+    	        ModuloGrupoController mgc = new ModuloGrupoController();
+    	        mgc.moduloGrupo();
+    	    } else {
+    	        JOptionPane.showMessageDialog(modulo, errores.toString(), "Errores de validación", JOptionPane.ERROR_MESSAGE);
+    	    }
+    	});
+
+        
+
+        modulo.revalidate();
+        modulo.repaint();
+	}
+
 	
 	
     
@@ -1737,9 +1852,10 @@ public class ModuloGrupoView {
     	lblValorNombre.setPreferredSize(new Dimension(200, 28));
 
     	DefaultListModel<Estudiante> modelo = new DefaultListModel<>();
-    	modelo.clear();
+    	System.out.println("Cantidad de estudiantes: " + grupo.getEstudiantes().size());
     	for (Estudiante e : grupo.getEstudiantes()) {
     	    modelo.addElement(e);
+    	    System.out.println("Estudiante: " + e.getNombres());
     	}
 
     	JList<Estudiante> listaAñadidos = new JList<>(modelo);
@@ -1750,9 +1866,10 @@ public class ModuloGrupoView {
     	        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
     	        if (value instanceof Estudiante) {
     	            Estudiante estudiante = (Estudiante) value;
-    	            setText(estudiante.getNombres());
+    	            setText(estudiante.getNombres()+" "+estudiante.getApellidos());
+    	            setHorizontalAlignment(SwingConstants.CENTER);
     	        }
-    	        setHorizontalAlignment(SwingConstants.CENTER);
+    	        
     	        return this;
     	    }
     	});

@@ -348,7 +348,7 @@ public class ModuloGrupoView {
 		option.add(Box.createRigidArea(new Dimension(180,0)));
 		
 	
-		String[] opciones = {"Filtrar","Identificador", "Nombre", "Grupo" };
+		String[] opciones = {"Filtrar","Identificador", "Nombre", "Docente", "Asignatura" };
 		JComboBox<String> filtroCombo = new JComboBox<>(opciones);
 		filtroCombo.setAlignmentY(Component.TOP_ALIGNMENT);
 		filtroCombo.setMaximumSize(new Dimension(150, 30));

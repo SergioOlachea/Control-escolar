@@ -941,24 +941,9 @@ public class ModuloGrupoView {
     	});
 
     	btnCancelar.addActionListener(e -> {
-    		int indiceSeleccionado = listaAñadidos.getSelectedIndex();
-    	    if (indiceSeleccionado != -1) {
-    	        String alumnoEliminado = modeloLista.getElementAt(indiceSeleccionado);
-    	        modeloLista.removeElementAt(indiceSeleccionado);
-
-    	        Iterator<Estudiante> iterator = listaEstudiantesSeleccionados.iterator();
-    	        while (iterator.hasNext()) {
-    	            Estudiante est = iterator.next();
-    	            String nombreCompleto = est.getNombres() + " " + est.getApellidos();
-    	            if (nombreCompleto.equals(alumnoEliminado)) {
-    	                iterator.remove(); 
-    	                System.out.println("Estudiante eliminado del ArrayList: " + nombreCompleto);
-    	                break; 
-    	            }
-    	        }
-    	    } else {
-    	        JOptionPane.showMessageDialog(modulo, "Seleccione un alumno para eliminar");
-    	    }
+    		ModuloGrupoController mgc = new ModuloGrupoController();
+    		modulo.dispose();
+			mgc.moduloGrupo();
     	});
 
     	btnCrear.addActionListener(e -> {

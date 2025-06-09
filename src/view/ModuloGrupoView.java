@@ -1559,13 +1559,13 @@ public class ModuloGrupoView {
     	    }
 
     	    if (camposValidos) {
-    	        Grupo nuevoGrupo = new Grupo();
-    	        nuevoGrupo.setNombre(nombre);
-    	        nuevoGrupo.setDocente(docenteGrupo);
-    	        nuevoGrupo.setAsignatura(asignaturaGrupo);
-    	        nuevoGrupo.setEstudiantes(listaEstudiantesSeleccionados);
-    	        mgm.add(nuevoGrupo);
-    	        JOptionPane.showMessageDialog(modulo, "Grupo creado exitosamente");
+    	        Grupo grupoMod = new Grupo();
+    	        grupoMod.setNombre(nombre);
+    	        grupoMod.setDocente(docenteGrupo);
+    	        grupoMod.setAsignatura(asignaturaGrupo);
+    	        grupoMod.setEstudiantes(listaEstudiantesSeleccionados);
+    	        mgm.update(grupo.getId(),grupoMod);
+    	        JOptionPane.showMessageDialog(modulo, "Grupo mdoificado exitosamente");
     	        modulo.dispose();
     	        ModuloGrupoController mgc = new ModuloGrupoController();
     	        mgc.moduloGrupo();

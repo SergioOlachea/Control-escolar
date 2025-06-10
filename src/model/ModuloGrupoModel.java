@@ -117,9 +117,9 @@ public class ModuloGrupoModel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return new ArrayList<Grupo>(grupos.values());
-		
+		return new ArrayList<Grupo>(grupos.values().stream().sorted((g1, g2)->
+			Integer.valueOf(g1.getId()).compareTo(Integer.valueOf(g2.getId()))
+		).toList());
 	}
 	
 	public Grupo getGrupoById(int id) {

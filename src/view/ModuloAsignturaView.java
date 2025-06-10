@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -347,16 +348,21 @@ public class ModuloAsignturaView {
 
         for (int i = 0; i < listaAsignaturas.size(); i++) {
             Asignatura a = listaAsignaturas.get(i);
-            for(Grupo g : a.getGrupos()) {
-            	String nombreGrupo = g.getNombre();
-            	 datos[i][0] = a.getId();
-	            datos[i][1] = a.getNombre();
-	            datos[i][2] = nombreGrupo;
-	            datos[i][3] = "Datos completos";
-	            datos[i][4] = "Opciones";
+            String nombreGrupo = "N/A";
 
+            if (a.getGrupos() != null && !a.getGrupos().isEmpty()) {
+                nombreGrupo = a.getGrupos().stream()
+                    .map(Grupo::getNombre)
+                    .collect(Collectors.joining(", "));
             }
-       }
+
+            datos[i][0] = a.getId();
+            datos[i][1] = a.getNombre();
+            datos[i][2] = nombreGrupo;
+            datos[i][3] = "Datos completos";
+            datos[i][4] = "Opciones";
+        }
+
 
         DefaultTableModel model = new DefaultTableModel(datos, columnas) {
             @Override

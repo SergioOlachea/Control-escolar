@@ -40,15 +40,16 @@ public class ModuloGrupoModel {
 			    "  t.first_name AS teacher_first_name, " +
 			    "  t.last_name AS teacher_last_name, " +
 			    "  t.email AS teacher_email, " +
+			    "  s.id AS student_id, " +
 			    "  s.control_number AS student_control_number, " +
 			    "  s.first_name AS student_first_name, " +
 			    "  s.last_name AS student_last_name, " +
 			    "  s.email AS student_email " +
 			    "FROM groups_entity g " +
-			    "  LEFT JOIN courses c ON g.course_id = c.id " +
-			    "  LEFT JOIN teachers t ON g.teacher_id = t.id " +
-			    "  LEFT JOIN group_assignment ga ON ga.group_id = g.id " +
-			    "  LEFT JOIN students s ON ga.student_id = s.id;";
+			    "   LEFT JOIN courses c ON g.course_id = c.id " +
+			    "   LEFT JOIN teachers t ON g.teacher_id = t.id " +
+			    "   LEFT JOIN group_assignment ga ON ga.group_id = g.id " +
+			    "   LEFT JOIN students s ON ga.student_id = s.id ";
 		HashMap<Integer, Grupo> grupos = new HashMap<Integer, Grupo>();
 		
 		try (
@@ -97,11 +98,13 @@ public class ModuloGrupoModel {
 				
 				long numeroControlEstudiante = rs.getLong("student_control_number");
 				if(!rs.wasNull()) {
+					int idEstudiante = rs.getInt("student_id");
 					String nombresEstudiante = rs.getString("student_first_name");
 					String apellidosEstudiante = rs.getString("student_last_name");
 					String correoEstudiante = rs.getString("student_email");
 					
 					Estudiante estudiante = new Estudiante();
+					estudiante.setId(idEstudiante);
 					estudiante.setNumeroControl(numeroControlEstudiante);
 					estudiante.setNombres(nombresEstudiante);
 					estudiante.setApellidos(apellidosEstudiante);
@@ -267,13 +270,15 @@ public class ModuloGrupoModel {
 				" WHERE id = ?";
 		String assignmentQuery = 
 				"INSERT INTO group_assignment (student_id, group_id) " +
-				"VALUES (?, ?) " +
-				"	 ON DUPLICATE KEY UPDATE student_id=student_id";
+				"VALUES (?, ?) ";
+		String deleteAssignmentQuery = 
+				"DELETE FROM group_assignment " +
+				"WHERE  group_id=?";
 		try (
 				Connection con = ConexionBD.getConnection();
-				PreparedStatement stmt = con.prepareStatement(query, 
-						Statement.RETURN_GENERATED_KEYS);
+				PreparedStatement stmt = con.prepareStatement(query);
 				PreparedStatement assignmentStmt = con.prepareStatement(assignmentQuery);
+				PreparedStatement deleteStmt = con.prepareStatement(deleteAssignmentQuery);
 			){
 
 			stmt.setString(1, grupo.getNombre());
@@ -293,8 +298,12 @@ public class ModuloGrupoModel {
 			stmt.setInt(4, id);
 	        int rs = stmt.executeUpdate();
 	        
-	        if(grupo.getEstudiantes()!=null) {	                		
+	        deleteStmt.setInt(1, id);
+	        int r = deleteStmt.executeUpdate();
+
+	        if(grupo.getEstudiantes()!=null) {	   
 	        	for (Estudiante estudiante : grupo.getEstudiantes()) {
+
 	        		assignmentStmt.setLong(1, estudiante.getId());
 	        		assignmentStmt.setInt(2, id);
 	        		assignmentStmt.addBatch();
@@ -304,6 +313,7 @@ public class ModuloGrupoModel {
 	        return rs > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println(e.getMessage());
 			return false;
 		}
 	}

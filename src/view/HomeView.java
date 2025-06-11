@@ -246,7 +246,7 @@ public class HomeView {
 		
 		contenido.add(Box.createRigidArea(new Dimension(0,20)));
 		
-		JLabel lblBienvenido = new JLabel("Bienvenido/a!");
+		JLabel lblBienvenido = new JLabel("Bienvenid@!");
 		lblBienvenido.setAlignmentY(Component.TOP_ALIGNMENT);
 		lblBienvenido.setFont(new Font("Almarai-Bold", Font.PLAIN, 50));
 		lblBienvenido.setAlignmentX(Component.CENTER_ALIGNMENT);

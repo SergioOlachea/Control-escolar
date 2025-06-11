@@ -4,42 +4,42 @@ import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 
+import model.Asignatura;
+import model.Docente;
 import model.Estudiante;
+import model.Grupo;
 import view.ModuloGrupoView;
 
 public class ModuloGrupoController {
-	ModuloGrupoView mgv = new ModuloGrupoView();
+	ModuloGrupoView mgv;
 		
 	public void moduloGrupo() {
+		mgv = new ModuloGrupoView();
 		mgv.moduloGrupo();
 	}
 	public void crear() {
+		mgv = new ModuloGrupoView();
 		mgv.crear();
 	}
-	public void modificar() {
-		mgv.modificar();
+	public void modificar(Grupo grupo) {
+		mgv = new ModuloGrupoView();
+		mgv.modificar(grupo);
 	}
-	public void datos() {
-		mgv.detalles();
+	public void datosGenerales(Grupo grupo) {
+		mgv = new ModuloGrupoView();
+		mgv.detalles(grupo);
 	}
-	public void addDocente() {
-		mgv.addDocente();
-	}
-	public void AddEstudiante() {
-		mgv.addAlumno();
-	}
-	public void addAsignatura() {
-		mgv.addAsignatura();
-	}
+	
 	public void datosGenerales(Estudiante estudiante) {
-		mgv.datoEstudiante(estudiante);
+		mgv = new ModuloGrupoView();
+		mgv.detallesE(estudiante);
 	}
-	public void datosGeneralesd(Estudiante estudiante/*Docente docente*/) {
-		mgv.datosDocente(estudiante/*docente*/);
+	public void datosGenerales(Docente docente) {
+		mgv = new ModuloGrupoView();
+		mgv.detallesD(docente);
 	}
-		/*public void datosGenerales(Asignatura asignatura) {
-		mgv.datoAsignatura(asignatura);
-	}*/
-
-
+	public void datosGenerales(Asignatura asignatura,Grupo grupo) {
+		mgv = new ModuloGrupoView();
+		mgv.detallesA(asignatura, grupo);
+	}
 }

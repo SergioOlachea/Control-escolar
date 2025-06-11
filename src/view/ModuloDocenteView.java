@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -56,6 +57,7 @@ import controlles.ModuloAsignaturaController;
 import controlles.ModuloDocenteController;
 import controlles.ModuloEstudianteController;
 import controlles.ModuloGrupoController;
+import model.Docente;
 import model.Estudiante;
 import model.ModuloDocenteModel;
 import model.ModuloEstudianteModel;
@@ -64,7 +66,7 @@ import model.exception.UniqueKeyViolationException;
 
 public class ModuloDocenteView {
 	ModuloDocenteModel mdm = new ModuloDocenteModel();
-	//ArrayList<Docente> listaDocente = mdm.getDocentes();
+	ArrayList<Docente> listaDocentes = mdm.getDocentes();
 	BufferedImage imagenSeleccionada = null;
 	Date fecha = null;
 
@@ -135,12 +137,10 @@ public class ModuloDocenteView {
 
 		        if(n==0){
 		        	Controller c = new Controller();
-		            JOptionPane.showMessageDialog(null,"HOLAAAA");
 		            modulo.dispose();
 		            c.despliegue();
 		        }
 		        else if(n==1) {
-		            JOptionPane.showMessageDialog(null, "GOODBYE");
 		        }
 		});
 		header.add(btnCerrarSesion);
@@ -322,7 +322,7 @@ public class ModuloDocenteView {
 		
 		option.add(Box.createRigidArea(new Dimension(180,0)));
 		
-		String[] opciones = {"Filtrar","Identificador", "Nombre", "Grupo" };
+		String[] opciones = {"Filtrar","Identificador", "Nombre" };
 		JComboBox<String> filtroCombo = new JComboBox<>(opciones);
 		filtroCombo.setAlignmentY(Component.TOP_ALIGNMENT);
 		filtroCombo.setMaximumSize(new Dimension(150, 30));
@@ -343,13 +343,16 @@ public class ModuloDocenteView {
         option.add(Box.createRigidArea(new Dimension(20,0)));
         
         // Tabla
-        String[] columnas = {"Identificador", "Nombre completo", "Detalles del docente", "Credencial", "Opciones"};
-        Object[][] datos = new Object[10][columnas.length];
+        String[] columnas = {"Numero de control", "Nombre completo", "Detalles del docente", "Credencial", "Opciones"};
+        Object[][] datos = new Object[listaDocentes.size()][columnas.length];
        
-        for (int i = 0; i < 10; i++) {
-            datos[i][0] = String.format("%03d", i + 1);
-            datos[i][1] = "Marco Antonio Núñez Muñoz";
-            datos[i][2] = "Detalles"; 
+        
+        for (int i = 0; i < listaDocentes.size(); i++) {
+            Docente d = listaDocentes.get(i);
+            
+            datos[i][0] = d.getNumeroControl();
+            datos[i][1] = d.getNombres() + " " + d.getApellidos();
+            datos[i][2] = "Detalles";
             datos[i][3] = "Credencial"; 
             datos[i][4] = "Opciones"; 
         }
@@ -367,7 +370,7 @@ public class ModuloDocenteView {
         DefaultTableCellRenderer centrado = new DefaultTableCellRenderer();
         centrado.setHorizontalAlignment(SwingConstants.CENTER);
 
-        tabla.getColumn("Identificador").setCellRenderer(centrado);
+        tabla.getColumn("Numero de control").setCellRenderer(centrado);
         tabla.getColumn("Nombre completo").setCellRenderer(centrado);
         
         DefaultTableCellRenderer azulCentrado = new DefaultTableCellRenderer();
@@ -404,34 +407,31 @@ public class ModuloDocenteView {
         btnBuscar.setAlignmentY(Component.TOP_ALIGNMENT);
         btnBuscar.setMaximumSize(new Dimension(50,30));
         btnBuscar.addActionListener(e -> {
-    
-    	    String texto = txtFiltro.getText().trim();
-    	    int seleccion = filtroCombo.getSelectedIndex();
+            String texto = txtFiltro.getText().trim();
+            int seleccion = filtroCombo.getSelectedIndex();
 
-    	    if (seleccion == 0) {
-    	        JOptionPane.showMessageDialog(null, "Seleccione un campo para filtrar.");
-    	        return;
-    	    }
+            if (seleccion == 0) {
+                JOptionPane.showMessageDialog(null, "Seleccione un campo para filtrar.");
+                return;
+            }
 
-    	    int columna = seleccion - 1;
-    	    
-    	    if (columna == 0 && !texto.matches("\\d+")) {
-    	        JOptionPane.showMessageDialog(null, "El identificador debe ser numérico.");
-    	        return;
-    	    }
+            int columna = seleccion - 1;
 
-    	    DefaultTableModel model1 = (DefaultTableModel) tabla.getModel();
-    	    TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
-    	    tabla.setRowSorter(sorter);
+            if (columna == 0 && !texto.matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "El número de control debe ser numérico.");
+                return;
+            }
 
-    	    sorter.setRowFilter(RowFilter.regexFilter("(?i)^" + Pattern.quote(texto) + "$", columna));
+            DefaultTableModel model1 = (DefaultTableModel) tabla.getModel();
+            TableRowSorter<TableModel> sorter = new TableRowSorter<>(model1);
+            tabla.setRowSorter(sorter);
 
-    	    if (tabla.getRowCount() == 0) {
-    	        JOptionPane.showMessageDialog(null, "No se encontró ningún resultado para: " + texto);
-    	        tabla.setRowSorter(null); // Quitar filtro
-    	    }
-        	
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(texto), columna));
 
+            if (tabla.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "No se encontró ningún resultado para: " + texto);
+                tabla.setRowSorter(null); // Quitar filtro
+            }
         });
 
         option.add(btnBuscar);
@@ -924,7 +924,7 @@ public class ModuloDocenteView {
 		        String nombres = txtNombres.getText().trim();
 		        String apellidos = txtApellidos.getText().trim();
 		        String telefono = txtTelefono.getText().trim();
-		        String gradotext = txtGrado.getText().trim();
+		        String gradoEstudio = txtGrado.getText().trim();
 		        String domicilio = txtDomicilio.getText().trim();
 		        String correo = txtCorreo.getText().trim();
 		        String curp = txtCurp.getText().trim();
@@ -943,9 +943,16 @@ public class ModuloDocenteView {
 		        }
 		        
 		        byte[] fotoBytes = Utils.toByte(imagenSeleccionada);
-		
 		        boolean camposValidos = true;
 		        StringBuilder errores = new StringBuilder("Por favor corrige los siguientes campos:\n");
+		        
+		        if (fotoBytes != null && fotoBytes.length > 65535) {
+		            JOptionPane.showMessageDialog(null, 
+		                "La imagen seleccionada supera el tamaño máximo permitido (64 KB / 65,535 bytes)", 
+		                "Imagen demasiado grande", 
+		                JOptionPane.WARNING_MESSAGE);
+		            camposValidos = false;
+		        }
 		        
 		        Pattern soloLetras = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$");
 		        Pattern soloNumeros = Pattern.compile("^\\d{7,15}$");
@@ -954,25 +961,25 @@ public class ModuloDocenteView {
 		        Pattern curpValida = Pattern.compile("^[A-Z0-9]{18}$");
 		        Pattern gradoNumerico = Pattern.compile("^\\d+$");
 
-		        if (nombres.isEmpty() || !soloLetras.matcher(nombres).matches()) {
+		        if (nombres.isEmpty() || !soloLetras.matcher(nombres).matches() || nombres.length() > 100) {
 		            txtNombres.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Nombres (solo letras)\n");
+		            errores.append("Nombres (solo letras, máximo 100 caracteres)\n");
 		            camposValidos = false;
 		        } else {
 		            txtNombres.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (apellidos.isEmpty() || !soloLetras.matcher(apellidos).matches()) {
+		        if (apellidos.isEmpty() || !soloLetras.matcher(apellidos).matches() || apellidos.length() > 100) {
 		            txtApellidos.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Apellidos (solo letras)\n");
+		            errores.append("Apellidos (solo letras, máximo 100 caracteres)\n");
 		            camposValidos = false;
 		        } else {
 		            txtApellidos.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (telefono.isEmpty() || !soloNumeros.matcher(telefono).matches()) {
+		        if (telefono.isEmpty() || !soloNumeros.matcher(telefono).matches()|| telefono.length() >10) {
 		            txtTelefono.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Teléfono (solo números de 7 a 15 dígitos)\n");
+		            errores.append("Teléfono (solo números de 10 dígitos)\n");
 		            camposValidos = false;
 		        } else {
 		            txtTelefono.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
@@ -986,26 +993,25 @@ public class ModuloDocenteView {
 		            txtCurp.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (correo.isEmpty() || !correoValido.matcher(correo).matches()) {
+		        if (correo.isEmpty() || !correoValido.matcher(correo).matches() || correo.length() > 256) {
 		            txtCorreo.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Correo (formato inválido)\n");
+		            errores.append("Correo (formato inválido, máximo 256 caracteres)\n");
 		            camposValidos = false;
 		        } else {
 		            txtCorreo.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (domicilio.isEmpty() || !soloDireccion.matcher(domicilio).matches()) {
+		        if (domicilio.isEmpty() || !soloDireccion.matcher(domicilio).matches() || domicilio.length() > 256) {
 		            txtDomicilio.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Domicilio (letras y números solamente)\n");
+		            errores.append("Domicilio (letras y números solamente, máximo 256 caracteres)\n");
 		            camposValidos = false;
 		        } else {
 		            txtDomicilio.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (gradotext.isEmpty() || !gradoNumerico.matcher(gradotext).matches()) {
-		        	 int gradoNum = Integer.parseInt(gradotext);
+		        if (gradoEstudio.isEmpty() || !soloLetras.matcher(gradoEstudio).matches()|| gradoEstudio.length() > 100) {
 		            txtGrado.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Grado (solo números)\n");
+		            errores.append("Grado (solo Letras, máximo 100 caracteres)\n");
 		            camposValidos = false;
 		        } else {
 		            txtGrado.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
@@ -1051,24 +1057,24 @@ public class ModuloDocenteView {
 		             try {
 		            	 Calendar calendar = Calendar.getInstance();
 		            	    calendar.setLenient(false); 
-		            	    calendar.set(anio, mes - 1, dia);  
+		            	    calendar.set(anio, mes - 2, dia);  
 		            	    fecha = calendar.getTime(); 
 		            	    System.out.println(fecha);
 		             } catch (Exception e1) {
 		                 JOptionPane.showMessageDialog(null, "La fecha seleccionada no es válida.");
 		             }
-		             //Docente nDocente= new Estudiante(nombres, apellidos, fecha, generoSeleccionado, gradoEstudio, domicilio, correo, telefono, curp, imagenSeleccionada);
+		             Docente nDocente= new Docente(nombres, apellidos, fecha, generoSeleccionado, gradoEstudio, domicilio, correo, telefono, curp, imagenSeleccionada);
 		            
-		            // try {
-						//mdm.add(nDocente);
-					//} catch (UniqueKeyViolationException e1) {
-						//e1.printStackTrace();
+		             try {
+						mdm.add(nDocente);
+					} catch (UniqueKeyViolationException e1) {
+						e1.printStackTrace();
 					
-					//}
-		            JOptionPane.showMessageDialog(null, "Alumno creado correctamente.");
-		            ModuloEstudianteController mec= new ModuloEstudianteController();
+					}
+		            JOptionPane.showMessageDialog(null, "Docente creado correctamente.");
+		            ModuloDocenteController mec= new ModuloDocenteController();
 		            crear.dispose();
-		            mec.ModuloEstudiante();
+		            mec.moduloDocente();
 		            
 		        } else {
 		            JOptionPane.showMessageDialog(null, errores.toString(), "Campos inválidos", JOptionPane.WARNING_MESSAGE);
@@ -1104,7 +1110,7 @@ public class ModuloDocenteView {
 
 	}
 	
-	 public void modificar() {
+	 public void modificar(Docente docente) {
 	    	Color borde = new Color(206, 207, 202);
 	    	Color azul2 = new Color(52, 134, 199);
 	    	Color azul1 = new Color(54, 146, 218);
@@ -1385,7 +1391,7 @@ public class ModuloDocenteView {
 	        JTextField txtTelefono = new JTextField(15);
 	        txtTelefono.setBorder(BorderFactory.createLineBorder(borde,5));
 
-	        JLabel lblGrado = new JLabel("Gradode estudios");
+	        JLabel lblGrado = new JLabel("Grado de estudios");
 	        JTextField txtGrado = new JTextField(15);
 	        txtGrado.setBorder(BorderFactory.createLineBorder(borde,5));
 
@@ -1444,11 +1450,11 @@ public class ModuloDocenteView {
 	        panelFoto.add(btnCargar);
 
 	       // Pregargado de los datos
-	       /* txtId.setText(String.valueOf(docente.getId()));
+	        txtId.setText(String.valueOf(docente.getNumeroControl()));
 	        txtNombres.setText(docente.getNombres());
 	        txtApellidos.setText(docente.getApellidos());
 	        txtTelefono.setText(docente.getTelefono());
-	        txtGrado.setText(String.valueOf(docente.getGrado()));
+	        txtGrado.setText(String.valueOf(docente.getGradoEstudios()));
 	        txtDomicilio.setText(docente.getDomicilio());
 	        txtCorreo.setText(docente.getCorreo());
 	        txtCurp.setText(docente.getCurp());
@@ -1473,7 +1479,9 @@ public class ModuloDocenteView {
 	            ImageIcon icon = new ImageIcon(docente.getFoto()); 
 	            Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 	            lblFoto.setIcon(new ImageIcon(scaledImage));
-	        }    */    
+	            imagenSeleccionada=toBufferedImage(docente.getFoto());
+	           
+	        }    
 	        int fila = 0;
 
 	        organizador.gridx = 0; 
@@ -1580,7 +1588,7 @@ public class ModuloDocenteView {
 		        String nombres = txtNombres.getText().trim();
 		        String apellidos = txtApellidos.getText().trim();
 		        String telefono = txtTelefono.getText().trim();
-		        String gradotext = txtGrado.getText().trim();
+		        String gradoEstudio = txtGrado.getText().trim();
 		        String domicilio = txtDomicilio.getText().trim();
 		        String correo = txtCorreo.getText().trim();
 		        String curp = txtCurp.getText().trim();
@@ -1597,14 +1605,17 @@ public class ModuloDocenteView {
 		                break;
 		            }
 		        }
-
-		        
-		        int grado= Integer.parseInt(gradotext);
-		        
 		        byte[] fotoBytes = Utils.toByte(imagenSeleccionada);
-		
 		        boolean camposValidos = true;
 		        StringBuilder errores = new StringBuilder("Por favor corrige los siguientes campos:\n");
+		        
+		        if (fotoBytes != null && fotoBytes.length > 65535) {
+		            JOptionPane.showMessageDialog(null, 
+		                "La imagen seleccionada supera el tamaño máximo permitido (64 KB / 65,535 bytes)", 
+		                "Imagen demasiado grande", 
+		                JOptionPane.WARNING_MESSAGE);
+		            camposValidos = false;
+		        }
 		        
 		        Pattern soloLetras = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$");
 		        Pattern soloNumeros = Pattern.compile("^\\d{7,15}$");
@@ -1613,27 +1624,27 @@ public class ModuloDocenteView {
 		        Pattern curpValida = Pattern.compile("^[A-Z0-9]{18}$");
 		        Pattern gradoNumerico = Pattern.compile("^\\d+$");
 
-		        if (nombres.isEmpty() || !soloLetras.matcher(nombres).matches()) {
+		        if (nombres.isEmpty() || !soloLetras.matcher(nombres).matches() || nombres.length() > 100) {
 		            txtNombres.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Nombres (solo letras)\n");
+		            errores.append("Nombres (solo letras, máximo 100 caracteres)\n");
 		            camposValidos = false;
 		        } else {
 		            txtNombres.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (apellidos.isEmpty() || !soloLetras.matcher(apellidos).matches()) {
+		        if (apellidos.isEmpty() || !soloLetras.matcher(apellidos).matches() || apellidos.length() > 100) {
 		            txtApellidos.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Apellidos (solo letras)\n");
+		            errores.append("Apellidos (solo letras, máximo 100 caracteres)\n");
 		            camposValidos = false;
 		        } else {
 		            txtApellidos.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (telefono.isEmpty() || !soloNumeros.matcher(telefono).matches()) {
+		        if (telefono.isEmpty() || !soloNumeros.matcher(telefono).matches()|| telefono.length() >10) {
 		            txtTelefono.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Teléfono (solo números de 7 a 15 dígitos)\n");
+		            errores.append("Teléfono (solo números de 10 dígitos)\n");
 		            camposValidos = false;
-		        } else {
+	            } else {
 		            txtTelefono.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
@@ -1645,26 +1656,25 @@ public class ModuloDocenteView {
 		            txtCurp.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (correo.isEmpty() || !correoValido.matcher(correo).matches()) {
+		        if (correo.isEmpty() || !correoValido.matcher(correo).matches() || correo.length() > 256) {
 		            txtCorreo.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Correo (formato inválido)\n");
+		            errores.append("Correo (formato inválido, máximo 256 caracteres)\n");
 		            camposValidos = false;
 		        } else {
 		            txtCorreo.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (domicilio.isEmpty() || !soloDireccion.matcher(domicilio).matches()) {
+		        if (domicilio.isEmpty() || !soloDireccion.matcher(domicilio).matches() || domicilio.length() > 256) {
 		            txtDomicilio.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Domicilio (letras y números solamente)\n");
+		            errores.append("Domicilio (letras y números solamente, máximo 256 caracteres)\n");
 		            camposValidos = false;
 		        } else {
 		            txtDomicilio.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (gradotext.isEmpty() || !gradoNumerico.matcher(gradotext).matches()) {
-		        	 int gradoNum = Integer.parseInt(gradotext);
+		        if (gradoEstudio.isEmpty() || !soloLetras.matcher(gradoEstudio).matches()|| gradoEstudio.length() > 100) {
 		            txtGrado.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Grado (solo números)\n");
+		            errores.append("Grado (solo Letras, máximo 100 caracteres)\n");
 		            camposValidos = false;
 		        } else {
 		            txtGrado.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
@@ -1716,21 +1726,20 @@ public class ModuloDocenteView {
 		             } catch (Exception e1) {
 		                 JOptionPane.showMessageDialog(null, "La fecha seleccionada no es válida.");
 		             }
-		             Estudiante estudianteMod= new Estudiante(nombres, apellidos, fecha, generoSeleccionado, grado, domicilio, correo, telefono, curp, imagenSeleccionada);
-		            
-		             /*try {
-		                 boolean actualizado = mdm.update(docente.getId(), estudianteMod);
+		             Docente docenteMod= new Docente(nombres, apellidos, fecha, generoSeleccionado, gradoEstudio, domicilio, correo, telefono, curp, imagenSeleccionada);
+		             try {
+		                 boolean actualizado = mdm.update(docente.getId(), docenteMod);
 		                 if (actualizado) {
-		                	 JOptionPane.showMessageDialog(null, "Estudiante modificado correctamente.");
-		                     ModuloEstudianteController mec= new ModuloEstudianteController();
+		                	 JOptionPane.showMessageDialog(null, "Docente modificado correctamente.");
+		                     ModuloDocenteController mdc= new ModuloDocenteController();
 		                     modulo.dispose();
-		                     mec.ModuloEstudiante();
+		                     mdc.moduloDocente();
 		                 } else {
-		                	 JOptionPane.showMessageDialog(null,"No se pudo actualizar el estudiante.");
+		                	 JOptionPane.showMessageDialog(null,"No se pudo actualizar el docente.");
 		                 }
 		             } catch (UniqueKeyViolationException e1) {
-		            	 JOptionPane.showMessageDialog(null,"Error: Ya existe un estudiante con el mismo CURP o correo.");
-		             }*/
+		            	 JOptionPane.showMessageDialog(null,"Error: Ya existe un docente con el mismo CURP o correo.");
+		             }
 		            
 		        } else {
 		            JOptionPane.showMessageDialog(null, errores.toString(), "Campos inválidos", JOptionPane.WARNING_MESSAGE);
@@ -1765,7 +1774,7 @@ public class ModuloDocenteView {
 			}
 	    }
 	    
-	 public void datos(/*Docente docente*/) {
+	 public void datos(Docente docente) {
 	    	Color borde = new Color(206, 207, 202);
 	    	Color azul2 = new Color(52, 134, 199);
 	    	Color azul1 = new Color(54, 146, 218);
@@ -2008,7 +2017,7 @@ public class ModuloDocenteView {
 	        txtApellidos.setBorder(null);
 	        txtApellidos.setEditable(false);
 	        
-	        JLabel lblId = new JLabel("Identificador");
+	        JLabel lblId = new JLabel("Numero de control");
 	        JTextField txtId = new JTextField();
 	        txtId.setEditable(false);
 	        txtId.setBackground(Color.WHITE);
@@ -2075,22 +2084,22 @@ public class ModuloDocenteView {
 	        panelFoto.add(btnCargar);
 
 	        // Carga de datos
-	        /*txtId.setText(String.valueOf(docente.getId()));
+	        txtId.setText(String.valueOf(docente.getNumeroControl()));
 	        txtNombres.setText(docente.getNombres());
 	        txtApellidos.setText(docente.getApellidos());
 	        txtCorreo.setText(docente.getCorreo());
 	        txtCurp.setText(docente.getCurp());
 	        txtFecha.setText(String.valueOf(docente.getFechaNacimiento()));
-	        txtGenero.setText(estudiante.getGenero());
+	        txtGenero.setText(docente.getGenero());
 	        txtTelefono.setText(docente.getTelefono());
-	        txtGrado.setText(docente.getGrupo());
+	        txtGrado.setText(docente.getGradoEstudios());
 	        txtDomicilio.setText(docente.getDomicilio());
 	       
 	        if (docente.getFoto() != null) {
 	            ImageIcon icon = new ImageIcon(docente.getFoto()); 
 	            Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 	            lblFoto.setIcon(new ImageIcon(scaledImage));
-	        }  */
+	        }  
 	        int fila = 0;
 
 	        organizador.gridx = 0; 
@@ -2194,6 +2203,27 @@ public class ModuloDocenteView {
 	        	mdc.moduloDocente();
 	        });
 	        btnCrear.addActionListener(e->{
+	        	JFileChooser fileChooser = new JFileChooser();
+	        	fileChooser.setDialogTitle("Guardar PDF");
+
+	        	
+	        	FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
+	        	fileChooser.setFileFilter(filter);
+
+	        	int userSelection = fileChooser.showSaveDialog(null);
+
+	        	if (userSelection == JFileChooser.APPROVE_OPTION) {
+	        	    File fileToSave = fileChooser.getSelectedFile();
+
+	        	    String ruta = fileToSave.getAbsolutePath();
+	        	    if (!ruta.toLowerCase().endsWith(".pdf")) {
+	        	        ruta += ".pdf";
+	        	    }
+
+	        	    System.out.println(ruta);
+	        	    mdm.descargarInformacion(ruta, docente);
+	        	}
+	        	
 	        	
 	        });
 	        panelBotones.add(btnCancelar);
@@ -2225,7 +2255,7 @@ public class ModuloDocenteView {
 			}
 	    }
  
-	 public void credencial() {
+	 public void credencial(Docente docente) {
 	    Color borde = new Color(206, 207, 202);
 		Color azul2 = new Color(52, 134, 199);
 		Color azul1 = new Color(54, 146, 218);
@@ -2453,17 +2483,17 @@ public class ModuloDocenteView {
 		 
 		JLabel lblFoto = new JLabel();
 		lblFoto.setAlignmentX(Component.CENTER_ALIGNMENT);
-		/*if (docente.getFoto() != null) {
-            ImageIcon icon = new ImageIcon();//docente.getFoto()); 
+		if (docente.getFoto() != null) {
+            ImageIcon icon = new ImageIcon(docente.getFoto()); 
             Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
             lblFoto.setIcon(new ImageIcon(scaledImage));
-        }*/ 
+        } 
 		credencial.add(Box.createRigidArea(new Dimension(0, 15)));
 		credencial.add(lblFoto);
 
 		credencial.add(Box.createRigidArea(new Dimension(0, 15)));
 
-		JLabel id = new JLabel("Identificador: ");//+docente.getId());
+		JLabel id = new JLabel("Identificador: "+docente.getId());
 		id.setFont(new Font("Arial", Font.PLAIN, 14));
 		id.setAlignmentX(Component.CENTER_ALIGNMENT);
 		credencial.add(id);
@@ -2473,7 +2503,7 @@ public class ModuloDocenteView {
 		tipo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		credencial.add(tipo);
 
-		JLabel nombre = new JLabel();//docente.getNombres()+" "+docente.getApellidos());
+		JLabel nombre = new JLabel(docente.getNombres()+" "+docente.getApellidos());
 		nombre.setFont(new Font("Arial", Font.PLAIN, 14));
 		nombre.setAlignmentX(Component.CENTER_ALIGNMENT);
 		credencial.add(nombre);
@@ -2488,12 +2518,15 @@ public class ModuloDocenteView {
 
 		contenido.add(Box.createRigidArea(new Dimension(0, 25)));
 
+
+		JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		panelBotones.setBackground(Color.white);
+				
 		JButton btnRegresar = new JButton("Regresar");
-		btnRegresar.setBackground(azul2);
+		btnRegresar.setBackground(new Color(40,103,152));
 		btnRegresar.setForeground(Color.WHITE);
 		btnRegresar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnRegresar.setFont(new Font("Almarai-Light", Font.BOLD, 16));
-		btnRegresar.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnRegresar.setFocusPainted(false);
 		btnRegresar.setPreferredSize(new Dimension(120, 40));
 		btnRegresar.addActionListener(e -> {
@@ -2501,9 +2534,44 @@ public class ModuloDocenteView {
         	modulo.dispose();
         	mdc.moduloDocente();
 		});
-		contenido.add(btnRegresar);
+		panelBotones.add(btnRegresar);
+		
+        JButton btnCrear = new JButton("Descargar");
+        btnCrear.setBackground(azul1);
+        btnCrear.setForeground(Color.white);
+        btnCrear.setPreferredSize(new Dimension(120, 40));
+        btnCrear.setFont(new Font("Almarai-Light", Font.BOLD, 16));
+        btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde,5));
+        btnCrear.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnCrear.addActionListener(e->{
+        	JFileChooser fileChooser = new JFileChooser();
+        	fileChooser.setDialogTitle("Guardar PDF");
+
+        	
+        	FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
+        	fileChooser.setFileFilter(filter);
+
+        	int userSelection = fileChooser.showSaveDialog(null);
+
+        	if (userSelection == JFileChooser.APPROVE_OPTION) {
+        	    File fileToSave = fileChooser.getSelectedFile();
+
+        	    String ruta = fileToSave.getAbsolutePath();
+        	    if (!ruta.toLowerCase().endsWith(".pdf")) {
+        	        ruta += ".pdf";
+        	    }
+
+        	    System.out.println(ruta);
+        	    mdm.descargarCredencial(ruta, docente);
+        	}
+        	
+        });
+        panelBotones.add(btnCrear);
+
+		contenido.add(panelBotones);
+
+
 	}
-	
 	
 	 // Renderizador simple para botones
 	 public class BotonEditor extends DefaultCellEditor {
@@ -2532,12 +2600,25 @@ public class ModuloDocenteView {
 
 		    public Object getCellEditorValue() {
 		    	ModuloDocenteController mdc = new ModuloDocenteController();
+	        	int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+
 		        if (texto.equals("Generar")) {
-		            modulo.dispose();
-		            mdc.credencial();
+	                if (filaSeleccionada >= 0) {
+	                    Docente dSeleccionado = listaDocentes.get(filaSeleccionada);
+			            modulo.dispose();
+			            mdc.credencial(dSeleccionado);
+	                }else {
+	                	JOptionPane.showMessageDialog(null, "Ninguna fila seleccionada" );
+	                }
 		        } else if (texto.equals("Datos completos")) {
-		            modulo.dispose(); 
-		            mdc.datos();
+	                if (filaSeleccionada >= 0) {
+	                    Docente dSeleccionado = listaDocentes.get(filaSeleccionada);
+	                    modulo.dispose(); 
+			            mdc.datos(dSeleccionado);
+	                }else {
+	                
+	                }
+		           
 		        }
 		        return texto;
 		    }
@@ -2600,17 +2681,41 @@ public class ModuloDocenteView {
 	            
 	            editar.addActionListener(e -> {
 	                ModuloDocenteController mdc = new ModuloDocenteController();
-	                modulo.dispose();
-	                mdc.modificar();
+	                int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+	                if (filaSeleccionada >= 0) {
+	                    Docente dSeleccionado = listaDocentes.get(filaSeleccionada);
+		                modulo.dispose();
+		                mdc.modificar(dSeleccionado);
+	                }
 	                
 	            });
 
 	            borrar.addActionListener(e -> {
-	                ((DefaultTableModel) tabla.getModel()).removeRow(row);
-	                JOptionPane.showMessageDialog(null, "Fila eliminada " + (row + 1));
-	                fireEditingStopped();
-	                System.out.println(borrar.getSize());
+	                int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+
+	                if (filaSeleccionada >= 0) {
+	                    int n = JOptionPane.showConfirmDialog(
+	                        null,
+	                        "¿Estás seguro que quieres eliminar este registro?",
+	                        "Eliminar registro",
+	                        JOptionPane.YES_NO_OPTION);
+
+	                    if (n == JOptionPane.YES_OPTION) {
+	                        fireEditingStopped();
+
+	                        Docente dSeleccionado = listaDocentes.get(filaSeleccionada);
+	                        listaDocentes.remove(filaSeleccionada);
+
+	                        ((DefaultTableModel) tabla.getModel()).removeRow(filaSeleccionada);
+
+	                        ModuloDocenteModel mdm = new ModuloDocenteModel();
+	                        mdm.delete(dSeleccionado.getId());
+
+	                        JOptionPane.showMessageDialog(null, "Registro eliminado");
+	                    }
+	                }
 	            });
+
 
 	            panel.add(editar);
 	            panel.add(borrar);
@@ -2633,4 +2738,21 @@ public class ModuloDocenteView {
 	            return label;
 	        }
 	    };
+	    public static BufferedImage toBufferedImage(Image img) {
+	        if (img instanceof BufferedImage) {
+	            return (BufferedImage) img;
+	        }
+	        
+	        BufferedImage bimage = new BufferedImage(
+	            img.getWidth(null),
+	            img.getHeight(null),
+	            BufferedImage.TYPE_INT_ARGB
+	        );
+	        
+	        Graphics2D bGr = bimage.createGraphics();
+	        bGr.drawImage(img, 0, 0, null);
+	        bGr.dispose();
+	        
+	        return bimage;
+	    }
 }

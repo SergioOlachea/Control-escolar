@@ -1,5 +1,6 @@
 package controlles;
 
+import model.Docente;
 import view.ModuloDocenteView;
 
 public class ModuloDocenteController {
@@ -15,13 +16,13 @@ public class ModuloDocenteController {
 	public void crear() {
 		mdv.crear();
 	}
-	public void modificar() {
-		mdv.modificar();
+	public void modificar(Docente docente) {
+		mdv.modificar(docente);
 	}
-	public void credencial() {
-		mdv.credencial();
+	public void credencial(Docente docente) {
+		mdv.credencial(docente);
 	}
-	public void datos() {
-		mdv.datos();
+	public void datos(Docente docente) {
+		mdv.datos(docente);
 	}
 }

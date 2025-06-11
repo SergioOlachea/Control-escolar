@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,6 +16,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -63,7 +65,9 @@ import controlles.ModuloAsignaturaController;
 import controlles.ModuloDocenteController;
 import controlles.ModuloEstudianteController;
 import controlles.ModuloGrupoController;
+import model.Docente;
 import model.Estudiante;
+import model.ModuloDocenteModel;
 import model.ModuloEstudianteModel;
 import model.Utils;
 import model.exception.UniqueKeyViolationException;
@@ -414,33 +418,33 @@ public class ModuloEstudianteView {
         btnBuscar.setAlignmentY(Component.TOP_ALIGNMENT);
         btnBuscar.setMaximumSize(new Dimension(50,30));
         btnBuscar.addActionListener(e -> {
-    
-    	    String texto = txtFiltro.getText().trim();
-    	    int seleccion = filtroCombo.getSelectedIndex();
+            String texto = txtFiltro.getText().trim();
+            int seleccion = filtroCombo.getSelectedIndex();
 
-    	    if (seleccion == 0) {
-    	        JOptionPane.showMessageDialog(null, "Seleccione un campo para filtrar.");
-    	        return;
-    	    }
+            if (seleccion == 0) {
+                JOptionPane.showMessageDialog(null, "Seleccione un campo para filtrar.");
+                return;
+            }
 
-    	    int columna = seleccion - 1;
-    	    
-    	    if (columna == 0 && !texto.matches("\\d+")) {
-    	        JOptionPane.showMessageDialog(null, "El numero de control debe ser numérico.");
-    	        return;
-    	    }
+            int columna = seleccion - 1;
 
-    	    DefaultTableModel model1 = (DefaultTableModel) tabla.getModel();
-    	    TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
-    	    tabla.setRowSorter(sorter);
+            if (columna == 0 && !texto.matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "El número de control debe ser numérico.");
+                return;
+            }
 
-    	    sorter.setRowFilter(RowFilter.regexFilter("(?i)^" + Pattern.quote(texto) + "$", columna));
+            DefaultTableModel model1 = (DefaultTableModel) tabla.getModel();
+            TableRowSorter<TableModel> sorter = new TableRowSorter<>(model1);
+            tabla.setRowSorter(sorter);
 
-    	    if (tabla.getRowCount() == 0) {
-    	        JOptionPane.showMessageDialog(null, "No se encontró ningún resultado para: " + texto);
-    	        tabla.setRowSorter(null); // Quitar filtro
-    	    }
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(texto), columna));
+
+            if (tabla.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "No se encontró ningún resultado para: " + texto);
+                tabla.setRowSorter(null); // Quitar filtro
+            }
         });
+
 
         option.add(btnBuscar);
         
@@ -989,9 +993,9 @@ public class ModuloEstudianteView {
 		            txtApellidos.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (telefono.isEmpty() || !soloNumeros.matcher(telefono).matches()) {
+		        if (telefono.isEmpty() || !soloNumeros.matcher(telefono).matches()|| telefono.length() >10) {
 		            txtTelefono.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Teléfono (solo números de 7 a 15 dígitos)\n");
+		            errores.append("Teléfono (solo números de 10 dígitos)\n");
 		            camposValidos = false;
 		        } else {
 		            txtTelefono.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
@@ -1070,7 +1074,7 @@ public class ModuloEstudianteView {
 		             try {
 		            	 Calendar calendar = Calendar.getInstance();
 		            	    calendar.setLenient(false); 
-		            	    calendar.set(anio, mes - 1, dia);  
+		            	    calendar.set(anio, mes - 2, dia);  
 		            	    fecha = calendar.getTime(); 
 		            	    System.out.println(fecha);
 		             } catch (Exception e1) {
@@ -1494,6 +1498,8 @@ public class ModuloEstudianteView {
             ImageIcon icon = new ImageIcon(estudiante.getFoto()); 
             Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
             lblFoto.setIcon(new ImageIcon(scaledImage));
+            imagenSeleccionada=toBufferedImage(estudiante.getFoto());
+           
         }        
         int fila = 0;
 
@@ -1658,9 +1664,9 @@ public class ModuloEstudianteView {
 	            txtApellidos.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 	        }
 
-	        if (telefono.isEmpty() || !soloNumeros.matcher(telefono).matches()) {
+	        if (telefono.isEmpty() || !soloNumeros.matcher(telefono).matches()|| telefono.length() >10) {
 	            txtTelefono.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-	            errores.append("Teléfono (solo números de 7 a 15 dígitos)\n");
+	            errores.append("Teléfono (solo números de 10 dígitos)\n");
 	            camposValidos = false;
 	        } else {
 	            txtTelefono.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
@@ -2714,31 +2720,29 @@ public class ModuloEstudianteView {
             });
 
             borrar.addActionListener(e -> {
-            	int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+                int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
 
-            	 if (filaSeleccionada >= 0) {
-            		 
-            		 int n = JOptionPane.showConfirmDialog(
-         		            null,
-         		            "Estas seguro que quieres eliminar este registro?",
-         		            "Eliminar registro",
-         		            JOptionPane.YES_NO_OPTION);
+                if (filaSeleccionada >= 0) {
+                    int n = JOptionPane.showConfirmDialog(
+                        null,
+                        "¿Estás seguro que quieres eliminar este registro?",
+                        "Eliminar registro",
+                        JOptionPane.YES_NO_OPTION);
 
-         		        if(n==0){
-         		        	((DefaultTableModel) tabla.getModel()).removeRow(row);
-         	                ModuloEstudianteModel mem = new ModuloEstudianteModel();
-         	                Estudiante eSeleccionado = listaEstudiantes.get(filaSeleccionada);
-         	                mem.delete(eSeleccionado.getId());
-         	                
-         	                JOptionPane.showMessageDialog(null, "Fila eliminada " + (row + 1));
-         	                fireEditingStopped();
-         	                System.out.println(borrar.getSize());
-         		        }
-         		        else if(n==1) {
-         		            
-         		        }
-	                
-            	 }
+                    if (n == JOptionPane.YES_OPTION) {
+                        fireEditingStopped();
+
+                        Estudiante eSeleccionado = listaEstudiantes.get(filaSeleccionada);
+                        listaEstudiantes.remove(filaSeleccionada);
+
+                        ((DefaultTableModel) tabla.getModel()).removeRow(filaSeleccionada);
+
+                        ModuloDocenteModel mdm = new ModuloDocenteModel();
+                        mdm.delete(eSeleccionado.getId());
+
+                        JOptionPane.showMessageDialog(null, "Registro eliminado");
+                    }
+                }
             });
 
             panel.add(editar);
@@ -2763,4 +2767,21 @@ public class ModuloEstudianteView {
         }
     };
 
+    public static BufferedImage toBufferedImage(Image img) {
+        if (img instanceof BufferedImage) {
+            return (BufferedImage) img;
+        }
+        
+        BufferedImage bimage = new BufferedImage(
+            img.getWidth(null),
+            img.getHeight(null),
+            BufferedImage.TYPE_INT_ARGB
+        );
+        
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+        
+        return bimage;
+    }
 }

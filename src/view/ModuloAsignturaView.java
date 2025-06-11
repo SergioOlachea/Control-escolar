@@ -1651,7 +1651,7 @@ public class ModuloAsignturaView {
 
 	                        ((DefaultTableModel) tabla.getModel()).removeRow(filaSeleccionada);
 
-	                        ModuloDocenteModel mdm = new ModuloDocenteModel();
+	                        ModuloAsignaturaModel mdm = new ModuloAsignaturaModel();
 	                        mdm.delete(dSeleccionado.getId());
 
 	                        JOptionPane.showMessageDialog(null, "Registro eliminado");

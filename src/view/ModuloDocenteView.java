@@ -137,12 +137,10 @@ public class ModuloDocenteView {
 
 		        if(n==0){
 		        	Controller c = new Controller();
-		            JOptionPane.showMessageDialog(null,"HOLAAAA");
 		            modulo.dispose();
 		            c.despliegue();
 		        }
 		        else if(n==1) {
-		            JOptionPane.showMessageDialog(null, "GOODBYE");
 		        }
 		});
 		header.add(btnCerrarSesion);

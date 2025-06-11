@@ -165,7 +165,6 @@ public class ModuloGrupoView {
 		            c.despliegue();
 		        }
 		        else if(n==1) {
-		            JOptionPane.showMessageDialog(null, "GOODBYE");
 		        }
 		});
 		header.add(btnCerrarSesion);
@@ -579,7 +578,6 @@ public class ModuloGrupoView {
     	        modulo.dispose();
     	        c.despliegue();
     	    } else if (n == 1) {
-    	        JOptionPane.showMessageDialog(null, "GOODBYE");
     	    }
     	});
     	header.add(btnCerrarSesion);
@@ -1093,7 +1091,6 @@ public class ModuloGrupoView {
     	        modulo.dispose();
     	        c.despliegue();
     	    } else if (n == 1) {
-    	        JOptionPane.showMessageDialog(null, "GOODBYE");
     	    }
     	});
     	header.add(btnCerrarSesion);
@@ -1662,7 +1659,6 @@ public class ModuloGrupoView {
     	        modulo.dispose();
     	        c.despliegue();
     	    } else if (n == 1) {
-    	        JOptionPane.showMessageDialog(null, "GOODBYE");
     	    }
     	});
     	header.add(btnCerrarSesion);

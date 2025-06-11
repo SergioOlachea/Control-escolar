@@ -1456,27 +1456,34 @@ public class ModuloAsignturaView {
 			    modulo.dispose();
 			    mac.moduloAsignatura();
 			});
-			btnDescargar.addActionListener(e->{
-				JFileChooser fileChooser = new JFileChooser();
-	        	fileChooser.setDialogTitle("Guardar PDF");
+			btnDescargar.addActionListener(e -> {
+			    int selectedIndex = listaGrupos.getSelectedIndex();
 
-	        	
-	        	FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
-	        	fileChooser.setFileFilter(filter);
+			    if (selectedIndex == -1) {
+			        JOptionPane.showMessageDialog(null, "Debes seleccionar un grupo para descargar el PDF.");
+			        return;
+			    }
 
-	        	int userSelection = fileChooser.showSaveDialog(null);
+			    Grupo grupoSeleccionado = grupos.get(selectedIndex);
 
-	        	if (userSelection == JFileChooser.APPROVE_OPTION) {
-	        	    File fileToSave = fileChooser.getSelectedFile();
+			    JFileChooser fileChooser = new JFileChooser();
+			    fileChooser.setDialogTitle("Guardar PDF");
 
-	        	    String ruta = fileToSave.getAbsolutePath();
-	        	    if (!ruta.toLowerCase().endsWith(".pdf")) {
-	        	        ruta += ".pdf";
-	        	    }
+			    FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
+			    fileChooser.setFileFilter(filter);
 
-	        	    System.out.println(ruta);
-	        	    mam.descargarPdf(ruta, asignatura, grupo.getId());
-			}});
+			    int userSelection = fileChooser.showSaveDialog(null);
+
+			    if (userSelection == JFileChooser.APPROVE_OPTION) {
+			        File fileToSave = fileChooser.getSelectedFile();
+			        String ruta = fileToSave.getAbsolutePath();
+			        if (!ruta.toLowerCase().endsWith(".pdf")) {
+			            ruta += ".pdf";
+			        }
+
+			        mam.descargarPdf(ruta, asignatura, grupoSeleccionado.getId());
+			    }
+			});
 
 			panelTitulo.add(lblTitulo);
 

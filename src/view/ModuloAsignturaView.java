@@ -324,7 +324,7 @@ public class ModuloAsignturaView {
 		
 		option.add(Box.createRigidArea(new Dimension(180,0)));
 		
-		String[] opciones = {"Filtrar","Identificador", "Nombre", "Grupo" };
+		String[] opciones = {"Filtrar","Identificador", "Nombre", "Grupos asignados" };
 		JComboBox<String> filtroCombo = new JComboBox<>(opciones);
 		filtroCombo.setAlignmentY(Component.TOP_ALIGNMENT);
 		filtroCombo.setMaximumSize(new Dimension(150, 30));
@@ -429,7 +429,7 @@ public class ModuloAsignturaView {
     	    TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
     	    tabla.setRowSorter(sorter);
 
-    	    sorter.setRowFilter(RowFilter.regexFilter("(?i)^" + Pattern.quote(texto) + "$", columna));
+    	    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(texto), columna));
 
     	    if (tabla.getRowCount() == 0) {
     	        JOptionPane.showMessageDialog(null, "No se encontró ningún resultado para: " + texto);

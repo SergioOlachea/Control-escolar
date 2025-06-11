@@ -1452,7 +1452,7 @@ public class ModuloDocenteView {
 	        panelFoto.add(btnCargar);
 
 	       // Pregargado de los datos
-	        txtId.setText(String.valueOf(docente.getId()));
+	        txtId.setText(String.valueOf(docente.getNumeroControl()));
 	        txtNombres.setText(docente.getNombres());
 	        txtApellidos.setText(docente.getApellidos());
 	        txtTelefono.setText(docente.getTelefono());

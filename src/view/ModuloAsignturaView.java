@@ -1095,7 +1095,7 @@ public class ModuloAsignturaView {
 				mac.moduloAsignatura();
 			});
 
-			JButton btnCrear = new JButton("Crear");
+			JButton btnCrear = new JButton("Modificar");
 			btnCrear.setBackground(azul1);
 			btnCrear.setForeground(Color.white);
 			btnCrear.setBorder(BorderFactory.createLineBorder(azulBorde, 5));

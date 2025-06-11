@@ -806,9 +806,10 @@ public class ModuloGrupoView {
     	btnAnadir.setBorder(BorderFactory.createLineBorder(azulBorde, 2));
     	btnAnadir.setPreferredSize(new Dimension(120, 35));
 
-    	ImageIcon iconEliminar = new ImageIcon(getClass().getResource("/imagenes/delete (1).png"));
+    	ImageIcon iconEliminar = new ImageIcon(getClass().getResource("/imagenes/icons8-delete-24.png"));
     	JButton btnEliminar = new JButton("Elimnar",iconEliminar);
     	btnEliminar.setBackground(azul1);
+    	btnEliminar.setForeground(Color.white);
     	btnEliminar.setBorder(BorderFactory.createLineBorder(azulBorde, 2));
     	btnEliminar.setPreferredSize(new Dimension(120, 35));
 
@@ -1322,11 +1323,12 @@ public class ModuloGrupoView {
     	btnAnadir.setBorder(BorderFactory.createLineBorder(azulBorde, 2));
     	btnAnadir.setPreferredSize(new Dimension(130, 35));
 
-    	ImageIcon iconEliminar = new ImageIcon(getClass().getResource("/imagenes/delete (1).png"));
-    	JButton btnEliminar = new JButton("Eliminar",iconEliminar);
-    	btnEliminar.setBackground(azulcan);
+    	ImageIcon iconEliminar = new ImageIcon(getClass().getResource("/imagenes/icons8-delete-24.png"));
+    	JButton btnEliminar = new JButton("Elimnar",iconEliminar);
+    	btnEliminar.setBackground(azul1);
+    	btnEliminar.setForeground(Color.white);
     	btnEliminar.setBorder(BorderFactory.createLineBorder(azulBorde, 2));
-    	btnEliminar.setPreferredSize(new Dimension(130, 35));
+    	btnEliminar.setPreferredSize(new Dimension(120, 35));
 
     	JButton btnCancelar = new JButton("Cancelar");
     	btnCancelar.setBackground(azulcan);

@@ -377,9 +377,16 @@ public class ModuloGrupoView {
         for (int i = 0; i < listaGrupos.size(); i++) {
         	Grupo g = listaGrupos.get(i);
         	Docente docente = g.getDocente();
+        	Asignatura asignatura = g.getAsignatura();
         	String nombreDocente="N/A";
+        	String nombreAsignatura="N/A";
         	if (docente != null) {
         	    nombreDocente = docente.getNombres()+" "+docente.getApellidos();
+        	} else {
+        		System.out.println(g.getId()+"no hay");
+        	}
+        	if (asignatura != null) {
+        	    nombreAsignatura = asignatura.getNombre();
         	} else {
         		System.out.println(g.getId()+"no hay");
         	}
@@ -387,7 +394,7 @@ public class ModuloGrupoView {
             datos[i][0] = g.getId(); 
             datos[i][1] = g.getNombre(); 
             datos[i][2] = nombreDocente; 
-            datos[i][3] = g.getAsignatura().getNombre(); 
+            datos[i][3] = nombreAsignatura; 
             datos[i][4] = "Datos completos"; 
             datos[i][5] = "Opciones"; 
         }

@@ -797,13 +797,13 @@ public class ModuloGrupoView {
     	btnAnadir.setBackground(azul1);
     	btnAnadir.setForeground(Color.WHITE);
     	btnAnadir.setBorder(BorderFactory.createLineBorder(azulBorde, 2));
-    	btnAnadir.setPreferredSize(new Dimension(100, 35));
+    	btnAnadir.setPreferredSize(new Dimension(120, 35));
 
     	ImageIcon iconEliminar = new ImageIcon(getClass().getResource("/imagenes/delete (1).png"));
-    	JButton btnEliminar = new JButton(iconEliminar);
+    	JButton btnEliminar = new JButton("Elimnar",iconEliminar);
     	btnEliminar.setBackground(azul1);
     	btnEliminar.setBorder(BorderFactory.createLineBorder(azulBorde, 2));
-    	btnEliminar.setPreferredSize(new Dimension(35, 35));
+    	btnEliminar.setPreferredSize(new Dimension(120, 35));
 
     	JButton btnCancelar = new JButton("Cancelar");
     	btnCancelar.setBackground(azulC);
@@ -1313,13 +1313,13 @@ public class ModuloGrupoView {
     	btnAnadir.setBackground(azul1);
     	btnAnadir.setForeground(Color.WHITE);
     	btnAnadir.setBorder(BorderFactory.createLineBorder(azulBorde, 2));
-    	btnAnadir.setPreferredSize(new Dimension(100, 35));
+    	btnAnadir.setPreferredSize(new Dimension(130, 35));
 
     	ImageIcon iconEliminar = new ImageIcon(getClass().getResource("/imagenes/delete (1).png"));
-    	JButton btnEliminar = new JButton(iconEliminar);
-    	btnEliminar.setBackground(azul1);
+    	JButton btnEliminar = new JButton("Eliminar",iconEliminar);
+    	btnEliminar.setBackground(azulcan);
     	btnEliminar.setBorder(BorderFactory.createLineBorder(azulBorde, 2));
-    	btnEliminar.setPreferredSize(new Dimension(35, 35));
+    	btnEliminar.setPreferredSize(new Dimension(130, 35));
 
     	JButton btnCancelar = new JButton("Cancelar");
     	btnCancelar.setBackground(azulcan);
@@ -1335,19 +1335,27 @@ public class ModuloGrupoView {
     	btnCrear.setPreferredSize(new Dimension(100, 35));
 
     	//Precargado de datos
-        for (int i = 0; i < comboAsignatura.getItemCount(); i++) {
-            if (comboAsignatura.getItemAt(i).equals(grupo.getAsignatura().getNombre())) {
-                comboAsignatura.setSelectedIndex(i);
-                break;
-            }
-        }
+    	if (grupo.getAsignatura()!=null) {
+	        for (int i = 0; i < comboAsignatura.getItemCount(); i++) {
+	            if (comboAsignatura.getItemAt(i).equals(grupo.getAsignatura().getNombre())) {
+	                comboAsignatura.setSelectedIndex(i);
+	                break;
+	            }
+	        }
+    	}else {
+    		comboAsignatura.setSelectedIndex(0);
+    	}
 
-        for (int i = 0; i < comboDocente.getItemCount(); i++) {
-            if (comboDocente.getItemAt(i).equals(grupo.getDocente().getNombres())) {
-                comboDocente.setSelectedIndex(i);
-                break;
-            }
-        }
+    	if (grupo.getDocente()!=null) {
+	        for (int i = 0; i < comboDocente.getItemCount(); i++) {
+	            if (comboDocente.getItemAt(i).equals(grupo.getDocente().getNombres())) {
+	                comboDocente.setSelectedIndex(i);
+	                break;
+	            }
+	        }
+    	} else {
+    		comboDocente.setSelectedIndex(0);
+    	}
 
         txtNombre.setText(grupo.getNombre());
         txtIdentificador.setText(String.valueOf(grupo.getId()));

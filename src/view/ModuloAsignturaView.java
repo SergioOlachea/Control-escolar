@@ -63,6 +63,7 @@ import model.Grupo;
 import model.ModuloAsignaturaModel;
 import model.ModuloDocenteModel;
 import model.ModuloEstudianteModel;
+import model.ModuloGrupoModel;
 import view.ModuloDocenteView.PanelBotonesEditor;
 import view.ModuloDocenteView.PanelBotonesRenderer;
 
@@ -70,6 +71,9 @@ public class ModuloAsignturaView {
 	
 	ModuloAsignaturaModel mam = new ModuloAsignaturaModel();
 	ArrayList<Asignatura> listaAsignaturas = mam.getAsignaturas();
+	
+	ModuloGrupoModel mgm =new ModuloGrupoModel();
+	ArrayList<Grupo> listaGrupos =mgm.getGrupos();
 	
 	Color borde = new Color(206, 207, 202);
 	Color azul2 = new Color(52, 134, 199);
@@ -1184,7 +1188,7 @@ public class ModuloAsignturaView {
 
 	    }
 	    
-	 public void datos(Asignatura asignatura) {
+	 public void datos(Asignatura asignatura, Grupo grupo) {
 	    	Color borde = new Color(206, 207, 202);
 	    	Color azul2 = new Color(52, 134, 199);
 	    	Color azul1 = new Color(54, 146, 218);
@@ -1452,7 +1456,7 @@ public class ModuloAsignturaView {
 			    modulo.dispose();
 			    mac.moduloAsignatura();
 			});
-			/*btnDescargar.addActionListener(e->{
+			btnDescargar.addActionListener(e->{
 				JFileChooser fileChooser = new JFileChooser();
 	        	fileChooser.setDialogTitle("Guardar PDF");
 
@@ -1471,8 +1475,8 @@ public class ModuloAsignturaView {
 	        	    }
 
 	        	    System.out.println(ruta);
-	        	    mam.descargarInformacion(ruta, asignatura);
-			});*/
+	        	    mam.descargarPdf(ruta, asignatura, grupo.getId());
+			}});
 
 			panelTitulo.add(lblTitulo);
 
@@ -1551,9 +1555,10 @@ public class ModuloAsignturaView {
 		        	int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
 	                if (filaSeleccionada >= 0) {
 	                	Asignatura aSeleccionada = listaAsignaturas.get(filaSeleccionada);
+	                	Grupo gSeleccionado = listaGrupos.get(filaSeleccionada);
 			            ModuloAsignaturaController mac= new ModuloAsignaturaController();
 			            modulo.dispose();
-			            mac.datos(aSeleccionada);
+			            mac.datos(aSeleccionada,gSeleccionado);
 			            fireEditingStopped();
 	                }
 		        });

@@ -1073,9 +1073,9 @@ public class ModuloAsignturaView {
 			JLabel lblDescripcion = new JLabel("Descripción");
 			lblDescripcion.setFont(new Font("Almarai-Bold", Font.BOLD, 14));
 
-			JTextPane txtDescripcion = new JTextPane();
-			txtDescripcion.setBorder(BorderFactory.createLineBorder(borde, 5));
-			JScrollPane scrollDescripcion = new JScrollPane(txtDescripcion);
+			JTextPane descriptionInput = new JTextPane();
+			descriptionInput.setBorder(BorderFactory.createLineBorder(borde, 5));
+			JScrollPane scrollDescripcion = new JScrollPane(descriptionInput);
 
 			JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 			panelBotones.setBackground(Color.white);
@@ -1107,7 +1107,7 @@ public class ModuloAsignturaView {
 			// Precargado de datos
 			txtNombre.setText(asignatura.getNombre());
 			txtId.setText(String.valueOf(asignatura.getId()));
-			txtDescripcion.setText(asignatura.getDescripcion());
+			descriptionInput.setText(asignatura.getDescripcion());
 			
 			
 			contenido.add(panelFormulario, BorderLayout.CENTER);
@@ -1145,9 +1145,10 @@ public class ModuloAsignturaView {
 
 			btnCrear.addActionListener(e->{
 	        	String nombre = txtNombre.getText().trim();
-	        	String descripcion = txtDescripcion.getText().trim();
+	        	String descripcion = descriptionInput.getText().trim();
 	        	
 	        	 Pattern soloLetras = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$");
+	        	 Pattern descripciondatos = Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚñÑ .,;:¡!¿?\"'()\\-/%/]+$");
 	        	 
 	        	 StringBuilder errores = new StringBuilder("Por favor corrige los siguientes campos:\n");
 	        	 boolean camposValidos=true;
@@ -1159,12 +1160,12 @@ public class ModuloAsignturaView {
 			            txtNombre.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 			        }
 
-			        if (descripcion.isEmpty() || !soloLetras.matcher(descripcion).matches()) {
-			        	txtDescripcion.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+	        	 	if (descripcion.isEmpty() || !descripciondatos.matcher(descripcion).matches()) {
+			        	descriptionInput.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 			            errores.append("Descripcion (solo letras)\n");
 			            camposValidos = false;
 			        } else {
-			        	txtDescripcion.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+			        	descriptionInput.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 			        }
 			        if (camposValidos) {
 			        	Asignatura asignaturaMod = new Asignatura(nombre,descripcion);

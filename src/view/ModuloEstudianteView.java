@@ -65,7 +65,9 @@ import controlles.ModuloAsignaturaController;
 import controlles.ModuloDocenteController;
 import controlles.ModuloEstudianteController;
 import controlles.ModuloGrupoController;
+import model.Docente;
 import model.Estudiante;
+import model.ModuloDocenteModel;
 import model.ModuloEstudianteModel;
 import model.Utils;
 import model.exception.UniqueKeyViolationException;
@@ -2718,31 +2720,29 @@ public class ModuloEstudianteView {
             });
 
             borrar.addActionListener(e -> {
-            	int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+                int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
 
-            	 if (filaSeleccionada >= 0) {
-            		 
-            		 int n = JOptionPane.showConfirmDialog(
-         		            null,
-         		            "Estas seguro que quieres eliminar este registro?",
-         		            "Eliminar registro",
-         		            JOptionPane.YES_NO_OPTION);
+                if (filaSeleccionada >= 0) {
+                    int n = JOptionPane.showConfirmDialog(
+                        null,
+                        "¿Estás seguro que quieres eliminar este registro?",
+                        "Eliminar registro",
+                        JOptionPane.YES_NO_OPTION);
 
-         		        if(n==0){
-         		        	((DefaultTableModel) tabla.getModel()).removeRow(row);
-         	                ModuloEstudianteModel mem = new ModuloEstudianteModel();
-         	                Estudiante eSeleccionado = listaEstudiantes.get(filaSeleccionada);
-         	                mem.delete(eSeleccionado.getId());
-         	                
-         	                JOptionPane.showMessageDialog(null, "Fila eliminada " + (row + 1));
-         	                fireEditingStopped();
-         	                System.out.println(borrar.getSize());
-         		        }
-         		        else if(n==1) {
-         		            
-         		        }
-	                
-            	 }
+                    if (n == JOptionPane.YES_OPTION) {
+                        fireEditingStopped();
+
+                        Estudiante eSeleccionado = listaEstudiantes.get(filaSeleccionada);
+                        listaEstudiantes.remove(filaSeleccionada);
+
+                        ((DefaultTableModel) tabla.getModel()).removeRow(filaSeleccionada);
+
+                        ModuloDocenteModel mdm = new ModuloDocenteModel();
+                        mdm.delete(eSeleccionado.getId());
+
+                        JOptionPane.showMessageDialog(null, "Registro eliminado");
+                    }
+                }
             });
 
             panel.add(editar);

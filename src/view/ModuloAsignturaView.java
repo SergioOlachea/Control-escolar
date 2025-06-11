@@ -57,9 +57,11 @@ import controlles.ModuloDocenteController;
 import controlles.ModuloEstudianteController;
 import controlles.ModuloGrupoController;
 import model.Asignatura;
+import model.Docente;
 import model.Estudiante;
 import model.Grupo;
 import model.ModuloAsignaturaModel;
+import model.ModuloDocenteModel;
 import model.ModuloEstudianteModel;
 import view.ModuloDocenteView.PanelBotonesEditor;
 import view.ModuloDocenteView.PanelBotonesRenderer;
@@ -1632,10 +1634,29 @@ public class ModuloAsignturaView {
 	            });
 
 	            borrar.addActionListener(e -> {
-	                ((DefaultTableModel) tabla.getModel()).removeRow(row);
-	                JOptionPane.showMessageDialog(null, "Fila eliminada " + (row + 1));
-	                fireEditingStopped();
-	                System.out.println(borrar.getSize());
+	                int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+
+	                if (filaSeleccionada >= 0) {
+	                    int n = JOptionPane.showConfirmDialog(
+	                        null,
+	                        "¿Estás seguro que quieres eliminar este registro?",
+	                        "Eliminar registro",
+	                        JOptionPane.YES_NO_OPTION);
+
+	                    if (n == JOptionPane.YES_OPTION) {
+	                        fireEditingStopped();
+
+	                        Asignatura dSeleccionado = listaAsignaturas.get(filaSeleccionada);
+	                        listaAsignaturas.remove(filaSeleccionada);
+
+	                        ((DefaultTableModel) tabla.getModel()).removeRow(filaSeleccionada);
+
+	                        ModuloDocenteModel mdm = new ModuloDocenteModel();
+	                        mdm.delete(dSeleccionado.getId());
+
+	                        JOptionPane.showMessageDialog(null, "Registro eliminado");
+	                    }
+	                }
 	            });
 
 	            panel.add(editar);

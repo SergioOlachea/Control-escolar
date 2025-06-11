@@ -77,7 +77,7 @@ import view.ModuloDocenteView.PanelBotonesEditor;
 import view.ModuloDocenteView.PanelBotonesRenderer;
 
 public class ModuloGrupoView {
-	String nombreDocente;
+	
 	ModuloGrupoModel mgm =new ModuloGrupoModel();
 	ArrayList<Grupo> listaGrupos =mgm.getGrupos();
 	
@@ -377,6 +377,7 @@ public class ModuloGrupoView {
         for (int i = 0; i < listaGrupos.size(); i++) {
         	Grupo g = listaGrupos.get(i);
         	Docente docente = g.getDocente();
+        	String nombreDocente="N/A";
         	if (docente != null) {
         	    nombreDocente = docente.getNombres()+" "+docente.getApellidos();
         	} else {
@@ -3415,31 +3416,29 @@ public class ModuloGrupoView {
             });
 
             borrar.addActionListener(e -> {
-            	int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+                int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
 
-            	 if (filaSeleccionada >= 0) {
-            		 
-            		 int n = JOptionPane.showConfirmDialog(
-         		            null,
-         		            "Estas seguro que quieres eliminar este registro?",
-         		            "Eliminar registro",
-         		            JOptionPane.YES_NO_OPTION);
+                if (filaSeleccionada >= 0) {
+                    int n = JOptionPane.showConfirmDialog(
+                        null,
+                        "¿Estás seguro que quieres eliminar este registro?",
+                        "Eliminar registro",
+                        JOptionPane.YES_NO_OPTION);
 
-         		        if(n==0){
-         		        	((DefaultTableModel) tabla.getModel()).removeRow(row);
-         		        	ModuloGrupoModel mgm = new ModuloGrupoModel();
-         		        	Grupo gSeleccionado = listaGrupos.get(filaSeleccionada);
-         		        	mgm.delete(gSeleccionado.getId());
-         	                
-         	                JOptionPane.showMessageDialog(null, "Fila eliminada " + (row + 1));
-         	                fireEditingStopped();
-         	                System.out.println(borrar.getSize());
-         		        }
-         		        else if(n==1) {
-         		            
-         		        }
-	                
-            	 }
+                    if (n == JOptionPane.YES_OPTION) {
+                        fireEditingStopped();
+
+                        Grupo dSeleccionado = listaGrupos.get(filaSeleccionada);
+                        listaGrupos.remove(filaSeleccionada);
+
+                        ((DefaultTableModel) tabla.getModel()).removeRow(filaSeleccionada);
+
+                        ModuloGrupoModel mdm = new ModuloGrupoModel();
+                        mdm.delete(dSeleccionado.getId());
+
+                        JOptionPane.showMessageDialog(null, "Registro eliminado");
+                    }
+                }
             });
 
             panel.add(editar);

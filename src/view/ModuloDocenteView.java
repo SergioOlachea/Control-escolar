@@ -345,7 +345,7 @@ public class ModuloDocenteView {
         option.add(Box.createRigidArea(new Dimension(20,0)));
         
         // Tabla
-        String[] columnas = {"Identificador", "Nombre completo", "Detalles del docente", "Credencial", "Opciones"};
+        String[] columnas = {"Numero de control", "Nombre completo", "Detalles del docente", "Credencial", "Opciones"};
         Object[][] datos = new Object[listaDocentes.size()][columnas.length];
        
         
@@ -372,7 +372,7 @@ public class ModuloDocenteView {
         DefaultTableCellRenderer centrado = new DefaultTableCellRenderer();
         centrado.setHorizontalAlignment(SwingConstants.CENTER);
 
-        tabla.getColumn("Identificador").setCellRenderer(centrado);
+        tabla.getColumn("Numero de control").setCellRenderer(centrado);
         tabla.getColumn("Nombre completo").setCellRenderer(centrado);
         
         DefaultTableCellRenderer azulCentrado = new DefaultTableCellRenderer();
@@ -2019,7 +2019,7 @@ public class ModuloDocenteView {
 	        txtApellidos.setBorder(null);
 	        txtApellidos.setEditable(false);
 	        
-	        JLabel lblId = new JLabel("Identificador");
+	        JLabel lblId = new JLabel("Numero de control");
 	        JTextField txtId = new JTextField();
 	        txtId.setEditable(false);
 	        txtId.setBackground(Color.WHITE);
@@ -2086,7 +2086,7 @@ public class ModuloDocenteView {
 	        panelFoto.add(btnCargar);
 
 	        // Carga de datos
-	        txtId.setText(String.valueOf(docente.getId()));
+	        txtId.setText(String.valueOf(docente.getNumeroControl()));
 	        txtNombres.setText(docente.getNombres());
 	        txtApellidos.setText(docente.getApellidos());
 	        txtCorreo.setText(docente.getCorreo());
@@ -2693,32 +2693,31 @@ public class ModuloDocenteView {
 	            });
 
 	            borrar.addActionListener(e -> {
-	            	int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
+	                int filaSeleccionada = tabla.convertRowIndexToModel(tabla.getSelectedRow());
 
-	            	 if (filaSeleccionada >= 0) {
-	            		 
-	            		 int n = JOptionPane.showConfirmDialog(
-	         		            null,
-	         		            "Estas seguro que quieres eliminar este registro?",
-	         		            "Eliminar registro",
-	         		            JOptionPane.YES_NO_OPTION);
+	                if (filaSeleccionada >= 0) {
+	                    int n = JOptionPane.showConfirmDialog(
+	                        null,
+	                        "¿Estás seguro que quieres eliminar este registro?",
+	                        "Eliminar registro",
+	                        JOptionPane.YES_NO_OPTION);
 
-	         		        if(n==0){
-	         		        	
-				                ((DefaultTableModel) tabla.getModel()).removeRow(row);
-				                ModuloDocenteModel mdm= new ModuloDocenteModel();
-	         	                Docente dSeleccionado = listaDocentes.get(filaSeleccionada);
-	         	                mdm.delete(dSeleccionado.getId());
-	         	                
-	         	                JOptionPane.showMessageDialog(null, "Registro eliminado ");
-	         	                fireEditingStopped();
-	         	                System.out.println(borrar.getSize());
-	         		        }
-	         		        else if(n==1) {
-	         		            
-	         		        }
-	            	 }
+	                    if (n == JOptionPane.YES_OPTION) {
+	                        fireEditingStopped();
+
+	                        Docente dSeleccionado = listaDocentes.get(filaSeleccionada);
+	                        listaDocentes.remove(filaSeleccionada);
+
+	                        ((DefaultTableModel) tabla.getModel()).removeRow(filaSeleccionada);
+
+	                        ModuloDocenteModel mdm = new ModuloDocenteModel();
+	                        mdm.delete(dSeleccionado.getId());
+
+	                        JOptionPane.showMessageDialog(null, "Registro eliminado");
+	                    }
+	                }
 	            });
+
 
 	            panel.add(editar);
 	            panel.add(borrar);

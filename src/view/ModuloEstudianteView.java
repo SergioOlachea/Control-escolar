@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,6 +16,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -1494,6 +1496,8 @@ public class ModuloEstudianteView {
             ImageIcon icon = new ImageIcon(estudiante.getFoto()); 
             Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
             lblFoto.setIcon(new ImageIcon(scaledImage));
+            imagenSeleccionada=toBufferedImage(estudiante.getFoto());
+           
         }        
         int fila = 0;
 
@@ -2763,4 +2767,21 @@ public class ModuloEstudianteView {
         }
     };
 
+    public static BufferedImage toBufferedImage(Image img) {
+        if (img instanceof BufferedImage) {
+            return (BufferedImage) img;
+        }
+        
+        BufferedImage bimage = new BufferedImage(
+            img.getWidth(null),
+            img.getHeight(null),
+            BufferedImage.TYPE_INT_ARGB
+        );
+        
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+        
+        return bimage;
+    }
 }

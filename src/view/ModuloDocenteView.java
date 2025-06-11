@@ -977,9 +977,9 @@ public class ModuloDocenteView {
 		            txtApellidos.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (telefono.isEmpty() || !soloNumeros.matcher(telefono).matches()) {
+		        if (telefono.isEmpty() || !soloNumeros.matcher(telefono).matches()|| telefono.length() >10) {
 		            txtTelefono.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Teléfono (solo números de 7 a 15 dígitos)\n");
+		            errores.append("Teléfono (solo números de 10 dígitos)\n");
 		            camposValidos = false;
 		        } else {
 		            txtTelefono.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
@@ -1640,11 +1640,11 @@ public class ModuloDocenteView {
 		            txtApellidos.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 
-		        if (telefono.isEmpty() || !soloNumeros.matcher(telefono).matches()) {
+		        if (telefono.isEmpty() || !soloNumeros.matcher(telefono).matches()|| telefono.length() >10) {
 		            txtTelefono.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-		            errores.append("Teléfono (solo números de 7 a 15 dígitos)\n");
+		            errores.append("Teléfono (solo números de 10 dígitos)\n");
 		            camposValidos = false;
-		        } else {
+	            } else {
 		            txtTelefono.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		        }
 

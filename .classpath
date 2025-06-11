@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="src/libs/slf4j-simple-2.0.17.jar"/>
 	<classpathentry kind="lib" path="src/libs/slf4j-api-2.0.17.jar"/>
 	<classpathentry kind="lib" path="src/libs/HikariCP-6.3.0.jar"/>
+	<classpathentry kind="lib" path="src/libs/flatlaf-3.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
